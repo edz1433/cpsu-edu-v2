@@ -1,0 +1,31 @@
+<p>Working toward capacitating faculty researchers in terms of visualizing and creating information that can be used to make well-formed decisions, a training-workshop on Geographic Information System (ARC- GIS) was held last February 6-10, 2023 at the Conference room of RDEC Building, CPSU Main.&nbsp;</p>
+
+<p><img alt="" src="https://cpsu.edu.ph/files/RDC GIS-1.jpg" class="img-responsive"/></p>
+
+<p>Dr. Angelie Rose L. Lumba, Director, Research and Development Services, who is also the lead facilitator and organizer, stated that the training aimed to provide fundamental concepts underlying the use of GIS. Hands-on training with maps and geographic data that are useful in conducting experimental, developmental and environmental researches were likewise introduced to the participants.</p>
+
+<p>Invited resource persons who engaged the trainees in the 5-day event on geographic info system were Sir Raymund Carlos, Sr., Forest Ranger of the Provincial Environment and Management Office (PEMO), and&nbsp; Sir Junel T. Mahinay, Environment Management Specialist 1, PEMO.</p>
+
+<p>The 30 identified participants coming from the Main and Extension campuses were immersed in various phases of the training, such as the introduction of ARC-GIS, including opening the arc map and adding data layers, projecting data, moving around the map, symbolizing map data, labeling map features and saving the map on the first day.</p>
+
+<p><img alt="" src="https://cpsu.edu.ph/files/RDC GIS-2.jpg" class="img-responsive" /></p>
+
+<p><img alt="" src="https://cpsu.edu.ph/files/RDC GIS-3.jpg" class="img-responsive" /></p>
+
+<p>The second day focused on the topic, Digitizing/Working with attributed Data.&rsquo; This included creating and editing Shapelife and adding attributes data to the data layers.</p>
+
+<p>The third day was on working with GPS which includes GPS Survey using SW Maps/ Android phones and tablets, downloading GPS data, adding and converting GPS data, and working with geoprocessing tools.</p>
+
+<p>On the fourth day of the said event, trainees were taught on Georeferencing which included adding data layers (Raster files) to the map, georeferencing Raster Files, digitizing/tracing Raster files, and digitizing using Google earth and importing KML to ARC GIS.</p>
+
+<p><img alt="" src="https://cpsu.edu.ph/files/RDC GIS-4.jpg" class="img-responsive" /></p>
+
+<p>The entire training concluded with the hands-on application of the concepts and processes through creating a map lay out.</p>
+
+<p>The said event was also attended by the University President. Aladino C. Moraca, Ph. D., Vice President for Academic Affairs, Fernando D. Abello, Ph. D., Vice President for Administration and Finance, Engr. Marc Alexei Caesar B. Badajos, Ph. D.&nbsp;&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>By: M. Matunding, R. Normor, (ABEL 4) &amp; J.A. Emoy/ The Cenphilian Publication (TCP)</p>
+
+<p>Photos: RDEC</p>
