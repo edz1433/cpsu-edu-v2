@@ -1,5 +1,4 @@
 @extends('web.layouts.mainlayout')
-{{-- @include('web.layouts.sidebar') --}}
 @section('content')
 @php
     $current_route = request()->route()->getName();
@@ -118,30 +117,30 @@
                 </div>
             </div>
         </div>
-        
-        <div class="row course-slied mt-10">
-			@foreach($article->take(10) as $art)
+         
+		<div class="row course-slied mt-10">
+			@foreach($article as $art)
 				@php
-					$thumbnailPath = public_path("Uploads/News/thumbnail/{$art->thumbnail}");
-				@endphp
-				@continue(empty($art->thumbnail) || !file_exists($thumbnailPath)) {{-- Skip if thumbnail field is empty or file doesn't exist --}}
+					$date   = date("M d, Y", strtotime($art->created_at));
+					$title  = $art->title;
+					$artid  = $art->id;
 
-				@php
-					$date = date("M d, Y", strtotime($art->created_at));
-					$title = $art->title;
-					$artid = $art->id;
-					$image = asset("Uploads/News/thumbnail/{$art->thumbnail}");
-					$contentFilePath = public_path("Uploads/News/content/{$art->content}");
+					// Public URL for thumbnail (fallback to default if missing)
+					$image = !empty($art->thumbnail) 
+						? asset("storage/Uploads/News/thumbnail/{$art->thumbnail}")
+						: asset("storage/Uploads/default-thumbnail.png");
+
+					// Content file path (still using storage_path to read the file)
+					$contentFilePath = storage_path("app/public/Uploads/News/content/{$art->content}");
 					$maxWords = 25;
-					$excerpt = 'Content not available';
+					$excerpt  = 'Content not available';
 
-					if (file_exists($contentFilePath)) {
+					if (!empty($art->content) && file_exists($contentFilePath)) {
 						$text = strip_tags(file_get_contents($contentFilePath));
 						$words = explode(' ', $text);
 						if (count($words) > $maxWords) {
 							$excerpt = implode(' ', array_slice($words, 0, $maxWords)) . '...';
-							$readMoreLink = ' <a href="' . route('view-article', ['id' => $artid]) . '" style="color: #28a745; text-decoration: none;">Read More</a>';
-							$excerpt .= $readMoreLink;
+							$excerpt .= ' <a href="' . route('view-article', ['id' => $artid]) . '" style="color: #28a745; text-decoration: none;">Read More</a>';
 						} else {
 							$excerpt = $text;
 						}
@@ -166,7 +165,8 @@
 					</div>
 				</div>
 			@endforeach
-        </div>
+		</div>
+
 		<div class="row mt-3">
             <div class="col-12 text-center">
                 <button id="load-more" class="btn btn-outline-success px-4 py-2">
@@ -210,7 +210,7 @@
                 <div class="hex admin transparent"><div><h4></h4><span></span></div></div>
                 <div class="hex the"><div><h4></h4><span></span></div></div>
                 <div class="hex uigreen"><div><h4></h4><span></span></div></div>
-                <div class="hex rnd transparent"><div><h3>CPSU SECURES 158TH SPOT IN THE WURI RANKING 2023</h3><span></span></div></div>
+                <div class="hex rnd transparent"><div><h3>CPSU SECURES 105TH SPOT IN THE WURI RANKING 2025</h3><span></span></div></div>
             </div>
             <div class="row-hive row3">
                 <div class="hex" style="background-image: url('https://development.cpsu.edu.ph/images/cpsu-iso.png');">

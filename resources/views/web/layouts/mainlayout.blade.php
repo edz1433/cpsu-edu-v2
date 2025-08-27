@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-@include('web.layouts.header1')
-
-
-
+@include('web.layouts.header')
 @include('web.layouts.footer')
 <head>
     <meta charset="utf-8">

@@ -46,62 +46,19 @@ $current_route = request()->route()->getName();
 						$allImages[] = 'default-thumbnail.png';
 					}
 
-					// Load and clean HTML content
-					$content = file_get_contents('Uploads/Submenu/content/' . $subcontent->content);
-					// $content = preg_replace('/<img\b[^>]*>(?:<\/img>)?/i', '', $content);
+					// Load HTML content using Laravel Storage
+					use Illuminate\Support\Facades\Storage;
+
+					$content = '';
+					if ($subcontent->content && Storage::disk('public')->exists('Uploads/Submenu/content/' . $subcontent->content)) {
+						$content = Storage::disk('public')->get('Uploads/Submenu/content/' . $subcontent->content);
+					} else {
+						$content = '<p>Content not available.</p>';
+					}
 				@endphp
 
-				{{-- <div class="corses-singel-left" style="background-color: transparent !important;">
-					<div class="image-slider-container">
-						<i class="slider-arrow arrow-left fa fa-chevron-left" onclick="prevSlide()"></i>
-
-						<div class="tab-content" id="pills-tabContent">
-							@foreach ($allImages as $index => $image)
-								@php
-									$isDefault = $image === 'default-thumbnail.png';
-									$imagePath = $isDefault
-										? asset('Uploads/' . $image)
-										: ($index === 0 && !$isDefault
-											? asset('Uploads/Submenu/thumbnail/' . $image)
-											: asset('Uploads/Submenu/images/' . $image));
-
-									$tabId = 'pills-image-' . ($index + 1);
-									$active = $index === 0 ? 'show active' : '';
-								@endphp
-								<div class="tab-pane fade {{ $active }}" id="{{ $tabId }}" role="tabpanel" aria-labelledby="{{ $tabId }}-tab">
-									<div class="shop-image">
-										<a href="{{ $imagePath }}" class="shop-items">
-											<img src="{{ $imagePath }}" alt="Shop">
-										</a>
-									</div>
-								</div>
-							@endforeach
-						</div>
-
-						<i class="slider-arrow arrow-right fa fa-chevron-right" onclick="nextSlide()"></i>
-					</div> --}}
-
-					<p>{!! $content !!}</p>
-				</div>
+				<p>{!! $content !!}</p>
 			</div>
-			{{-- <div class="col-lg-4">
-				<div class="row">
-					<div class="col-lg-12 col-md-6">
-						<div class="course-features" style="background-color: transparent !important;">
-							<h4>RECENT NEWS</h4>
-
-							@foreach ($articles->take(10) as $art)
-								<p>
-									<a href="{{ route('view-article', ['id' => $art->id]) }}" style="color: inherit; text-decoration: none;">
-										{{ $art->title }}
-									</a>
-								</p><br>
-							@endforeach
-
-						</div> <!-- course features -->
-					</div>
-				</div>
-			</div> --}}
 		</div> <!-- row -->
 	</div>
 </section>

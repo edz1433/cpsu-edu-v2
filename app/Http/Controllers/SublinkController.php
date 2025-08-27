@@ -19,41 +19,39 @@ class SublinkController extends Controller
     public function storeSublink(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string',
-            'content' => 'required|string',
+            'title'     => 'required|string',
+            'content'   => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240', 
         ]);
-    
+
         $rand = rand(1000, 9999);
         $timestamp = now()->format('YmdHis');
-    
-        $randomFilename = "Sublink-{$timestamp}-" . $rand . '.txt';
-    
+
+        // ✅ Generate filename for content
+        $randomFilename = "Sublink-{$timestamp}-{$rand}.txt";
+
+        // ✅ Save content to storage/app/public/Uploads/Sublink/content
         $contentFilePath = "Uploads/Sublink/content/{$randomFilename}";
-        $fullContentFilePath = public_path($contentFilePath);
-        file_put_contents($contentFilePath, $validatedData['content']);
-    
-        $newFileName = null; 
-    
+        Storage::disk('public')->put($contentFilePath, $validatedData['content']);
+
+        // ✅ Handle thumbnail
+        $newFileName = null;
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
             $newFileName = 'thumbnail-' . $timestamp . '-' . $rand . '.' . $file->getClientOriginalExtension();
-            $customPath = 'Uploads/Sublink/thumbnail/';
-    
-            $file->move(public_path($customPath), $newFileName);
+            Storage::disk('public')->putFileAs("Uploads/Sublink/thumbnail", $file, $newFileName);
         }
-    
+
         $sublink = new Sublink([
-            'title' => $validatedData['title'],
-            'content' => $randomFilename,
-            'thumbnail' => $newFileName,
+            'title'     => $validatedData['title'],
+            'content'   => $randomFilename, // only filename
+            'thumbnail' => $newFileName,    // only filename
         ]);
-    
+
         $sublink->save();
-    
+
         return redirect()->back()->with('success', 'Sublink created successfully');
     }
-    
 
     public function updateSubLink(Request $request, $id)
     {

@@ -15,41 +15,35 @@ class WebController extends Controller
     public function webHome()
     {
         $file = File::all();
-        $article = Article::orderBy('created_at', 'asc')->paginate(8);
+        $article = Article::latest()->paginate(10);
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $categories = Category::all();
         $subcategories = SubCategory::all();
-        return view('web.home', compact("article", "submenu", "categories", "file", "subcategories"));
-    }
-
-    public function webHome1()
-    {
-        $file = File::all();
-        $article = Article::orderBy('created_at', 'asc')->paginate(8);
-        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        $categories = Category::all();
-        $subcategories = SubCategory::all();
-        return view('web.home1', compact("article", "submenu", "categories", "file", "subcategories"));
+        return view('web.home', compact("article", "submenu", "file", "categories", "subcategories"));
     }
 
     public function viewArticle($id)
     {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
         $file = File::all();
         $articles = Article::orderBy('created_at', 'desc')->paginate(3);
         $article = Article::find($id);
         // if ($article) {
         //     $article->increment('visit');
         // }
-        $submenu = Submenu::orderBy('title', 'asc')->get();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $category = Category::all();
-        return view('web.view-article', compact("article", "submenu", "category", "articles", "file"));
+        return view('web.view-article', compact("article", "submenu", "category", "articles", "file", "categories", "subcategories"));
     }
 
     public function subContent($id)
     {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
         $file = File::all();
         $articles = Article::orderBy('created_at', 'desc')->paginate(3);
-        $submenu = Submenu::orderBy('title', 'asc')->get();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $subcontent = Submenu::join('categories', 'submenus.category', '=', 'categories.id')
         ->where('submenus.id', $id)
         ->select('submenus.*', 'categories.cat_name')
@@ -58,42 +52,49 @@ class WebController extends Controller
         //     $submen->increment('visit');
         // }
         $category = Category::all();
-        return view('web.view-sub-content', compact("submenu", "subcontent", "category", "articles", "file"));
+        return view('web.view-sub-content', compact("submenu", "subcontent", "category", "articles", "file", "categories", "subcategories"));
     }
     
     public function viewSublinkContent($id)
     {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
         $file = File::all();
         $articles = Article::orderBy('created_at', 'desc')->paginate(3);
-        $submenu = Submenu::orderBy('title', 'asc')->get();
+       $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $sublink = Sublink::find($id);
         // if ($sublink) {
         //     $sublink->increment('visit');
         // }
         $category = Category::all();
-        return view('web.view-sublink-content', compact("submenu", "sublink", "category", "articles", "file"));
+        return view('web.view-sublink-content', compact("submenu", "sublink", "category", "articles", "file", "categories", "subcategories"));
     }
     
     public function searchArticle(Request $request){
-        
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
         $searchTerm = $request->input('s'); 
         $articles = Article::orderBy('created_at', 'desc')->paginate(3);
         $file = File::all();
-        $submenu = Submenu::orderBy('title', 'asc')->get();
+       $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $category = Category::all();
 
         $article = Article::where('title', 'LIKE', '%' . $searchTerm . '%')->get();
-    
-        return view('web.search-article', compact("articles", "article", "submenu", "file", "category"));
-    } 
+
+        return view('web.search-article', compact("articles", "article", "submenu", "file", "category", "categories", "subcategories"));
+    }
 
     public function history()
     {
-        return view('web.history');
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        return view('web.history', compact("categories", "subcategories"));
     }
 
     public function vgmo()
     {
-        return view('web.vgmo');
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        return view('web.vgmo', compact("categories", "subcategories"));
     }
-}
+}   

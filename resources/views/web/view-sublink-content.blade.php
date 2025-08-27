@@ -28,10 +28,12 @@ $current_route = request()->route()->getName();
 			<div class="col-lg-10">
 					<p>
 						@php
-							$content = file_get_contents('Uploads/Sublink/content/'.$sublink->content);
+							$content = file_get_contents('Uploads/Sublink/content/' . $sublink->content);
+
+							// Replace all localhost URLs with app URL dynamically
 							$content = str_replace(
-								'http://localhost/cpsu-edu/public/view-content',
-								'https://development.cpsu.edu.ph/sublink',
+								url('view-sublink-content'),  // match the exact URL in content
+								url('/sublink'),              // replace with the correct URL
 								$content
 							);
 						@endphp

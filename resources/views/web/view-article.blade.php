@@ -1,5 +1,4 @@
-@extends('web.layouts.mainlayout')
-{{-- @include('web.layouts.sidebar') --}}
+@extends('web.layouts.mainlayout')=
 @section('content')
 @php
 $current_route = request()->route()->getName();
@@ -31,56 +30,56 @@ $relatedArticles = $articles
 		<div class="row">
 			<div class="col-lg-8">
 				@php
-					$thumbnail = $article->thumbnail == '' 
-						? asset('Uploads/default-thumbnail.png') 
-						: asset("Uploads/News/thumbnail/{$article->thumbnail}");
+					// Thumbnail URL using storage path (fallback if missing)
+					$thumbnail = !empty($article->thumbnail) && file_exists(storage_path("app/public/Uploads/News/thumbnail/{$article->thumbnail}"))
+						? asset("storage/Uploads/News/thumbnail/{$article->thumbnail}")
+						: asset("storage/Uploads/default-thumbnail.png");
 
 					// Load and clean content
-					$content = file_get_contents('Uploads/News/content/' . $article->content);
+					$contentFilePath = storage_path("app/public/Uploads/News/content/{$article->content}");
+					$content = 'Content not available';
+					if (!empty($article->content) && file_exists($contentFilePath)) {
+						$content = file_get_contents($contentFilePath);
+						// Remove all <img> tags
+						$content = preg_replace('/<img\b[^>]*>(?:<\/img>)?/i', '', $content);
+					}
 
-					// Remove all <img> tags, even with newlines or spaces
-					$content = preg_replace('/<img\b[^>]*>(?:<\/img>)?/i', '', $content);
+					// Images
+					$images = !empty($article->images) ? explode(',', $article->images) : [];
+					$allImages = array_merge([$article->thumbnail], $images);
 				@endphp
 
 				<div class="corses-singel-left" style="background-color: transparent !important;">
-					@php
-						$thumbnail = $article->thumbnail 
-							? asset('Uploads/News/thumbnail/' . $article->thumbnail) 
-							: asset('Uploads/default-thumbnail.png');
+					<div class="image-slider-container">
+						<i class="slider-arrow arrow-left fa fa-chevron-left" onclick="prevSlide()"></i>
 
-						$images = $article->images 
-							? explode(',', $article->images) 
-							: [];
+						<div class="tab-content" id="pills-tabContent">
+							@foreach ($allImages as $index => $image)
+								@php
+									if ($index === 0) {
+										$imagePath = !empty($image) && file_exists(storage_path("app/public/Uploads/News/thumbnail/{$image}"))
+											? asset("storage/Uploads/News/thumbnail/{$image}")
+											: asset("storage/Uploads/default-thumbnail.png");
+									} else {
+										$imagePath = !empty($image) && file_exists(storage_path("app/public/Uploads/News/images/{$image}"))
+											? asset("storage/Uploads/News/images/{$image}")
+											: asset("storage/Uploads/default-thumbnail.png");
+									}
 
-						// Combined list of images: first is thumbnail, others are from the 'images' column
-						$allImages = array_merge([$article->thumbnail], $images);
-					@endphp
+									$tabId = 'pills-image-' . ($index + 1);
+									$active = $index === 0 ? 'show active' : '';
+								@endphp
 
-				
-						<div class="image-slider-container">
-							<i class="slider-arrow arrow-left fa fa-chevron-left" onclick="prevSlide()"></i>
-
-							<div class="tab-content" id="pills-tabContent">
-								@foreach ($allImages as $index => $image)
-									@php
-										$imagePath = $index === 0
-											? asset('Uploads/News/thumbnail/' . $image)
-											: asset('Uploads/News/images/' . $image);
-
-										$tabId = 'pills-image-' . ($index + 1);
-										$active = $index === 0 ? 'show active' : '';
-									@endphp
-									<div class="tab-pane fade {{ $active }}" id="{{ $tabId }}" role="tabpanel" aria-labelledby="{{ $tabId }}-tab">
-										<div class="shop-image">
-											<a href="{{ $imagePath }}" class="shop-items"><img src="{{ $imagePath }}" alt="Shop"></a>
-										</div>
+								<div class="tab-pane fade {{ $active }}" id="{{ $tabId }}" role="tabpanel" aria-labelledby="{{ $tabId }}-tab">
+									<div class="shop-image">
+										<a href="{{ $imagePath }}" class="shop-items"><img src="{{ $imagePath }}" alt="Shop"></a>
 									</div>
-								@endforeach
-							</div>
-
-							<i class="slider-arrow arrow-right fa  fa-chevron-right" onclick="nextSlide()"></i>
+								</div>
+							@endforeach
 						</div>
 
+						<i class="slider-arrow arrow-right fa fa-chevron-right" onclick="nextSlide()"></i>
+					</div>
 
 					<div class="title pt-2">
 						<h5>{{ $article->title }}</h5>
@@ -88,6 +87,7 @@ $relatedArticles = $articles
 					<p>{!! $content !!}</p>
 				</div>
 			</div>
+
 			<div class="col-lg-4">
 				<div class="row">
 					<div class="col-lg-12 col-md-6">
@@ -101,12 +101,12 @@ $relatedArticles = $articles
 									</a>
 								</p><br>
 							@endforeach
-
-						</div> <!-- course features -->
+						</div>
 					</div>
 				</div>
 			</div>
-		</div> <!-- row -->
+		</div>
+
 		<div class="row">
 			<div class="col-lg-8">
 				<div class="releted-courses pt-95">
@@ -117,9 +117,10 @@ $relatedArticles = $articles
 
 						@foreach ($relatedArticles as $related)
 							@php
-								$thumbnail = $related->thumbnail == '' 
-									? asset('Uploads/default-thumbnail.png') 
-									: asset("Uploads/News/thumbnail/{$related->thumbnail}");
+								// Use storage link with fallback if file missing
+								$thumbnail = !empty($related->thumbnail) && file_exists(storage_path("app/public/Uploads/News/thumbnail/{$related->thumbnail}"))
+									? asset("storage/Uploads/News/thumbnail/{$related->thumbnail}")
+									: asset("storage/Uploads/default-thumbnail.png");
 							@endphp
 
 							<div class="col-md-6 d-flex">
@@ -146,6 +147,7 @@ $relatedArticles = $articles
 				</div> <!-- releted courses -->
 			</div>
 		</div>
+
 	</div>
 </section>
 <script>

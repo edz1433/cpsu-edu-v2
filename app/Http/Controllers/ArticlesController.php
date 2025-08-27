@@ -18,29 +18,29 @@ class ArticlesController extends Controller
     public function storeArticles(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string',
-            'content' => 'required|string',
+            'title'     => 'required|string',
+            'content'   => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'images.*'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         $rand = rand(1000, 9999);
         $timestamp = now()->format('YmdHis');
         $randomFilename = "News-{$timestamp}-{$rand}.txt";
 
-        // Save content to file
+        // ✅ Save content to storage/app/public/Uploads/News/content
         $contentFilePath = "Uploads/News/content/{$randomFilename}";
-        file_put_contents(public_path($contentFilePath), $validatedData['content']);
+        Storage::disk('public')->put($contentFilePath, $validatedData['content']);
 
-        // Handle thumbnail
+        // ✅ Handle thumbnail
         $newFileName = null;
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
             $newFileName = 'thumbnail-' . $timestamp . '-' . $rand . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('Uploads/News/thumbnail'), $newFileName);
+            Storage::disk('public')->putFileAs("Uploads/News/thumbnail", $file, $newFileName);
         }
 
-        // Handle multiple images and rename using thumbnail as base
+        // ✅ Handle multiple images and rename using thumbnail as base
         $imageNames = [];
         if ($request->hasFile('images')) {
             $index = 1;
@@ -48,19 +48,19 @@ class ArticlesController extends Controller
                 $ext = $image->getClientOriginalExtension();
                 $baseName = $newFileName ? pathinfo($newFileName, PATHINFO_FILENAME) : "news-{$timestamp}-{$rand}";
                 $imageName = "{$baseName}-{$index}.{$ext}";
-                $image->move(public_path('Uploads/News/images'), $imageName);
+                Storage::disk('public')->putFileAs("Uploads/News/images", $image, $imageName);
                 $imageNames[] = $imageName;
                 $index++;
             }
         }
 
+        // ✅ Save DB record
         $article = new Article([
-            'title' => $validatedData['title'],
-            'content' => $randomFilename,
+            'title'     => $validatedData['title'],
+            'content'   => $randomFilename,
             'thumbnail' => $newFileName,
-            'images' => implode(',', $imageNames), // store as comma-separated string
+            'images'    => implode(',', $imageNames), // store as comma-separated string
         ]);
-        
 
         $article->save();
 
