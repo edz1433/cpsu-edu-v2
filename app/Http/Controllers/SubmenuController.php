@@ -147,7 +147,12 @@ class SubmenuController extends Controller
 
     public function editSubmenu($id){
         $category = Category::all();
-        $submenu = Submenu::find($id);
+        $submenu = Submenu::query()
+            ->leftJoin('sub_categories', 'sub_categories.id', '=', 'submenus.subcategory')
+            ->where('submenus.id', $id)
+            ->select('submenus.*', 'sub_categories.title as sub_category_title')
+            ->first();
+
         $subcategories = SubCategory::all();
         return view('webadmin.submenu-edit', compact('category', 'submenu', 'subcategories'));
     }

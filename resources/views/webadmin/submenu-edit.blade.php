@@ -40,6 +40,7 @@
 							<div class="form-group col-md-4">
 								<label for="subcategory"><i class="fas fa-list-alt"></i> Sub Category</label>
 								<select class="form-control" name="subcategory" id="subcategory">
+									<option value="{{ $submenu->subcategory  }}">{{ $submenu->sub_category_title }}</option>
 									{{-- @foreach ($subcategories as $sub)
 										<option value="{{ $sub->id }}" @if($submenu->subcategory == $sub->id) selected @endif>
 											{{ $sub->title }}
