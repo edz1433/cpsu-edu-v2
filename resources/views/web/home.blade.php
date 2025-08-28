@@ -182,14 +182,14 @@
 		<div class="row">
 			<div class="col-lg-7">
 				<div class="about-image mt-50 hover-effect">
-					<a href="#">
+					<a href="{{ route('academic-calendar') }}">
 						<img src="{{ asset('images/academic calendar.jpg') }}" alt="About">
 					</a>
 				</div>
 			</div>
 			<div class="col-lg-5">
 				<div class="about-image hover-effect">
-					<a href="#">
+					<a href="{{ route('jobList') }}">
 						<img src="{{ asset('images/hiring logo.png') }}" alt="About">
 					</a>
 				</div>

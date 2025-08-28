@@ -17,12 +17,15 @@ Route::middleware(['headers.security'])->group(function () {
     Route::get('/content/{id}', [WebController::class, 'subContent'])->name('view-sub-content');
     Route::get('/search', [WebController::class, 'searchArticle'])->name('search-article');
     Route::get('/sublink/{id}', [WebController::class, 'viewSublinkContent'])->name('view-sublink-content');
+    Route::get('/jobs', [WebController::class, 'jobList'])->name('jobList');
     Route::get('/autogen', [autoGenController::class, 'autoGen'])->name('autoGen');
 
     //pages
     Route::get('/home', [WebController::class, 'webHome1'])->name('webHome1');
     Route::get('/history', [WebController::class, 'history'])->name('history');
     Route::get('/vgmo', [WebController::class, 'vgmo'])->name('vgmo');
+    Route::get('/academic-calendar', [WebController::class, 'acadCalendar'])->name('academic-calendar');
+
     
     //Website Admin
     Route::get('/syntax-error', function () {

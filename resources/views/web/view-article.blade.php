@@ -1,4 +1,4 @@
-@extends('web.layouts.mainlayout')=
+@extends('web.layouts.mainlayout')
 @section('content')
 @php
 $current_route = request()->route()->getName();
@@ -38,6 +38,7 @@ $relatedArticles = $articles
 					// Load and clean content
 					$contentFilePath = storage_path("app/public/Uploads/News/content/{$article->content}");
 					$content = 'Content not available';
+					
 					if (!empty($article->content) && file_exists($contentFilePath)) {
 						$content = file_get_contents($contentFilePath);
 						// Remove all <img> tags
@@ -82,7 +83,7 @@ $relatedArticles = $articles
 					</div>
 
 					<div class="title pt-2">
-						<h5>{{ $article->title }}</h5>
+						<h5>{{ strip_tags($article->title) }}</h5>
 					</div> 
 					<p>{!! $content !!}</p>
 				</div>
@@ -95,12 +96,27 @@ $relatedArticles = $articles
 							<h4>RECENT NEWS</h4>
 
 							@foreach ($articles->take(10) as $art)
+								@php
+									$title = strip_tags($art->title);
+
+									// Prefer Normalizer (intl). Fallback to transliterator if available.
+									if (class_exists('Normalizer')) {
+										$title = Normalizer::normalize($title, Normalizer::FORM_KC);
+									} elseif (function_exists('transliterator_transliterate')) {
+										$title = transliterator_transliterate('NFKC', $title);
+									}
+
+									// remove invisible/formatting characters (optional)
+									$title = preg_replace('/\p{Cf}/u', '', $title);
+								@endphp
+
 								<p>
-									<a href="{{ route('view-article', ['id' => $art->id]) }}" style="color: inherit; text-decoration: none;">
-										{{ $art->title }}
-									</a>
+								<a href="{{ route('view-article', ['id' => $art->id]) }}" style="color: inherit; text-decoration: none;">
+									{{ $title }}
+								</a>
 								</p><br>
 							@endforeach
+
 						</div>
 					</div>
 				</div>

@@ -9,6 +9,7 @@ use App\Models\Submenu;
 use App\Models\Sublink;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Illuminate\Support\Facades\Http;
 
 class WebController extends Controller
 {
@@ -61,7 +62,7 @@ class WebController extends Controller
         $subcategories = SubCategory::all();
         $file = File::all();
         $articles = Article::orderBy('created_at', 'desc')->paginate(3);
-       $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $sublink = Sublink::find($id);
         // if ($sublink) {
         //     $sublink->increment('visit');
@@ -76,7 +77,7 @@ class WebController extends Controller
         $searchTerm = $request->input('s'); 
         $articles = Article::orderBy('created_at', 'desc')->paginate(3);
         $file = File::all();
-       $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $category = Category::all();
 
         $article = Article::where('title', 'LIKE', '%' . $searchTerm . '%')->get();
@@ -88,13 +89,43 @@ class WebController extends Controller
     {
         $categories = Category::all();
         $subcategories = SubCategory::all();
-        return view('web.history', compact("categories", "subcategories"));
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.history', compact("categories", "subcategories", "submenu"));
     }
 
     public function vgmo()
     {
         $categories = Category::all();
         $subcategories = SubCategory::all();
-        return view('web.vgmo', compact("categories", "subcategories"));
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.vgmo', compact("categories", "subcategories", "submenu"));
     }
+
+    public function acadCalendar()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.academic-calendar', compact("categories", "subcategories", "submenu"));
+    }
+
+    public function jobList()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+
+        // Fetch job list from API
+        $response = Http::get('https://hris.cpsu.edu.ph/api/job-list');
+
+        $jobs = $response->json();
+
+        return view('web.job-hring', compact(
+            'categories',
+            'subcategories',
+            'submenu',
+            'jobs'
+        ));
+    }
+
 }   

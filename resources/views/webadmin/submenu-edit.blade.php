@@ -40,11 +40,11 @@
 							<div class="form-group col-md-4">
 								<label for="subcategory"><i class="fas fa-list-alt"></i> Sub Category</label>
 								<select class="form-control" name="subcategory" id="subcategory">
-									@foreach ($subcategories as $sub)
+									{{-- @foreach ($subcategories as $sub)
 										<option value="{{ $sub->id }}" @if($submenu->subcategory == $sub->id) selected @endif>
 											{{ $sub->title }}
 										</option>
-									@endforeach
+									@endforeach --}}
 								</select>
 							</div>
 
@@ -62,9 +62,17 @@
 						<div class="form-group">
 							<label for="content"><i class="fas fa-align-left"></i> Content</label>
 							<div class="summernote">
-								@php $content = file_get_contents('Uploads/Submenu/content/'.$submenu->content); @endphp
+								@php
+									// Build full storage path
+									$contentPath = storage_path('app/public/Uploads/Submenu/content/' . $submenu->content);
+
+									// Fallback if file doesn't exist
+									$content = file_exists($contentPath) ? file_get_contents($contentPath) : '';
+								@endphp
+
 								{!! $content !!}
 							</div>
+
 							<textarea id="summernote-textarea" name="content" style="display:none;">{!! $content !!}</textarea>
 						</div>
 

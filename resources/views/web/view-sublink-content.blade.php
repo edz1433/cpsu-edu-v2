@@ -30,13 +30,14 @@ $current_route = request()->route()->getName();
 						@php
 							$content = file_get_contents('Uploads/Sublink/content/' . $sublink->content);
 
-							// Replace all localhost URLs with app URL dynamically
+							// Replace both 'view-content' and 'view-sublink-content' with 'sublink'
 							$content = str_replace(
-								url('view-sublink-content'),  // match the exact URL in content
-								url('/sublink'),              // replace with the correct URL
+								[url('view-content'), url('view-sublink-content')],
+								url('/sublink'),
 								$content
 							);
 						@endphp
+
 						{!! $content !!}
 					</p>
 				</div>

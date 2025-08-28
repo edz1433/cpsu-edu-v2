@@ -18,64 +18,62 @@ class SubmenuController extends Controller
     }
 
 
-public function storeSubmenu(Request $request)
-{
-    $validatedData = $request->validate([
-        'title'       => 'required|string',
-        'category'    => 'required|string',
-        'subcategory' => 'nullable|string',
-        'url'         => 'nullable|string',
-        'men_order'   => 'required|integer',
-        'content'     => 'required|string',
-        'thumbnail'   => 'nullable|file',
-        'status'      => 'required|integer',
-    ]);
+    public function storeSubmenu(Request $request)
+    {
+        $validatedData = $request->validate([
+            'title'       => 'required|string',
+            'category'    => 'required|string',
+            'subcategory' => 'nullable|string',
+            'url'         => 'nullable|string',
+            'men_order'   => 'required|integer',
+            'content'     => 'required|string',
+            'thumbnail'   => 'nullable|file',
+            'status'      => 'required|integer',
+        ]);
 
-    $rand = rand(1000, 9999);
-    $timestamp = now()->format('YmdHis');
-    $categorySlug = \Str::slug($validatedData['category'], '-');
+        $rand = rand(1000, 9999);
+        $timestamp = now()->format('YmdHis');
+        $categorySlug = \Str::slug($validatedData['category'], '-');
 
-    // --- Content File ---
-    $contentFilename = "{$categorySlug}-{$timestamp}-{$rand}.txt";
-    $contentPath = "Uploads/Submenu/content/{$contentFilename}";
+        // --- Content File ---
+        $contentFilename = "{$categorySlug}-{$timestamp}-{$rand}.txt";
+        $contentPath = "Uploads/Submenu/content/{$contentFilename}";
 
-    // Make sure the content directory exists
-    Storage::disk('public')->makeDirectory('Uploads/Submenu/content');
+        // Make sure the content directory exists
+        Storage::disk('public')->makeDirectory('Uploads/Submenu/content');
 
-    // Save content to storage/app/public/Uploads/Submenu/content
-    if (!Storage::disk('public')->put($contentPath, $validatedData['content'])) {
-        return redirect()->back()->with('error', 'Failed to save content file.');
-    }
-
-    $thumbnailFilename = null;
-
-    // --- Thumbnail File ---
-    if ($request->hasFile('thumbnail')) {
-        $file = $request->file('thumbnail');
-        $thumbnailFilename = "thumbnail-{$timestamp}-{$rand}." . $file->getClientOriginalExtension();
-        Storage::disk('public')->makeDirectory('Uploads/Submenu/thumbnail');
-
-        if (!Storage::disk('public')->putFileAs('Uploads/Submenu/thumbnail', $file, $thumbnailFilename)) {
-            return redirect()->back()->with('error', 'Failed to save thumbnail.');
+        // Save content to storage/app/public/Uploads/Submenu/content
+        if (!Storage::disk('public')->put($contentPath, $validatedData['content'])) {
+            return redirect()->back()->with('error', 'Failed to save content file.');
         }
+
+        $thumbnailFilename = null;
+
+        // --- Thumbnail File ---
+        if ($request->hasFile('thumbnail')) {
+            $file = $request->file('thumbnail');
+            $thumbnailFilename = "thumbnail-{$timestamp}-{$rand}." . $file->getClientOriginalExtension();
+            Storage::disk('public')->makeDirectory('Uploads/Submenu/thumbnail');
+
+            if (!Storage::disk('public')->putFileAs('Uploads/Submenu/thumbnail', $file, $thumbnailFilename)) {
+                return redirect()->back()->with('error', 'Failed to save thumbnail.');
+            }
+        }
+
+        // --- Save to Database ---
+        Submenu::create([
+            'title'       => $validatedData['title'],
+            'category'    => $validatedData['category'],
+            'subcategory' => $validatedData['subcategory'],
+            'url'         => $validatedData['url'],
+            'menu_order'  => $validatedData['men_order'],
+            'content'     => $contentFilename,
+            'thumbnail'   => $thumbnailFilename,
+            'status'      => $validatedData['status'],
+        ]);
+
+        return redirect()->back()->with('success', 'Submenu created successfully');
     }
-
-    // --- Save to Database ---
-    Submenu::create([
-        'title'       => $validatedData['title'],
-        'category'    => $validatedData['category'],
-        'subcategory' => $validatedData['subcategory'],
-        'url'         => $validatedData['url'],
-        'menu_order'  => $validatedData['men_order'],
-        'content'     => $contentFilename,
-        'thumbnail'   => $thumbnailFilename,
-        'status'      => $validatedData['status'],
-    ]);
-
-    return redirect()->back()->with('success', 'Submenu created successfully');
-}
-
-
 
     public function updateSubmenu(Request $request, $id)
     {
@@ -136,7 +134,7 @@ public function storeSubmenu(Request $request)
         // ✅ Update database fields
         $submenu->title       = $validatedData['title'];
         $submenu->category    = $validatedData['category'];
-        $submenu->subcategory = $validatedData['subcategory'];
+        $submenu->subcategory = $validatedData['subcategory'] ?? NULL;
         $submenu->url         = $validatedData['url'];
         $submenu->menu_order  = $validatedData['men_order'];
         $submenu->status      = $validatedData['status'];
