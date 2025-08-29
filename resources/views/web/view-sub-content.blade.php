@@ -46,12 +46,10 @@ $current_route = request()->route()->getName();
 						$allImages[] = 'default-thumbnail.png';
 					}
 
-					// Load HTML content using Laravel Storage
-					use Illuminate\Support\Facades\Storage;
-
-					$content = '';
-					if ($subcontent->content && Storage::disk('public')->exists('Uploads/Submenu/content/' . $subcontent->content)) {
-						$content = Storage::disk('public')->get('Uploads/Submenu/content/' . $subcontent->content);
+					// Load HTML content directly from public folder
+					$contentFilePath = public_path("Uploads/Submenu/content/{$subcontent->content}");
+					if (!empty($subcontent->content) && file_exists($contentFilePath)) {
+						$content = file_get_contents($contentFilePath);
 					} else {
 						$content = '<p>Content not available.</p>';
 					}
