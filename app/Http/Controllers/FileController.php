@@ -16,18 +16,26 @@ class FileController extends Controller
         $validatedData = $request->validate([
             'storage' => 'required|string',
             'title' => 'required|string',
-            'file' => 'required|file|max:102400',
+            'file' => 'required|file|max:102400', // Max 100MB
             'category' => 'required|string',
         ]);
-    
+
         $uploadedFile = $request->file('file');
         $originalFileName = $uploadedFile->getClientOriginalName();
         $fileExtension = $uploadedFile->getClientOriginalExtension();
-        
-        $customPath = 'Uploads/Files/'.$validatedData['storage'];
-    
-        $uploadedFile->move(public_path($customPath), $originalFileName);
-    
+
+        // ✅ Define custom path in public folder
+        $customPath = public_path('Uploads/Files/' . $validatedData['storage']);
+
+        // ✅ Make sure folder exists
+        if (!file_exists($customPath)) {
+            mkdir($customPath, 0777, true);
+        }
+
+        // ✅ Move uploaded file to public folder
+        $uploadedFile->move($customPath, $originalFileName);
+
+        // ✅ Save file info to database
         $files = new File([
             'storage' => $validatedData['storage'],
             'title' => $validatedData['title'],
@@ -35,13 +43,11 @@ class FileController extends Controller
             'file_ext' => $fileExtension,
             'category' => $validatedData['category'],
         ]);
-    
+
         $files->save();
-    
+
         return redirect()->back()->with('success', 'File uploaded successfully');
     }
-    
 
-    
     
 }
