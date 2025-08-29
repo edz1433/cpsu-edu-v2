@@ -40,7 +40,7 @@
     <!-- Welcome Slide with video -->
     <div class="single-slider bg_cover d-flex align-items-start fixed-slider position-relative slider-intro">
         <video autoplay muted loop playsinline class="video-background" preload="metadata">
-            <source src="{{ asset('Uploads/Videos/banner_video.mp4') }}" type="video/mp4">
+            <source src="{{ asset('Uploads/Videos/banner_video.webm') }}" type="video/mp4">
             {{-- Your browser does not support the video tag. --}}
         </video>
     </div>
