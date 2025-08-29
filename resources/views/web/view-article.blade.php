@@ -30,13 +30,13 @@ $relatedArticles = $articles
 		<div class="row">
 			<div class="col-lg-8">
 				@php
-					// Thumbnail URL using storage path (fallback if missing)
-					$thumbnail = !empty($article->thumbnail) && file_exists(storage_path("app/public/Uploads/News/thumbnail/{$article->thumbnail}"))
-						? asset("storage/Uploads/News/thumbnail/{$article->thumbnail}")
-						: asset("storage/Uploads/default-thumbnail.png");
+					// Thumbnail URL (fallback if missing)
+					$thumbnail = !empty($article->thumbnail) && file_exists(public_path("Uploads/News/thumbnail/{$article->thumbnail}"))
+						? asset("Uploads/News/thumbnail/{$article->thumbnail}")
+						: asset("Uploads/default-thumbnail.png");
 
 					// Load and clean content
-					$contentFilePath = storage_path("app/public/Uploads/News/content/{$article->content}");
+					$contentFilePath = public_path("Uploads/News/content/{$article->content}");
 					$content = 'Content not available';
 					
 					if (!empty($article->content) && file_exists($contentFilePath)) {
@@ -58,13 +58,13 @@ $relatedArticles = $articles
 							@foreach ($allImages as $index => $image)
 								@php
 									if ($index === 0) {
-										$imagePath = !empty($image) && file_exists(storage_path("app/public/Uploads/News/thumbnail/{$image}"))
-											? asset("storage/Uploads/News/thumbnail/{$image}")
-											: asset("storage/Uploads/default-thumbnail.png");
+										$imagePath = !empty($image) && file_exists(public_path("Uploads/News/thumbnail/{$image}"))
+											? asset("Uploads/News/thumbnail/{$image}")
+											: asset("Uploads/default-thumbnail.png");
 									} else {
-										$imagePath = !empty($image) && file_exists(storage_path("app/public/Uploads/News/images/{$image}"))
-											? asset("storage/Uploads/News/images/{$image}")
-											: asset("storage/Uploads/default-thumbnail.png");
+										$imagePath = !empty($image) && file_exists(public_path("Uploads/News/images/{$image}"))
+											? asset("Uploads/News/images/{$image}")
+											: asset("Uploads/default-thumbnail.png");
 									}
 
 									$tabId = 'pills-image-' . ($index + 1);
@@ -99,21 +99,20 @@ $relatedArticles = $articles
 								@php
 									$title = strip_tags($art->title);
 
-									// Prefer Normalizer (intl). Fallback to transliterator if available.
+									// Normalize
 									if (class_exists('Normalizer')) {
 										$title = Normalizer::normalize($title, Normalizer::FORM_KC);
 									} elseif (function_exists('transliterator_transliterate')) {
 										$title = transliterator_transliterate('NFKC', $title);
 									}
 
-									// remove invisible/formatting characters (optional)
 									$title = preg_replace('/\p{Cf}/u', '', $title);
 								@endphp
 
 								<p>
-								<a href="{{ route('view-article', ['id' => $art->id]) }}" style="color: inherit; text-decoration: none;">
-									{{ $title }}
-								</a>
+									<a href="{{ route('view-article', ['id' => $art->id]) }}" style="color: inherit; text-decoration: none;">
+										{{ $title }}
+									</a>
 								</p><br>
 							@endforeach
 
@@ -133,10 +132,9 @@ $relatedArticles = $articles
 
 						@foreach ($relatedArticles as $related)
 							@php
-								// Use storage link with fallback if file missing
-								$thumbnail = !empty($related->thumbnail) && file_exists(storage_path("app/public/Uploads/News/thumbnail/{$related->thumbnail}"))
-									? asset("storage/Uploads/News/thumbnail/{$related->thumbnail}")
-									: asset("storage/Uploads/default-thumbnail.png");
+								$thumbnail = !empty($related->thumbnail) && file_exists(public_path("Uploads/News/thumbnail/{$related->thumbnail}"))
+									? asset("Uploads/News/thumbnail/{$related->thumbnail}")
+									: asset("Uploads/default-thumbnail.png");
 							@endphp
 
 							<div class="col-md-6 d-flex">
@@ -155,17 +153,18 @@ $relatedArticles = $articles
 											</h6>
 										</a>
 									</div>
-								</div> <!-- singel course -->
+								</div>
 							</div>
 						@endforeach
 
-					</div> <!-- row -->
-				</div> <!-- releted courses -->
+					</div>
+				</div>
 			</div>
 		</div>
 
 	</div>
 </section>
+
 <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.tab-pane');

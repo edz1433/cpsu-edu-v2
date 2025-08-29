@@ -122,8 +122,16 @@
 			@foreach($article as $art)
 				@php
 					$date   = date("M d, Y", strtotime($art->created_at));
-					$title  = $art->title;
+					$title  = strip_tags($art->title); // ✅ Strip tags first
 					$artid  = $art->id;
+
+					// ✅ Normalize title
+					if (class_exists('Normalizer')) {
+						$title = Normalizer::normalize($title, Normalizer::FORM_KC);
+					} elseif (function_exists('transliterator_transliterate')) {
+						$title = transliterator_transliterate('NFKC', $title);
+					}
+					$title = preg_replace('/\p{Cf}/u', '', $title);
 
 					// ✅ Thumbnail (fallback if missing)
 					$image = !empty($art->thumbnail) 
