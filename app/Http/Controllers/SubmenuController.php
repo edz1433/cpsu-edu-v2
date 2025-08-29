@@ -17,7 +17,6 @@ class SubmenuController extends Controller
         return view('webadmin.submenu-create', compact('category', 'subcategories'));
     }
 
-
     public function storeSubmenu(Request $request)
     {
         $validatedData = $request->validate([
@@ -37,13 +36,15 @@ class SubmenuController extends Controller
 
         // --- Content File ---
         $contentFilename = "{$categorySlug}-{$timestamp}-{$rand}.txt";
-        $contentPath = "Uploads/Submenu/content/{$contentFilename}";
+        $contentPath = public_path("Uploads/Submenu/content/{$contentFilename}");
 
         // Make sure the content directory exists
-        Storage::disk('public')->makeDirectory('Uploads/Submenu/content');
+        if (!file_exists(dirname($contentPath))) {
+            mkdir(dirname($contentPath), 0777, true);
+        }
 
-        // Save content to storage/app/public/Uploads/Submenu/content
-        if (!Storage::disk('public')->put($contentPath, $validatedData['content'])) {
+        // Save content directly into public/Uploads/Submenu/content
+        if (file_put_contents($contentPath, $validatedData['content']) === false) {
             return redirect()->back()->with('error', 'Failed to save content file.');
         }
 
@@ -53,9 +54,13 @@ class SubmenuController extends Controller
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
             $thumbnailFilename = "thumbnail-{$timestamp}-{$rand}." . $file->getClientOriginalExtension();
-            Storage::disk('public')->makeDirectory('Uploads/Submenu/thumbnail');
+            $thumbnailPath = public_path("Uploads/Submenu/thumbnail");
 
-            if (!Storage::disk('public')->putFileAs('Uploads/Submenu/thumbnail', $file, $thumbnailFilename)) {
+            if (!file_exists($thumbnailPath)) {
+                mkdir($thumbnailPath, 0777, true);
+            }
+
+            if (!$file->move($thumbnailPath, $thumbnailFilename)) {
                 return redirect()->back()->with('error', 'Failed to save thumbnail.');
             }
         }
@@ -67,8 +72,8 @@ class SubmenuController extends Controller
             'subcategory' => $validatedData['subcategory'],
             'url'         => $validatedData['url'],
             'menu_order'  => $validatedData['men_order'],
-            'content'     => $contentFilename,
-            'thumbnail'   => $thumbnailFilename,
+            'content'     => $contentFilename,   // just the filename, not full path
+            'thumbnail'   => $thumbnailFilename, // just the filename
             'status'      => $validatedData['status'],
         ]);
 
@@ -96,49 +101,60 @@ class SubmenuController extends Controller
 
         $rand = rand(1000, 9999);
         $timestamp = now()->format('YmdHis');
-        $category = Str::slug($validatedData['category'], '-');
+        $categorySlug = \Str::slug($validatedData['category'], '-');
 
-        // ✅ Always create/replace content file with new random filename
-        $randomFilename = "{$category}-{$timestamp}-{$rand}.txt";
-        $contentFilePath = "Uploads/Submenu/content/{$randomFilename}";
+        // --- Always save new content file ---
+        $newContentFilename = "{$categorySlug}-{$timestamp}-{$rand}.txt";
+        $newContentPath = public_path("Uploads/Submenu/content/{$newContentFilename}");
 
-        Storage::disk('public')->put($contentFilePath, $validatedData['content']);
+        if (!file_exists(dirname($newContentPath))) {
+            mkdir(dirname($newContentPath), 0777, true);
+        }
 
-        // ✅ Remove old content file if exists
+        if (file_put_contents($newContentPath, $validatedData['content']) === false) {
+            return redirect()->back()->with('error', 'Failed to save content file.');
+        }
+
+        // --- Remove old content file ---
         if ($submenu->content) {
-            $oldContentPath = "Uploads/Submenu/content/{$submenu->content}";
-            if (Storage::disk('public')->exists($oldContentPath)) {
-                Storage::disk('public')->delete($oldContentPath);
+            $oldContentPath = public_path("Uploads/Submenu/content/{$submenu->content}");
+            if (file_exists($oldContentPath)) {
+                unlink($oldContentPath);
             }
         }
 
-        // ✅ Handle thumbnail
+        // --- Handle thumbnail ---
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
-            $newFileName = 'thumbnail-' . $timestamp . '-' . $rand . '.' . $file->getClientOriginalExtension();
-            $customPath = "Uploads/Submenu/thumbnail/{$newFileName}";
+            $newThumbnailFilename = "thumbnail-{$timestamp}-{$rand}." . $file->getClientOriginalExtension();
+            $thumbnailPath = public_path("Uploads/Submenu/thumbnail");
 
-            Storage::disk('public')->putFileAs("Uploads/Submenu/thumbnail", $file, $newFileName);
+            if (!file_exists($thumbnailPath)) {
+                mkdir($thumbnailPath, 0777, true);
+            }
+
+            // Move new thumbnail
+            $file->move($thumbnailPath, $newThumbnailFilename);
 
             // Remove old thumbnail if exists
             if ($submenu->thumbnail) {
-                $oldThumbnailPath = "Uploads/Submenu/thumbnail/{$submenu->thumbnail}";
-                if (Storage::disk('public')->exists($oldThumbnailPath)) {
-                    Storage::disk('public')->delete($oldThumbnailPath);
+                $oldThumbnailPath = public_path("Uploads/Submenu/thumbnail/{$submenu->thumbnail}");
+                if (file_exists($oldThumbnailPath)) {
+                    unlink($oldThumbnailPath);
                 }
             }
 
-            $submenu->thumbnail = $newFileName;
+            $submenu->thumbnail = $newThumbnailFilename;
         }
 
-        // ✅ Update database fields
+        // --- Update database fields ---
         $submenu->title       = $validatedData['title'];
         $submenu->category    = $validatedData['category'];
         $submenu->subcategory = $validatedData['subcategory'] ?? NULL;
         $submenu->url         = $validatedData['url'];
         $submenu->menu_order  = $validatedData['men_order'];
         $submenu->status      = $validatedData['status'];
-        $submenu->content     = $randomFilename;
+        $submenu->content     = $newContentFilename;
 
         $submenu->save();
 

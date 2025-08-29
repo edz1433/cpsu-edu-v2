@@ -125,19 +125,20 @@
 					$title  = $art->title;
 					$artid  = $art->id;
 
-					// Public URL for thumbnail (fallback to default if missing)
+					// ✅ Thumbnail (fallback if missing)
 					$image = !empty($art->thumbnail) 
-						? asset("storage/Uploads/News/thumbnail/{$art->thumbnail}")
-						: asset("storage/Uploads/default-thumbnail.png");
+						? asset("Uploads/News/thumbnail/{$art->thumbnail}") 
+						: asset("Uploads/default-thumbnail.png");
 
-					// Content file path (still using storage_path to read the file)
-					$contentFilePath = storage_path("app/public/Uploads/News/content/{$art->content}");
+					// ✅ Content file path in public folder
+					$contentFilePath = public_path("Uploads/News/content/{$art->content}");
 					$maxWords = 25;
 					$excerpt  = 'Content not available';
 
 					if (!empty($art->content) && file_exists($contentFilePath)) {
 						$text = strip_tags(file_get_contents($contentFilePath));
-						$words = explode(' ', $text);
+						$words = preg_split('/\s+/', $text);
+
 						if (count($words) > $maxWords) {
 							$excerpt = implode(' ', array_slice($words, 0, $maxWords)) . '...';
 							$excerpt .= ' <a href="' . route('view-article', ['id' => $artid]) . '" style="color: #28a745; text-decoration: none;">Read More</a>';
