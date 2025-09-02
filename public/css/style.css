@@ -4127,4 +4127,11 @@ p.form-message.error {
     color: #ffffff;
 }
 
-
+.no-style {
+  color: inherit;      /* use the parent text color */
+  text-decoration: none; /* remove underline */
+}
+.no-style:hover {
+  color: #ffffff;
+  text-decoration: underline; /* optional: underline on hover */
+}

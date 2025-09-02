@@ -18,8 +18,8 @@
                         <ul class="mt-20">
                             <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
                             <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            {{-- <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="#"><i class="fa fa-instagram"></i></a></li> --}}
                         </ul>
                     </div>
                 </div>
@@ -31,8 +31,7 @@
                             <h6>Support</h6>
                         </div>
                         <ul>
-                            <li><a href="#"><i class="fa fa-angle-right"></i>Privacy</a></li>
-                            <li><a href="#"><i class="fa fa-angle-right"></i>Policy</a></li>
+                            <li><a href="https://cpsu.edu.ph/sublink/84"><i class="fa fa-angle-right"></i>Privacy Policy</a></li>
                             <li><a href="#"><i class="fa fa-angle-right"></i>Support</a></li>
                         </ul>
                     </div>
@@ -58,7 +57,7 @@
                                     <i class="fa fa-phone"></i>
                                 </div>
                                 <div class="cont">
-                                    <p>(034) 471-3023</p>
+                                    <p>+63 9173 015 565</p>
                                 </div>
                             </li>
                             <li>
@@ -66,7 +65,7 @@
                                     <i class="fa fa-envelope-o"></i>
                                 </div>
                                 <div class="cont">
-                                    <p>info@cpsu.edu.ph</p>
+                                    <p><a href="mailto:cpsu_main@cpsu.edu.ph" class="no-style">cpsu_main@cpsu.edu.ph</a></p>
                                 </div>
                             </li>
                         </ul>
