@@ -12,6 +12,9 @@
     <!-- DESCRIPTION -->
     <meta name="description" content="CPSU Official Website" />
     
+    <!-- DESCRIPTION -->
+    <title>CPSU</title>
+
     <!--====== Favicon Icon ======-->
     <link rel="shortcut icon" href="{{ asset('images/cpsu-logo.png') }}" type="image/png">
         

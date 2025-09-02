@@ -42,7 +42,7 @@
         <video autoplay muted loop playsinline class="video-background" preload="metadata">
             <source src="{{ asset('Uploads/Videos/banner_video.webm') }}" type="video/mp4">
             {{-- Your browser does not support the video tag. --}}
-        </video>
+        </video>	
     </div>
 
 	<div class="single-slider bg_cover d-flex align-items-start fixed-slider position-relative" style="background-image: url('{{ asset('Uploads/page-banner/banner-1.jpg') }}');" >
@@ -222,7 +222,7 @@
                 <div class="hex rnd transparent"><div><h3>CPSU SECURES 105TH SPOT IN THE WURI RANKING 2025</h3><span></span></div></div>
             </div>
             <div class="row-hive row3">
-                <div class="hex" style="background-image: url('https://development.cpsu.edu.ph/images/cpsu-iso.png');">
+                <div class="hex" style="background-image: url('https://cpsu.edu.ph/images/cpsu-iso.png');">
 					<div><h4></h4><span></span></div>
 				</div>
                 <div class="hex it transparent"><div><h4></h4><span></span></div></div>
