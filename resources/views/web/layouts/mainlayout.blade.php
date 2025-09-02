@@ -56,7 +56,7 @@
         <!-- Header Top ==== -->
         @yield('header')
         <!-- Header Top END ==== -->
-    
+        
         <!-- Content -->
         @yield('content')
         <!-- Content END-->
@@ -181,6 +181,41 @@
                 }, 120000); // 2 minutes
             }
         });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Target all nav items with submenu
+        const submenuLinks = document.querySelectorAll(".navbar-nav .nav-item > a");
+
+        submenuLinks.forEach(link => {
+            link.addEventListener("click", function (e) {
+                const parent = this.parentElement;
+                const submenu = parent.querySelector(".sub-menu");
+
+                if (submenu) {
+                    e.preventDefault(); // Prevent "#" navigation
+
+                    // Close other open submenus (optional)
+                    document.querySelectorAll(".navbar-nav .nav-item.open").forEach(item => {
+                        if (item !== parent) {
+                            item.classList.remove("open");
+                            let sm = item.querySelector(".sub-menu");
+                            if (sm) sm.style.display = "none";
+                        }
+                    });
+
+                    // Toggle this one
+                    if (parent.classList.contains("open")) {
+                        parent.classList.remove("open");
+                        submenu.style.display = "none";
+                    } else {
+                        parent.classList.add("open");
+                        submenu.style.display = "block";
+                    }
+                }
+            });
+        });
+    });
     </script>
 </body>
 </html>
