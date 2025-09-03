@@ -21,8 +21,8 @@
                                 <div class="wrap-submenu">
                                     <ul class="navbar-nav mr-auto">
                                         @foreach($categories as $cat)
-                                            <li class="nav-item text-success {{ $cat->hasgrid ? 'has-grid' : '' }}">
-                                                <a href="#" class="">{{ $cat->cat_name }} <i class="fa fa-chevron-right fa-xs submenu-icon"></i></a>
+                                            <li class="nav-item {{ $cat->hasgrid ? 'has-grid' : 'active' }}">
+                                                <a href="#" class="{{ (isset($subcontent) && $subcontent->category == $cat->id) ? 'active' : '' }} {{ (url()->current() == config('app.url') && $cat->id == 1) ? 'active' : '' }}">{{ $cat->cat_name }} <i class="fa fa-chevron-right fa-xs submenu-icon"></i></a>
                                                 <ul class="sub-menu">
                                                     @if($cat->hasgrid == 2)
                                                         {{-- Category has subcategories --}}

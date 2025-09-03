@@ -49,6 +49,7 @@ class WebController extends Controller
         ->where('submenus.id', $id)
         ->select('submenus.*', 'categories.cat_name')
         ->first();
+
         // if ($submen) {
         //     $submen->increment('visit');
         // }
