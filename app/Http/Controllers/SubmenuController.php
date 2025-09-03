@@ -107,10 +107,12 @@ class SubmenuController extends Controller
         $newContentFilename = "{$categorySlug}-{$timestamp}-{$rand}.txt";
         $newContentPath = public_path("Uploads/Submenu/content/{$newContentFilename}");
 
+        // Make sure the content directory exists
         if (!file_exists(dirname($newContentPath))) {
             mkdir(dirname($newContentPath), 0777, true);
         }
 
+        // Save content directly into public/Uploads/Submenu/content
         if (file_put_contents($newContentPath, $validatedData['content']) === false) {
             return redirect()->back()->with('error', 'Failed to save content file.');
         }
@@ -134,7 +136,9 @@ class SubmenuController extends Controller
             }
 
             // Move new thumbnail
-            $file->move($thumbnailPath, $newThumbnailFilename);
+            if (!$file->move($thumbnailPath, $newThumbnailFilename)) {
+                return redirect()->back()->with('error', 'Failed to save thumbnail.');
+            }
 
             // Remove old thumbnail if exists
             if ($submenu->thumbnail) {

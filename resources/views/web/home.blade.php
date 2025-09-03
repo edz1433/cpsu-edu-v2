@@ -208,28 +208,30 @@
 </section>
 
 <section id="testimonial" class="pt-115 pb-115" style="background: url('{{ asset('images/s-12.jpg') }}') no-repeat center center; background-size: cover;">
-    <div class="container">
-        <div class="hive-container">
-            <div class="row-hive row1">
-                <div class="hex planning transparent"><div><h4></h4><span></span></div></div>
-                <div class="hex qs"><div><h4></h4><span></span></div></div>
-                <div class="hex audit transparent"><div><h4></h4><span></span></div></div>
-            </div>
-            <div class="row-hive offset">
-                <div class="hex admin transparent"><div><h4></h4><span></span></div></div>
-                <div class="hex the"><div><h4></h4><span></span></div></div>
-                <div class="hex uigreen"><div><h4></h4><span></span></div></div>
-                <div class="hex rnd transparent"><div><h3>CPSU SECURES 105TH SPOT IN THE WURI RANKING 2025</h3><span></span></div></div>
-            </div>
-            <div class="row-hive row3">
-                <div class="hex" style="background-image: url('https://cpsu.edu.ph/images/cpsu-iso.png');">
-					<div><h4></h4><span></span></div>
-				</div>
-                <div class="hex it transparent"><div><h4></h4><span></span></div></div>
-                <div class="hex wuri"><div><h4></h4><span></span></div></div>
+   <div class="container">
+    <div class="hive-container">
+        <div class="row-hive row1">
+            <div class="hex planning  hive-white"><div><h4></h4><span></span></div></div>
+            <div class="hex qs"><div><h4></h4><span></span></div></div>
+            <div class="hex audit"><div><h4></h4><span></span></div></div>
+        </div>
+        <div class="row-hive offset">
+            <div class="hex admin"><div><h4></h4><span></span></div></div>
+            <div class="hex the"><div><h4></h4><span></span></div></div>
+            <div class="hex uigreen"><div><h4></h4><span></span></div></div>
+            <div class="hex rnd">
+                <div><h3>CPSU SECURES 105TH SPOT IN THE WURI RANKING 2025</h3><span></span></div>
             </div>
         </div>
+        <div class="row-hive row3">
+            <div class="hex" style="background-image: url('https://cpsu.edu.ph/images/cpsu-iso.png');">
+                <div><h4></h4><span></span></div>
+            </div>
+            <div class="hex it"><div><h4></h4><span></span></div></div>
+            <div class="hex wuri"><div><h4></h4><span></span></div></div>
+        </div>
     </div>
+</div>
 </section>
 
 <div id="patnar-logo" class="pt-40 pb-80 gray-bg">
@@ -245,5 +247,54 @@
         </div>
     </div>
 </div>
+<script>
+(function () {
+  const containers = document.querySelectorAll('.hive-container');
+
+  containers.forEach(container => {
+    // 1) Wrap existing children into an inner wrapper (no HTML changes needed)
+    let inner = container.querySelector('.hive-inner');
+    if (!inner) {
+      inner = document.createElement('div');
+      inner.className = 'hive-inner';
+      while (container.firstChild) inner.appendChild(container.firstChild);
+      container.appendChild(inner);
+    }
+
+    // 2) Scale function: fit to container (no overflow), never upscale above 1
+    const scaleToFit = () => {
+      // Temporarily clear container height to measure natural inner size
+      const prevHeight = container.style.height;
+      container.style.height = 'auto';
+
+      const naturalW = inner.scrollWidth;
+      const naturalH = inner.scrollHeight;
+      const maxW = container.clientWidth;
+
+      // If container has an explicit height, respect it; otherwise ignore height bound
+      const computed = getComputedStyle(container);
+      const hasExplicitH = computed.height !== 'auto' && computed.height !== '0px';
+      const maxH = hasExplicitH ? container.clientHeight : Number.POSITIVE_INFINITY;
+
+      const scaleW = maxW / naturalW;
+      const scaleH = maxH / naturalH;
+      const scale = Math.min(1, scaleW, scaleH); // only shrink, never grow
+
+      inner.style.transform = `scale(${isFinite(scale) ? scale : 1})`;
+      // Set container height to the scaled inner height so layout stays correct
+      container.style.height = `${naturalH * (isFinite(scale) ? scale : 1)}px`;
+    };
+
+    // 3) Recalculate on size changes
+    const ro = new ResizeObserver(scaleToFit);
+    ro.observe(container);
+    ro.observe(inner);
+    window.addEventListener('resize', scaleToFit, { passive: true });
+
+    // 4) Initial fit
+    scaleToFit();
+  });
+})();
+</script>
 
 @endsection

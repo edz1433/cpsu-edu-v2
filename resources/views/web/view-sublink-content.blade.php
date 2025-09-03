@@ -30,10 +30,18 @@ $current_route = request()->route()->getName();
 						@php
 							$content = file_get_contents('Uploads/Sublink/content/' . $sublink->content);
 
-							// Replace both 'view-content' and 'view-sublink-content' with 'sublink'
+							// Normalize replacement domain
+							$baseUrl = rtrim(config('app.url'), '/'); // https://cpsu.edu.ph
+
+							// Replace all dev URLs with production base url + /sublink
 							$content = str_replace(
-								[url('view-content'), url('view-sublink-content')],
-								url('/sublink'),
+								[
+									url('view-content'),
+									url('view-sublink-content'),
+									'http://localhost/cpsu-edu/public/view-sublink-content',
+									'http://localhost/cpsu-edu/public/view-content'
+								],
+								$baseUrl . '/sublink',
 								$content
 							);
 						@endphp

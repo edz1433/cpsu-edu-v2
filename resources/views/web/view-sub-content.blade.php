@@ -50,6 +50,21 @@ $current_route = request()->route()->getName();
 					$contentFilePath = public_path("Uploads/Submenu/content/{$subcontent->content}");
 					if (!empty($subcontent->content) && file_exists($contentFilePath)) {
 						$content = file_get_contents($contentFilePath);
+
+						// Normalize replacement domain from .env APP_URL
+						$baseUrl = rtrim(config('app.url'), '/'); // e.g. https://cpsu.edu.ph
+
+						// Replace all localhost/public links with production sublink
+						$content = str_replace(
+							[
+								url('view-content'),
+								url('view-sublink-content'),
+								'http://localhost/cpsu-edu/public/view-sublink-content',
+								'http://localhost/cpsu-edu/public/view-content'
+							],
+							$baseUrl . '/sublink',
+							$content
+						);
 					} else {
 						$content = '<p>Content not available.</p>';
 					}

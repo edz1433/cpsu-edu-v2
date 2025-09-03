@@ -3939,52 +3939,82 @@ p.form-message.error {
 
 .hive-container {
     position: relative;
-    width: fit-content;
+    width: 100%;
     margin: auto;
-}
-
-.row-hive {
-    display: flex;
-    justify-content: center;
-    gap: 2px;
-    margin: -40px 0;
-}
-
-.offset {
-    margin-left: 0;
-}
-
-.hex {
-    width: 258px;
-    height: 254px;
-    background-color: #ffffffb0;
-    background-size: 96%; /* simulate inner margin */
-    background-repeat: no-repeat;
-    background-position: center;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0;
-    margin: 3px; /* 3px gap between hexes */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
-    cursor: pointer;
+
+    /* Background */
+    background: url('../images/hive-bg.jpg') center center no-repeat;
+    background-size: cover;
+}
+
+/* Hive inner (scaled wrapper, added by JS) */
+.hive-container .hive-inner {
+    transform-origin: top center;
+    will-change: transform;
+    width: max-content;
+    margin: auto;
+}
+
+/* ===============================
+    Hive Rows
+    =============================== */
+.hive-container .row-hive {
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    margin: -5px 0;
+    flex-wrap: nowrap;
+}
+
+.hive-container .row1 {
+    margin-bottom: -48px;
+}
+.hive-container .row3 {
+    margin-top: -48px;
+}
+
+/* ===============================
+    Hexagon Cell
+    =============================== */
+.hive-container .hex {
+    flex: 0 0 auto;
+    width: 258px;
+    height: 254px;
+
+    background: white;
+    background-size: 96%;
+    background-repeat: no-repeat;
+    background-position: center;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3px;
     position: relative;
     overflow: hidden;
+
     color: white;
     text-align: center;
     font-weight: bold;
     text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
 }
 
-.hex:hover {
+.hive-container .hex:hover {
     transform: scale(1.04);
     filter: brightness(1.15);
     box-shadow: 0 8px 16px rgba(0, 255, 0, 0.4);
 }
 
-.hex::after {
+.hive-container .hex::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -3994,12 +4024,14 @@ p.form-message.error {
     clip-path: inherit;
     z-index: 0;
 }
-
-.hex:hover::after {
+.hive-container .hex:hover::after {
     opacity: 1;
 }
 
-.hex > div {
+/* ===============================
+    Hex Content
+    =============================== */
+.hive-container .hex > div {
     z-index: 1;
     position: relative;
     display: flex;
@@ -4008,37 +4040,44 @@ p.form-message.error {
     justify-content: center;
 }
 
-.hex h4 {
+.hive-container .hex h4 {
     margin: 0;
     font-size: 16px;
 }
-
-.hex span {
+.hive-container .hex span {
     font-size: 12px;
     font-weight: normal;
     margin-top: 4px;
     display: block;
 }
 
-.row1 {
-    margin-bottom: -48px;
+/* ===============================
+    Background Images per Hex
+    =============================== */
+.hive-container .qs        { background-image: url('../images/qs.png'); }
+.hive-container .cpsu-iso  { background-image: url('../images/cpsu-iso.png'); }
+.hive-container .uigreen   { background-image: url('../images/uigreen.png'); }
+.hive-container .the       { background-image: url('../images/the.png'); }
+.hive-container .wuri      { background-image: url('../images/wuri.png'); }
+
+.hive-container .transparent {
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
 
-.row3 {
-    margin-top: -48px;
+/* ===============================
+    Responsive Behavior
+    =============================== */
+@media (max-width: 768px) {
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0;
+    }
+    .hive-container {
+        background-size: contain; /* keep full hive visible */
+    }
 }
-
-/* Background image classes */
-/* .planning    { background-image: url('../images/planning.jpg'); } */
-.qs          { background-image: url('../images/qs.png'); }
-/* .audit       { background-image: url('../images/audit.jpg'); } */
-/* .admin       { background-image: url('../images/admin.jpg'); } */
-.cpsu-iso         { background-image: url('../images/cpsu-iso.png'); }
-.uigreen     { background-image: url('../images/uigreen.png'); }
-/* .rnd         { background-image: url('../images/rnd.jpg'); } */
-.the         { background-image: url('../images/the.png'); }
-/* .it          { background-image: url('../images/it.jpg'); } */
-.wuri        { background-image: url('../images/wuri.png'); }
 
 .transparent {
     /* background-color: #ffffff8c !important; */
