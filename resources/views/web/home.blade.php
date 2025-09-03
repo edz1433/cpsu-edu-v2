@@ -159,19 +159,34 @@
 </div>
 </section>
 
+@php
+    $partners = [
+        1 => '#',
+        2 => '#',
+        3 => '#',
+        4 => '#',
+        5 => 'https://cpsu.edu.ph/content/86',
+        6 => '#',
+        7 => '#',
+    ];
+@endphp
+
 <div id="patnar-logo" class="pt-40 pb-80 gray-bg">
     <div class="container">
         <div class="row patnar-slied justify-content-center">
-            @for ($i = 1; $i <= 7; $i++)
+            @foreach ($partners as $i => $link)
                 <div class="col-auto logo-col">
                     <div class="singel-patnar text-center">
-                        <img src="{{ asset('images/patnar-logo/' . $i . '.png') }}" alt="Logo" class="patnar-img small-logo	">
+                        <a href="{{ $link }}" rel="noopener">
+                            <img src="{{ asset('images/patnar-logo/' . $i . '.png') }}" alt="Logo {{ $i }}" class="patnar-img small-logo">
+                        </a>
                     </div>
                 </div>
-            @endfor
+            @endforeach
         </div>
     </div>
 </div>
+
 <script>
 (function () {
   const containers = document.querySelectorAll('.hive-container');
