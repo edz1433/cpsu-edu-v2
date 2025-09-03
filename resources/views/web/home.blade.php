@@ -3,111 +3,36 @@
 @php
     $current_route = request()->route()->getName();
 @endphp
-<style>
-	.fixed-slider {
-    min-height: 100vh;
-    max-height: 100vh;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-}
-#slider-part,
-.single-slider {
-    width: 100%;
-    height: 100vh;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Make the video cover the entire container */
-.video-background {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    transform: translate(-50%, -50%);
-    object-fit: cover;
-    z-index: -1; /* Keeps it behind content if any */
-}
-
-</style>
+<!--====== SLIDER PART START ======-->
+<!--====== SLIDER PART START ======-->
 <!--====== SLIDER PART START ======-->
 <section id="slider-part" class="slider-active">
-    <!-- Welcome Slide with video -->
-    <div class="single-slider bg_cover d-flex align-items-start fixed-slider position-relative slider-intro">
-        <video autoplay muted loop playsinline class="video-background" preload="metadata">
-            <source src="{{ asset('Uploads/Videos/banner_video.webm') }}" type="video/mp4">
-            {{-- Your browser does not support the video tag. --}}
-        </video>	
+
+    <!-- Video Slide -->
+    <div class="single-slider fixed-slider">
+        <video autoplay muted loop playsinline class="video-background">
+            <source src="{{ asset('Uploads/Videos/banner_video.webm') }}" type="video/webm">
+        </video>
+        <div class="slider-cont">
+
+        </div>
     </div>
 
-	<div class="single-slider bg_cover d-flex align-items-start fixed-slider position-relative" style="background-image: url('{{ asset('Uploads/page-banner/banner-1.jpg') }}');" >
-		<div class="container">
-			<div class="row">
-				<div class="col-xl-7 col-lg-9">
-					<div class="slider-cont">
-						<!-- Optional article content -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- Image Slides -->
+    @foreach(range(1,5) as $i)
+    <div class="single-slider">
+        <img src="{{ asset('Uploads/page-banner/banner-'.$i.'.jpg') }}" alt="Banner {{$i}}" class="slider-image">
+        <div class="slider-cont">
 
-	<div class="single-slider bg_cover d-flex align-items-start fixed-slider position-relative" style="background-image: url('{{ asset('Uploads/page-banner/banner-2.jpg') }}');" >
-		<div class="container">
-			<div class="row">
-				<div class="col-xl-7 col-lg-9">
-					<div class="slider-cont">
-						<!-- Optional article content -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="single-slider bg_cover d-flex align-items-start fixed-slider position-relative" style="background-image: url('{{ asset('Uploads/page-banner/banner-3.jpg') }}');" >
-		<div class="container">
-			<div class="row">
-				<div class="col-xl-7 col-lg-9">
-					<div class="slider-cont">
-						<!-- Optional article content -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="single-slider bg_cover d-flex align-items-start fixed-slider position-relative" style="background-image: url('{{ asset('Uploads/page-banner/banner-4.jpg') }}');" >
-		<div class="container">
-			<div class="row">
-				<div class="col-xl-7 col-lg-9">
-					<div class="slider-cont">
-						<!-- Optional article content -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="single-slider bg_cover d-flex align-items-start fixed-slider position-relative" style="background-image: url('{{ asset('Uploads/page-banner/banner-5.jpg') }}');" >
-		<div class="container">
-			<div class="row">
-				<div class="col-xl-7 col-lg-9">
-					<div class="slider-cont">
-						<!-- Optional article content -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
+    @endforeach
 
 </section>
 
+
 <section id="course-part" class="pt-115 pb-120 gray-bg">
+    {{-- Responsive container: fluid on mobile, normal on larger screens --}}
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
@@ -122,10 +47,9 @@
 			@foreach($article as $art)
 				@php
 					$date   = date("M d, Y", strtotime($art->created_at));
-					$title  = strip_tags($art->title); // ✅ Strip tags first
+					$title  = strip_tags($art->title);
 					$artid  = $art->id;
 
-					// ✅ Normalize title
 					if (class_exists('Normalizer')) {
 						$title = Normalizer::normalize($title, Normalizer::FORM_KC);
 					} elseif (function_exists('transliterator_transliterate')) {
@@ -133,12 +57,10 @@
 					}
 					$title = preg_replace('/\p{Cf}/u', '', $title);
 
-					// ✅ Thumbnail (fallback if missing)
 					$image = !empty($art->thumbnail) 
 						? asset("Uploads/News/thumbnail/{$art->thumbnail}") 
 						: asset("Uploads/default-thumbnail.png");
 
-					// ✅ Content file path in public folder
 					$contentFilePath = public_path("Uploads/News/content/{$art->content}");
 					$maxWords = 25;
 					$excerpt  = 'Content not available';
@@ -156,11 +78,12 @@
 					}
 				@endphp
 
-				<div class="col-lg-4">
+				<!-- Responsive column -->
+				<div class="col-12 col-sm-12 col-md-6 col-lg-4">
 					<div class="singel-course mt-30">
 						<div class="thum">
 							<div class="image">
-								<img src="{{ $image }}" alt="Article Thumbnail">
+								<img src="{{ $image }}" alt="Article Thumbnail" class="img-fluid">
 							</div>
 						</div>
 						<div class="cont">
@@ -176,7 +99,7 @@
 			@endforeach
 		</div>
 
-		<div class="row mt-3">
+        <div class="row mt-3">
             <div class="col-12 text-center">
                 <button id="load-more" class="btn btn-outline-success px-4 py-2">
                     <i class="fa fa-refresh"></i> More News
@@ -186,26 +109,28 @@
     </div> 
 </section>
 
+
 <section id="about-page" class="pt-70 pb-110 bg-dark">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-7">
-				<div class="about-image mt-50 hover-effect">
-					<a href="{{ route('academic-calendar') }}">
-						<img src="{{ asset('images/academic calendar.jpg') }}" alt="About">
-					</a>
-				</div>
-			</div>
-			<div class="col-lg-5">
-				<div class="about-image hover-effect">
-					<a href="{{ route('jobList') }}">
-						<img src="{{ asset('images/hiring logo.png') }}" alt="About">
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 col-lg-7">
+                <div class="about-image mt-50 hover-effect">
+                    <a href="{{ route('academic-calendar') }}">
+                        <img src="{{ asset('images/academic calendar.jpg') }}" alt="calendar" class="img-fluid">
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-lg-5">
+                <div class="about-image hover-effect">
+                    <a href="{{ route('jobList') }}">
+                        <img src="{{ asset('images/hiring logo.png') }}" alt="hiring" class="img-fluid">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
 
 <section id="testimonial" class="pt-115 pb-115" style="background: url('{{ asset('images/s-12.jpg') }}') no-repeat center center; background-size: cover;">
    <div class="container">
@@ -298,3 +223,4 @@
 </script>
 
 @endsection
+

@@ -4,12 +4,12 @@
         <div class="container">
             <div class="row">
                 <!-- About -->
-                <div class="col-lg-5 col-md-6">
+                <div class="col-4 col-md-4 col-lg-4">
                     <div class="footer-about mt-30">
                         <div class="logo">
                             <a href="#"><img src="{{ asset('images/logo-header.png') }}" alt="Logo"></a>
                         </div>
-                        <p >
+                        <p>
                             <b>Central Philippines State University (CPSU)</b> <br>
                             <span style="color: #fff; font-size: 13px; line-height: 1.6;">
                                 is a catalyst for change in Negros Occidental empowering communities through innovation, education, and agriculture. With 10 ISO-accredited campuses, CPSU transforms local potential into lasting impact.
@@ -18,14 +18,12 @@
                         <ul class="mt-20">
                             <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
                             <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-                            {{-- <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li> --}}
                         </ul>
                     </div>
                 </div>
 
                 <!-- Support -->
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-4 col-md-4 col-lg-4">
                     <div class="footer-link support mt-40">
                         <div class="footer-title pb-25">
                             <h6>Support</h6>
@@ -38,7 +36,7 @@
                 </div>
 
                 <!-- Contact -->
-                <div class="col-lg-4 col-md-6">
+                <div class="col-4 col-md-4 col-lg-4">
                     <div class="footer-address mt-40">
                         <div class="footer-title pb-25">
                             <h6>Contact Us</h6>
@@ -76,11 +74,14 @@
             <!-- Visitor Stats Row -->
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <p style="margin: 0; color: rgb(236, 233, 233);">Online Visitors: <strong>67,803</strong> &nbsp;|&nbsp; Today's Visitors: <strong>609</strong> &nbsp;|&nbsp; Total Page Views: <strong>32,404</strong></p>
+                    <p style="margin: 0; color: rgb(236, 233, 233);">
+                        Online Visitors: <strong>67,803</strong> &nbsp;|&nbsp; Today's Visitors: <strong>609</strong> &nbsp;|&nbsp; Total Page Views: <strong>32,404</strong>
+                    </p>
                 </div>
             </div>
 
-        </div> <!-- container -->
+        </div> <!-- container-fluid -->
     </div> <!-- footer top -->
 </footer>
+
 @endsection

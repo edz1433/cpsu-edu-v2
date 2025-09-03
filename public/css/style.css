@@ -808,198 +808,127 @@ p {
 
 
 /*=====================================================
-    3. SLIDER css 
+    3. SLIDER - FULL RESPONSIVE
 ======================================================*/
 
-.single-slider{
-    padding-bottom: 300px;
+/* Desktop default */
+.single-slider {
+    position: relative;
+    width: 100%;
+    height: 100vh;       /* full viewport height for desktop */
+    overflow: hidden;
+    padding: 0;
+    transition: height 0.3s ease;
+    border-top: 1px solid black;
 }
 
-.slider-cont{
-    position: relative;
-    z-index: 5;
+.video-background,
+.slider-image {
+    width: 100%;
+    height: 100%;
+    object-fit: unset; 
+    display: block;
 }
-.slider-cont h1{
-    font-size: 60px;
+
+/* Slider content overlay */
+.slider-cont {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    text-align: center;
+    width: 100%;
+    max-width: 1200px;
+    color: #fff;
+}
+
+/* Responsive text */
+.slider-cont h1 {
+    font-size: clamp(24px, 5vw, 60px);
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    color: #fff;
-    padding-bottom: 25px;
-}
-.slider-cont p{
-    font-size: 18px;
-    color: #fff;
-    font-weight: 600;
-    padding-bottom: 50px;
-}
-.slider-cont ul {}
-.slider-cont ul li{
-    display: inline-block;
-    margin-right: 15px;
-}
-.slider-cont ul li:last-child{
-    margin-right: 0;
+    margin-bottom: 15px;
 }
 
-.slider-active .slick-arrow{
+.slider-cont p {
+    font-size: clamp(14px, 2vw, 18px);
+    margin-bottom: 25px;
+}
+
+/* Slider arrows */
+.slider-active .slick-arrow {
     font-size: 50px;
-	position: absolute;
-	top: 50%;
-	left: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     color: #fff;
     cursor: pointer;
     z-index: 5;
     opacity: 0;
     visibility: hidden;
-    -webkit-transition: all 0.4s linear;
-    transition: all 0.4s linear;
-}
-.slider-active .next.slick-arrow {
-    left: auto;
-    right: 0;
+    transition: all 0.4s ease;
 }
 
-.slider-active:hover .slick-arrow{
-    left: 30px;
+.slider-active:hover .slick-arrow {
     opacity: 1;
     visibility: visible;
 }
 
-.slider-active:hover .next.slick-arrow {
-    left: auto;
+.slider-active .next.slick-arrow {
     right: 30px;
 }
 
-.slider-active .slick-slide {
-    cursor: grab;
-}
-.slider-active .slick-slide:active {
-    cursor: grabbing;
+.slider-active .prev.slick-arrow {
+    left: 30px;
 }
 
-/*===== Index-2 =====*/
+/*===========================
+   MOBILE & TABLET ADJUSTMENTS - FORCE 30vh
+============================*/
+@media (max-width: 768px) {
+    .single-slider {
+        height: 30vh !important; /* force slider height */
+        
+        margin-top: -95px !important;
+    }
 
-.slider-2 .slider-cont h1 {
-	padding-bottom: 40px;
-}
-.slider-2.single-slider{
-    padding-top: 230px;
-    padding-bottom: 250px;
-}
+    .slider-cont h1 {
+        font-size: clamp(20px, 6vw, 40px);
+    }
+    .slider-cont p {
+        font-size: clamp(12px, 3vw, 16px);
+    }
 
-/*===== Index-3 =====*/
-
-#slider-part-3{
-    position: relative;
-    padding-top: 220px;
-    padding-bottom: 120px;
-}
-#slider-part-3::before{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-.slider-cont-3{
-    position: relative;
-    z-index: 5;
-    background-color: rgba(7, 41, 77, 0.8);
-    padding: 70px 100px 80px;
-}
-.slider-cont-3 h2{
-    color: #fff;
-    font-size: 48px;
-    padding-bottom: 8px;
-}
-.slider-cont-3 span{
-    font-size: 24px;
-    color: #fff;
+    .video-background,
+    .slider-image {
+        width: 100% !important;
+        height: 30vh !important;       /* force video/image height */
+        object-fit: contain !important; /* keep full video/image visible */
+        display: block !important;
+    }
 }
 
-.slider-search{
-    background-color: #fff;
-    border-radius: 5px;
-}
+@media (max-width: 480px) {
+    .single-slider {
+        height: 30vh !important; /* force slider height */
+    }
 
-.slider-search .nice-select {
-	width: 100%;
-	height: 55px;
-	line-height: 55px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border: 0;
-}
-.slider-search .nice-select span {
-	font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    color: #07294d;
-    font-weight: 400;
-}
-.slider-search .nice-select .list {
-	width: 100%;
-	border-radius: 0;
-	margin: 0;
-}
-.slider-search .nice-select::after {
-	border-bottom: 0;
-	border-right: 8px solid #07294d;
-	border-top: 8px solid transparent;
-	height: 0px;
-	margin-top: -4px;
-	width: 0px;
-}
+    .slider-cont h1 {
+        font-size: clamp(18px, 7vw, 32px);
+    }
+    .slider-cont p {
+        font-size: clamp(12px, 4vw, 14px);
+    }
 
-.slider-search input{
-    width: 100%;
-    height: 55px;
-    border: 0;
-    border-left: 1px solid #a8a8a8;
-    padding-left: 25px;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    color: #8a8a8a;
+    .video-background,
+    .slider-image {
+        width: 100% !important;
+        height: 30vh !important;       /* force video/image height */
+        object-fit: contain !important;
+        display: block !important;
+    }
 }
-.slider-search .main-btn {
-	line-height: 53px;
-	width: 100%;
-	padding: 0;
-}
-.slider-search .main-btn:hover{
-    border-color: #07294d;
-}
-
-
-.slider-feature{}
-.singel-slider-feature{
-    display: -moz-flex;
-    display: -ms-flex;
-    display: -o-flex;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex; 
-    -webkit-box-align: start; 
-    -ms-flex-align: start; 
-    align-items: flex-start;
-}
-.singel-slider-feature .icon{}
-.singel-slider-feature .cont{
-    padding-left: 30px;
-}
-.singel-slider-feature .cont h3{
-    color: #fff;
-    padding-bottom: 3px;
-    margin-top: -3px;
-    font-size: 24px;
-}
-.singel-slider-feature .cont span{
-    color: #fff;
-    font-size: 15px;
-}
-
 
 /*=====================================================
     4. CATEGORY css 
@@ -4077,6 +4006,20 @@ p.form-message.error {
     .hive-container {
         background-size: contain; /* keep full hive visible */
     }
+}
+
+/* Hide on mobile (up to 767.98px) */
+@media (max-width: 767.98px) {
+  .mobile-view {
+    display: none !important;
+  }
+}
+
+/* Show on larger screens (768px and up) */
+@media (min-width: 768px) {
+  .mobile-view {
+    display: block !important; /* change to flex / inline-block if needed */
+  }
 }
 
 .transparent {
