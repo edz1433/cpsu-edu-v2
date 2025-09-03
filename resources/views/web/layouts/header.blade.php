@@ -5,7 +5,7 @@
         <div class="navigation">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-9 col-8">
+                    <div class="col-lg-11 col-md-11 col-sm-9 col-8">
                         <nav class="navbar navbar-expand-lg navigation">
                             <a class="navbar-brand" href="{{ url('/') }}" style="width: 100px; padding-right: 15px;">
                                 <img src="{{ asset('images/logo.png') }}" alt="Logo">
@@ -81,13 +81,13 @@
                             </div>
                         </nav>
                     </div>
-                    {{-- <div class="col-lg-1 col-md-1 col-sm-2 col-3 mobile-view">
+                    <div class="col-lg-1 col-md-1 col-sm-2 col-3"> 
                         <div class="right-icon text-right">
                             <ul>
                                 <li><a href="#" id="search"><i class="fa fa-search"></i></a></li>
                             </ul>
                         </div>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
 <!--====== HEADER PART ENDS ======-->
 
 <!--====== SEARCH BOX PART START ======-->
-{{-- <div class="search-box mobile-view">
+<div class="search-box">
     <div class="serach-form">
         <div class="closebtn">
             <span></span>
@@ -106,6 +106,6 @@
             <button><i class="fa fa-search"></i></button>
         </form>
     </div>
-</div> --}}
+</div>
 <!--====== SEARCH BOX PART ENDS ======-->
 @endsection
