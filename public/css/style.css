@@ -819,7 +819,6 @@ p {
     overflow: hidden;
     padding: 0;
     transition: height 0.3s ease;
-    border-top: 1px solid black;
 }
 
 .video-background,
