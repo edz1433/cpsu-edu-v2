@@ -94,6 +94,7 @@ class ArticlesController extends Controller
             'content'   => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
             'images.*'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'created_at' => 'nullable|date',
         ]);
 
         $timestamp = now()->format('YmdHis');
@@ -101,6 +102,11 @@ class ArticlesController extends Controller
 
         // ✅ Update title
         $article->title = $validatedData['title'];
+
+        // ✅ Update created_at (if provided)
+        if (!empty($validatedData['created_at'])) {
+            $article->created_at = $validatedData['created_at'];
+        }
 
         // ✅ Update content (overwrite existing .txt file)
         if ($article->content) {

@@ -18,32 +18,40 @@
 									<form class="mail-compose" action="{{ route('admin-updateArticles', ['id' => $article->id]) }}" method="post" enctype="multipart/form-data">
 										@csrf
 										<div class="form-group row">
-										<div class="col-12 col-md-12">
-											<label for="title">Title</label>
-											<input class="form-control" name="title" value="{{  $article->title }}" type="text" placeholder="Title">
-										</div>
+											<div class="col-6 col-md-6">
+												<label for="title">Title</label>
+												<input class="form-control" name="title" value="{{ $article->title }}" type="text" placeholder="Title">
+											</div>
+											<div class="col-6 col-md-6">
+												<label for="date">Date</label>
+												<input 
+													type="date" 
+													class="form-control" 
+													name="created_at" 
+													value="{{ old('created_at', $article->created_at ? $article->created_at->format('Y-m-d') : '') }}">
+											</div>
 										</div>
 										<div class="form-group row">
-										<div class="form-group col-12">
-											<label for="content">Content</label>
-											<div class="summernote">
-												<p>
-													@php
-														// Build relative path under public/
-														$relativePath = 'Uploads/News/content/' . $article->content;
+											<div class="form-group col-12">
+												<label for="content">Content</label>
+												<div class="summernote">
+													<p>
+														@php
+															// Build relative path under public/
+															$relativePath = 'Uploads/News/content/' . $article->content;
 
-														// Get full path from public/
-														$fullPath = public_path($relativePath);
+															// Get full path from public/
+															$fullPath = public_path($relativePath);
 
-														// Load file if it exists
-														$content = file_exists($fullPath) ? file_get_contents($fullPath) : '';
-													@endphp
+															// Load file if it exists
+															$content = file_exists($fullPath) ? file_get_contents($fullPath) : '';
+														@endphp
 
-													{!! $content !!}
-												</p>
+														{!! $content !!}
+													</p>
+												</div>
+												<textarea id="summernote-textarea" name="content" style="display: none;">{!! $content !!}</textarea>
 											</div>
-											<textarea id="summernote-textarea" name="content" style="display: none;">{!! $content !!}</textarea>
-										</div>
 										</div>
 										<div class="form-group row">
 											<div class="form-group col-12">
