@@ -44,6 +44,9 @@
 												<span class="badge badge-info">{{ $f->category }}</span>
 											</td>
 											<td class="text-center">
+												<a href="#" class="btn btn-secondary btn-sm  copy-link" data-clipboard-text="https://cpsu.edu.ph/Uploads/Files/{{ $f->storage }}/{{ $f->file_name }}" data-original-title="Copied!">
+													<i class="fa fa-copy"></i>
+												</a>
 												<a href="{{ route('admin-editSublink', ['id' => $f->id]) }}" 
 												   class="btn btn-sm btn-info" title="Edit">
 													<i class="fas fa-edit"></i>
