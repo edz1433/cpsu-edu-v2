@@ -9,6 +9,7 @@ use App\Models\Submenu;
 use App\Models\Sublink;
 use App\Models\Category;
 use App\Models\SubCategory;
+use Normalizer;
 use Illuminate\Support\Facades\Http;
 
 class WebController extends Controller
@@ -16,12 +17,137 @@ class WebController extends Controller
     public function webHome()
     {
         $file = File::all();
+
+        // Paginate articles
         $article = Article::latest()->paginate(10);
+
+        // Preprocess each article
+        $article->transform(function ($art) {
+            // Format date
+            $art->date = $art->created_at->format('M d, Y');
+
+            // Safe title
+            $title = strip_tags($art->title);
+            if (class_exists('\Normalizer')) { // use global namespace
+                $title = \Normalizer::normalize($title, \Normalizer::FORM_KC);
+            } elseif (function_exists('transliterator_transliterate')) {
+                $title = transliterator_transliterate('NFKC', $title);
+            }
+            $art->safe_title = preg_replace('/\p{Cf}/u', '', $title);
+
+            // Thumbnail image
+            $art->image = !empty($art->thumbnail) 
+                ? asset("Uploads/News/thumbnail/{$art->thumbnail}") 
+                : asset("Uploads/default-thumbnail.png");
+
+            // Excerpt
+            $art->excerpt = 'Content not available';
+            if (!empty($art->content)) {
+                $contentPath = public_path("Uploads/News/content/{$art->content}");
+                if (file_exists($contentPath)) {
+                    $text = strip_tags(file_get_contents($contentPath));
+
+                    if (class_exists('\Normalizer')) {
+                        $text = \Normalizer::normalize($text, \Normalizer::FORM_KC);
+                    } elseif (function_exists('transliterator_transliterate')) {
+                        $text = transliterator_transliterate('NFKC', $text);
+                    }
+                    $text = preg_replace('/\p{Cf}/u', '', $text);
+
+                    $words = preg_split('/\s+/', $text);
+                    $maxWords = 25;
+
+                    if (count($words) > $maxWords) {
+                        $art->excerpt = implode(' ', array_slice($words, 0, $maxWords)) 
+                            . '... <a href="'.route('view-article', $art->id).'" style="color:#14532D;text-decoration:none;">Read More</a>';
+                    } else {
+                        $art->excerpt = $text;
+                    }
+                }
+            }
+
+            return $art;
+        });
+
+        // Other data
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $categories = Category::all();
         $subcategories = SubCategory::all();
+
         return view('web.home', compact("article", "submenu", "file", "categories", "subcategories"));
     }
+
+    public function viewMoreArticle(Request $request, $page = null)
+    {
+        // Base query
+        $query = Article::latest();
+
+        // Apply search filter if present
+        if ($request->has('search') && !empty($request->search)) {
+            $keyword = $request->search;
+            $query->where('title', 'like', "%{$keyword}%")
+                ->orWhere('content', 'like', "%{$keyword}%"); // optional: search content
+        }
+
+        // Paginate results and keep search query in pagination links
+        $articles = $query->paginate(6)->appends($request->all());
+
+        // Transform each article for optimized Blade rendering
+        $articles->transform(function ($art) {
+            // Format date
+            $art->date = $art->created_at->format('M d, Y');
+
+            // Safe title
+            $title = strip_tags($art->title);
+            if (class_exists('\Normalizer')) {
+                $title = \Normalizer::normalize($title, \Normalizer::FORM_KC);
+            } elseif (function_exists('transliterator_transliterate')) {
+                $title = transliterator_transliterate('NFKC', $title);
+            }
+            $art->safe_title = preg_replace('/\p{Cf}/u', '', $title);
+
+            // Thumbnail image
+            $art->image = !empty($art->thumbnail) 
+                ? asset("Uploads/News/thumbnail/{$art->thumbnail}") 
+                : asset("Uploads/default-thumbnail.png");
+
+            // Excerpt
+            $art->excerpt = 'Content not available';
+            if (!empty($art->content)) {
+                $contentPath = public_path("Uploads/News/content/{$art->content}");
+                if (file_exists($contentPath)) {
+                    $text = strip_tags(file_get_contents($contentPath));
+
+                    if (class_exists('\Normalizer')) {
+                        $text = \Normalizer::normalize($text, \Normalizer::FORM_KC);
+                    } elseif (function_exists('transliterator_transliterate')) {
+                        $text = transliterator_transliterate('NFKC', $text);
+                    }
+                    $text = preg_replace('/\p{Cf}/u', '', $text);
+
+                    $words = preg_split('/\s+/', $text);
+                    $maxWords = 25;
+
+                    if (count($words) > $maxWords) {
+                        $art->excerpt = implode(' ', array_slice($words, 0, $maxWords)) 
+                            . '... <a href="'.route('view-article', $art->id).'" style="color:#14532D;text-decoration:none;">Read More</a>';
+                    } else {
+                        $art->excerpt = $text;
+                    }
+                }
+            }
+
+            return $art;
+        });
+
+        // Other data
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+
+        return view('web.view-more-article', compact("articles", "submenu", "categories", "subcategories"));
+    }
+
 
     public function viewArticle($id)
     {
@@ -71,6 +197,7 @@ class WebController extends Controller
         $category = Category::all();
         return view('web.view-sublink-content', compact("submenu", "sublink", "category", "articles", "file", "categories", "subcategories"));
     }
+    
     
     public function searchArticle(Request $request){
         $categories = Category::all();

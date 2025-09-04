@@ -14,6 +14,9 @@ use App\Http\Controllers\autoGenController;
 Route::middleware(['headers.security'])->group(function () {
     Route::get('/',[WebController::class,'webHome'])->name('web-home');
     Route::get('/news/{id}', [WebController::class, 'viewArticle'])->name('view-article');
+    Route::get('/load-news', [WebController::class, 'viewMoreArticle'])->name('viewMoreArticle');
+
+    
     Route::get('/content/{id}', [WebController::class, 'subContent'])->name('view-sub-content');
     Route::get('/search', [WebController::class, 'searchArticle'])->name('search-article');
     Route::get('/sublink/{id}', [WebController::class, 'viewSublinkContent'])->name('view-sublink-content');

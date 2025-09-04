@@ -45,64 +45,19 @@
          
         <div class="row course-slied mt-10">
             @foreach($article as $art)
-                @php
-                    $date   = date("M d, Y", strtotime($art->created_at));
-                    $title  = strip_tags($art->title);
-                    $artid  = $art->id;
-
-                    // Normalize title
-                    if (class_exists('Normalizer')) {
-                        $title = Normalizer::normalize($title, Normalizer::FORM_KC);
-                    } elseif (function_exists('transliterator_transliterate')) {
-                        $title = transliterator_transliterate('NFKC', $title);
-                    }
-                    $title = preg_replace('/\p{Cf}/u', '', $title);
-
-                    // Thumbnail
-                    $image = !empty($art->thumbnail) 
-                        ? asset("Uploads/News/thumbnail/{$art->thumbnail}") 
-                        : asset("Uploads/default-thumbnail.png");
-
-                    $contentFilePath = public_path("Uploads/News/content/{$art->content}");
-                    $maxWords = 25;
-                    $excerpt  = 'Content not available';
-
-                    if (!empty($art->content) && file_exists($contentFilePath)) {
-                        $text = strip_tags(file_get_contents($contentFilePath));
-
-                        // Normalize content (same as title)
-                        if (class_exists('Normalizer')) {
-                            $text = Normalizer::normalize($text, Normalizer::FORM_KC);
-                        } elseif (function_exists('transliterator_transliterate')) {
-                            $text = transliterator_transliterate('NFKC', $text);
-                        }
-                        $text = preg_replace('/\p{Cf}/u', '', $text);
-
-                        $words = preg_split('/\s+/', $text);
-
-                        if (count($words) > $maxWords) {
-                            $excerpt = implode(' ', array_slice($words, 0, $maxWords)) . '...';
-                            $excerpt .= ' <a href="' . route('view-article', ['id' => $artid]) . '" style="color: #14532D; text-decoration: none;">Read More</a>';
-                        } else {
-                            $excerpt = $text;
-                        }
-                    }
-                @endphp
-
-                <!-- Responsive column -->
                 <div class="col-12 col-sm-12 col-md-6 col-lg-4">
                     <div class="singel-course mt-30">
                         <div class="thum">
                             <div class="image">
-                                <img src="{{ $image }}" alt="Article Thumbnail" class="img-fluid">
+                                <img src="{{ $art->image }}" alt="Article Thumbnail" class="img-fluid">
                             </div>
                         </div>
                         <div class="cont">
-                            <small><i class="fa fa-calendar"></i> {{ $date }}</small>
-                            <a href="{{ route('view-article', ['id' => $artid]) }}">
-                                <p class="text-success1 mt-2"><b>{{ $title }}</b></p>
+                            <small><i class="fa fa-calendar"></i> {{ $art->date }}</small>
+                            <a href="{{ route('view-article', ['id' => $art->id]) }}">
+                                <p class="text-success1 mt-2"><b>{{ $art->safe_title }}</b></p>
                             </a>
-                            <p class="mt-2" style="text-align: justify;">{!! $excerpt !!}</p>
+                            <p class="mt-2" style="text-align: justify;">{!! $art->excerpt !!}</p>
                         </div>
                     </div>
                 </div>
@@ -111,14 +66,13 @@
 
         <div class="row mt-3">
             <div class="col-12 text-center">
-                <button id="load-more" class="btn btn-outline-success">
+                <a  href="{{ route('viewMoreArticle') }}" class="btn btn-outline-success">
                     <i class="fa fa-refresh"></i> More News
-                </button>
+                </a>
             </div>
         </div>
     </div> 
 </section>
-
 
 <section id="about-page" class="pt-70 pb-110 bg-dark">
     <div class="container">
