@@ -96,52 +96,49 @@ class ArticlesController extends Controller
             'images.*'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
-        $article->title = $validatedData['title'];
-
-        // --- Update content in .txt file ---
-        if ($article->content) {
-            $contentFilePath = public_path("Uploads/News/content/{$article->content}");
-
-            // Make sure folder exists
-            if (!file_exists(dirname($contentFilePath))) {
-                mkdir(dirname($contentFilePath), 0777, true);
-            }
-
-            file_put_contents($contentFilePath, $validatedData['content']);
-        }
-
         $timestamp = now()->format('YmdHis');
         $rand = rand(1000, 9999);
 
-        // --- Handle thumbnail ---
+        // ✅ Update title
+        $article->title = $validatedData['title'];
+
+        // ✅ Update content (overwrite existing .txt file)
+        if ($article->content) {
+            $contentFilePath = public_path("Uploads/News/content/{$article->content}");
+        } else {
+            $article->content = "News-{$timestamp}-{$rand}.txt";
+            $contentFilePath = public_path("Uploads/News/content/{$article->content}");
+        }
+
+        $contentDir = dirname($contentFilePath);
+        if (!file_exists($contentDir)) {
+            mkdir($contentDir, 0777, true);
+        }
+        file_put_contents($contentFilePath, $validatedData['content']);
+
+        // ✅ Handle thumbnail
         if ($request->hasFile('thumbnail')) {
             $file = $request->file('thumbnail');
             $newFileName = "thumbnail-{$timestamp}-{$rand}." . $file->getClientOriginalExtension();
-            $thumbnailPath = public_path('Uploads/News/thumbnail');
+            $thumbDir = public_path("Uploads/News/thumbnail");
 
-            if (!file_exists($thumbnailPath)) {
-                mkdir($thumbnailPath, 0777, true);
+            if (!file_exists($thumbDir)) {
+                mkdir($thumbDir, 0777, true);
             }
+            $file->move($thumbDir, $newFileName);
 
-            $file->move($thumbnailPath, $newFileName);
-
-            // Remove old thumbnail
+            // Delete old thumbnail
             if ($article->thumbnail) {
-                $oldThumbnailPath = public_path("Uploads/News/thumbnail/{$article->thumbnail}");
-                if (file_exists($oldThumbnailPath)) {
-                    unlink($oldThumbnailPath);
+                $oldPath = public_path("Uploads/News/thumbnail/{$article->thumbnail}");
+                if (file_exists($oldPath)) {
+                    unlink($oldPath);
                 }
             }
 
             $article->thumbnail = $newFileName;
-        } else {
-            // If no new thumbnail uploaded, reuse base name
-            $newFileName = $article->thumbnail
-                ? pathinfo($article->thumbnail, PATHINFO_FILENAME)
-                : "news-{$timestamp}-{$rand}";
         }
 
-        // --- Handle images ---
+        // ✅ Handle images
         if ($request->hasFile('images')) {
             // Delete old images
             if (!empty($article->images)) {
@@ -153,35 +150,26 @@ class ArticlesController extends Controller
                 }
             }
 
-            // Save new images
-            $imagePath = public_path('Uploads/News/images');
-            if (!file_exists($imagePath)) {
-                mkdir($imagePath, 0777, true);
+            $imageDir = public_path("Uploads/News/images");
+            if (!file_exists($imageDir)) {
+                mkdir($imageDir, 0777, true);
             }
 
             $imageNames = [];
             $index = 1;
             foreach ($request->file('images') as $image) {
                 $ext = $image->getClientOriginalExtension();
-                $baseName = pathinfo($newFileName, PATHINFO_FILENAME);
+                $baseName = $article->thumbnail
+                    ? pathinfo($article->thumbnail, PATHINFO_FILENAME)
+                    : "news-{$timestamp}-{$rand}";
                 $imageName = "{$baseName}-{$index}.{$ext}";
-                $image->move($imagePath, $imageName);
+
+                $image->move($imageDir, $imageName);
                 $imageNames[] = $imageName;
                 $index++;
             }
 
             $article->images = implode(',', $imageNames);
-        } else {
-            // If no new images uploaded → delete all existing ones
-            if (!empty($article->images)) {
-                foreach (explode(',', $article->images) as $oldImg) {
-                    $oldPath = public_path("Uploads/News/images/" . trim($oldImg));
-                    if (file_exists($oldPath)) {
-                        unlink($oldPath);
-                    }
-                }
-            }
-            $article->images = null;
         }
 
         $article->save();
