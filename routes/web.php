@@ -88,9 +88,11 @@ Route::group(['middleware'=>['login_auth']],function(){
         });
 
         //User
-        Route::prefix('user')->group(function (){  
+        Route::prefix('user')->group(function () {
             Route::get('/',[SyntaxErrorController::class,'user'])->name('admin-user');
-            Route::post('/user-create',[UserController::class,'userCreate'])->name('admin-userCreate');
+            Route::post('/user-create',[UserController::class,'userCreate'])->name('userCreate');
+            Route::get('/edit/{id}', [UserController::class, 'edit'])->name('userEdit');
+            Route::post('/update', [UserController::class, 'update'])->name('userUpdate');
             Route::post('/delete',[SyntaxErrorController::class,'delete'])->name('delete');
         });
 

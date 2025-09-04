@@ -28,66 +28,71 @@ $relatedArticles = $articles
 <section id="corses-singel" class="pt-40 pb-120" style="background-image: url('{{ asset('images/bg-article.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat; padding: 30px;">
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-8">
-				@php
-					// Thumbnail URL (fallback if missing)
-					$thumbnail = !empty($article->thumbnail) && file_exists(public_path("Uploads/News/thumbnail/{$article->thumbnail}"))
-						? asset("Uploads/News/thumbnail/{$article->thumbnail}")
-						: asset("Uploads/default-thumbnail.png");
+<div class="col-lg-8">
+	@php
+		// Thumbnail URL (fallback if missing)
+		$thumbnail = !empty($article->thumbnail) && file_exists(public_path("Uploads/News/thumbnail/{$article->thumbnail}"))
+			? asset("Uploads/News/thumbnail/{$article->thumbnail}")
+			: asset("Uploads/default-thumbnail.png");
 
-					// Load and clean content
-					$contentFilePath = public_path("Uploads/News/content/{$article->content}");
-					$content = 'Content not available';
-					
-					if (!empty($article->content) && file_exists($contentFilePath)) {
-						$content = file_get_contents($contentFilePath);
-						// Remove all <img> tags
-						$content = preg_replace('/<img\b[^>]*>(?:<\/img>)?/i', '', $content);
-					}
+		// Load and clean content
+		$contentFilePath = public_path("Uploads/News/content/{$article->content}");
+		$content = 'Content not available';
+		
+		if (!empty($article->content) && file_exists($contentFilePath)) {
+			$content = file_get_contents($contentFilePath);
+			// Remove all <img> tags
+			$content = preg_replace('/<img\b[^>]*>(?:<\/img>)?/i', '', $content);
+		}
 
-					// Images
-					$images = !empty($article->images) ? explode(',', $article->images) : [];
-					$allImages = array_merge([$article->thumbnail], $images);
-				@endphp
+		// Images
+		$images = !empty($article->images) ? explode(',', $article->images) : [];
+		$allImages = array_merge([$article->thumbnail], $images);
+	@endphp
 
-				<div class="corses-singel-left" style="background-color: transparent !important;">
-					<div class="image-slider-container">
-						<i class="slider-arrow arrow-left fa fa-chevron-left" onclick="prevSlide()"></i>
+	<div class="corses-singel-left p-3 rounded shadow-sm bg-transparent">
+		<div class="image-slider-container position-relative text-center">
+			<i class="slider-arrow arrow-left fa fa-chevron-left" onclick="prevSlide()"></i>
 
-						<div class="tab-content" id="pills-tabContent">
-							@foreach ($allImages as $index => $image)
-								@php
-									if ($index === 0) {
-										$imagePath = !empty($image) && file_exists(public_path("Uploads/News/thumbnail/{$image}"))
-											? asset("Uploads/News/thumbnail/{$image}")
-											: asset("Uploads/default-thumbnail.png");
-									} else {
-										$imagePath = !empty($image) && file_exists(public_path("Uploads/News/images/{$image}"))
-											? asset("Uploads/News/images/{$image}")
-											: asset("Uploads/default-thumbnail.png");
-									}
+			<div class="tab-content" id="pills-tabContent">
+				@foreach ($allImages as $index => $image)
+					@php
+						if ($index === 0) {
+							$imagePath = !empty($image) && file_exists(public_path("Uploads/News/thumbnail/{$image}"))
+								? asset("Uploads/News/thumbnail/{$image}")
+								: asset("Uploads/default-thumbnail.png");
+						} else {
+							$imagePath = !empty($image) && file_exists(public_path("Uploads/News/images/{$image}"))
+								? asset("Uploads/News/images/{$image}")
+								: asset("Uploads/default-thumbnail.png");
+						}
 
-									$tabId = 'pills-image-' . ($index + 1);
-									$active = $index === 0 ? 'show active' : '';
-								@endphp
+						$tabId = 'pills-image-' . ($index + 1);
+						$active = $index === 0 ? 'show active' : '';
+					@endphp
 
-								<div class="tab-pane fade {{ $active }}" id="{{ $tabId }}" role="tabpanel" aria-labelledby="{{ $tabId }}-tab">
-									<div class="shop-image">
-										<a href="{{ $imagePath }}" class="shop-items"><img src="{{ $imagePath }}" alt="Shop"></a>
-									</div>
-								</div>
-							@endforeach
+					<div class="tab-pane fade {{ $active }}" id="{{ $tabId }}" role="tabpanel" aria-labelledby="{{ $tabId }}-tab">
+						<div class="shop-image bg-transparent">
+							<a href="{{ $imagePath }}" class="shop-items">
+								<img src="{{ $imagePath }}" class="img-fluid rounded shadow-sm" alt="Article Image">
+							</a>
 						</div>
-
-						<i class="slider-arrow arrow-right fa fa-chevron-right" onclick="nextSlide()"></i>
 					</div>
-
-					<div class="title pt-2">
-						<h5>{{ strip_tags($article->title) }}</h5>
-					</div> 
-					<p>{!! $content !!}</p>
-				</div>
+				@endforeach
 			</div>
+
+			<i class="slider-arrow arrow-right fa fa-chevron-right" onclick="nextSlide()"></i>
+		</div>
+
+		<div class="title pt-3">
+			<h4 class="fw-bold text-dark text-center">{{ strip_tags($article->title) }}</h4>
+		</div> 
+
+		<div class="article-content mt-2">
+			<p class="text-muted">{!! $content !!}</p>
+		</div>
+	</div>
+</div>
 
 			<div class="col-lg-4">
 				<div class="row">

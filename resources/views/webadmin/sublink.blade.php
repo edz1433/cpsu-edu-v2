@@ -43,8 +43,8 @@
 												</a>
 											</td>
 											<td class="text-center">
-												<a href="{{ asset('Uploads/Sublink/thumbnail/' . $sub->thumbnail) }}" 
-												   class="btn btn-sm btn-warning" target="_blank" rel="noopener noreferrer">
+												<a href="{{ asset($sub->thumbnail ? 'Uploads/Sublink/thumbnail/' . $sub->thumbnail : 'Uploads/Sublink/thumbnail/' . 'default-thumbnail.png') }}" 
+												class="btn btn-sm btn-warning" target="_blank" rel="noopener noreferrer">
 													<i class="fas fa-image"></i> View
 												</a>
 											</td>

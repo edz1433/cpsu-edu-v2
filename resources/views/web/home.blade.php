@@ -111,7 +111,7 @@
 
         <div class="row mt-3">
             <div class="col-12 text-center">
-                <button id="load-more" class="btn btn-outline-success px-4 py-2">
+                <button id="load-more" class="btn btn-outline-success">
                     <i class="fa fa-refresh"></i> More News
                 </button>
             </div>
