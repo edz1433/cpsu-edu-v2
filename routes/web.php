@@ -21,11 +21,12 @@ Route::middleware(['headers.security'])->group(function () {
     Route::get('/autogen', [autoGenController::class, 'autoGen'])->name('autoGen');
 
     //pages
-    Route::get('/home', [WebController::class, 'webHome1'])->name('webHome1');
     Route::get('/history', [WebController::class, 'history'])->name('history');
     Route::get('/vgmo', [WebController::class, 'vgmo'])->name('vgmo');
     Route::get('/academic-calendar', [WebController::class, 'acadCalendar'])->name('academic-calendar');
 
+    //facilities
+    Route::get('/facilities', [WebController::class, 'webFacilitiy'])->name('webFacilitiy');
     
     //Website Admin
     Route::get('/syntax-error', function () {

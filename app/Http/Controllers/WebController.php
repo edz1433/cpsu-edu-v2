@@ -102,6 +102,14 @@ class WebController extends Controller
         return view('web.vgmo', compact("categories", "subcategories", "submenu"));
     }
 
+    public function webFacilitiy()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.facilities', compact("categories", "subcategories", "submenu"));
+    }
+
     public function acadCalendar()
     {
         $categories = Category::all();
