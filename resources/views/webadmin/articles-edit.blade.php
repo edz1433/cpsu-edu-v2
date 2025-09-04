@@ -96,7 +96,7 @@
 										@endif
 
 										<div class="form-group col-12">
-											<button type="submit" class="btn btn-lg bg-success text-light float-right">
+											<button type="submit" class="btn btn-lg bg-success text-light">
 												<li class="fa fa-save"></li> Save
 											</button>
 										</div>

@@ -33,7 +33,7 @@
 								<input class="form-control" type="file" name="images[]" accept="image/*" multiple>
 							</div>
 
-							<div class="form-group text-right">
+							<div class="form-group">
 								<button type="submit" class="btn btn-success btn-lg">
 									<i class="fas fa-save"></i> Save
 								</button>
