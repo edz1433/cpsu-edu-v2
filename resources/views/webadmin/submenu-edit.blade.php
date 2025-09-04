@@ -63,15 +63,20 @@
 						<div class="form-group">
 							<label for="content"><i class="fas fa-align-left"></i> Content</label>
 							<div class="summernote">
-								@php
-									// Build full storage path
-									$contentPath = storage_path('app/public/Uploads/Submenu/content/' . $submenu->content);
+								<p>
+									@php
+										// Build relative path under public/
+										$relativePath = 'Uploads/Submenu/content/' . $submenu->content;
 
-									// Fallback if file doesn't exist
-									$content = file_exists($contentPath) ? file_get_contents($contentPath) : '';
-								@endphp
+										// Get full path from public/
+										$fullPath = public_path($relativePath);
 
-								{!! $content !!}
+										// Load file if it exists
+										$content = file_exists($fullPath) ? file_get_contents($fullPath) : '';
+									@endphp
+
+									{!! $content !!}
+								</p>
 							</div>
 
 							<textarea id="summernote-textarea" name="content" style="display:none;">{!! $content !!}</textarea>
