@@ -129,8 +129,6 @@
     <!--====== Main js ======-->
     <script src="{{ asset('js/main.js') }}"></script>
 
-    <!--====== Map js ======-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDC3Ip9iVC0nIxC6V14CKLQ1HZNF_65qEQ"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const cookiePopup = document.getElementById("cookie-popup");
@@ -184,25 +182,32 @@
     </script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
-        fetch("{{ route('track.visit') }}", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({
-                page: "home"
+
+        function updateVisitorCounts() {
+            fetch("{{ route('visit.count') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({}) // you can send data if needed
             })
-        })
-        .then(res => res.json())
-        .then(data => {
-            // Update UI dynamically
-            document.getElementById("onlineVisitors").innerText = data.onlineVisitors;
-            document.getElementById("todaysVisitors").innerText = data.todaysVisitors;
-            document.getElementById("totalPageViews").innerText = data.totalPageViews;
-        })
-        .catch(err => console.error("Visit tracking failed", err));
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("onlineVisitors").innerText = data.onlineVisitors;
+                document.getElementById("todaysVisitors").innerText = data.todaysVisitors;
+                document.getElementById("totalPageViews").innerText = data.totalPageViews;
+            })
+            .catch(err => console.error("Visitor count failed", err));
+        }
+
+        // Initial fetch
+        updateVisitorCounts();
+
+        // Update every 2 seconds
+        setInterval(updateVisitorCounts, 2000);
     });
     </script>
+
 </body>
 </html>

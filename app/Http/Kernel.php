@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'headers.security' => \App\Http\Middleware\HeaderSecurity::class,
         'login_auth' => \App\Http\Middleware\LoginAuth::class,
         'role' => \App\Http\Middleware\LoginAuth::class,
+        'track.visit' => \App\Http\Middleware\TrackVisit::class,
     ];
 }

@@ -9,6 +9,7 @@ class Visit extends Model
 {
     use HasFactory;
 
+    // Columns that are mass assignable
     protected $fillable = [
         'page',
         'ip_address',
@@ -17,5 +18,10 @@ class Visit extends Model
         'last_seen_at',
     ];
 
-    protected $dates = ['last_seen_at'];
+    // Optional: treat last_seen_at as Carbon instance
+    protected $dates = [
+        'last_seen_at',
+        'created_at',
+        'updated_at',
+    ];
 }

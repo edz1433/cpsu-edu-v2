@@ -12,28 +12,31 @@ use App\Http\Controllers\WebController;
 use App\Http\Controllers\autoGenController;
 
 Route::middleware(['headers.security'])->group(function () {
-    Route::get('/',[WebController::class,'webHome'])->name('web-home');
-    Route::get('/news/{id}', [WebController::class, 'viewArticle'])->name('view-article');
-    Route::get('/load-news', [WebController::class, 'viewMoreArticle'])->name('viewMoreArticle');
+    Route::middleware(['track.visit'])->group(function () {
+        Route::get('/',[WebController::class,'webHome'])->name('web-home');
+        Route::get('/news/{id}', [WebController::class, 'viewArticle'])->name('view-article');
+        Route::get('/load-news', [WebController::class, 'viewMoreArticle'])->name('viewMoreArticle');
 
-    
-    Route::get('/content/{id}', [WebController::class, 'subContent'])->name('view-sub-content');
-    Route::get('/search', [WebController::class, 'searchArticle'])->name('search-article');
-    Route::get('/sublink/{id}', [WebController::class, 'viewSublinkContent'])->name('view-sublink-content');
-    Route::get('/jobs', [WebController::class, 'jobList'])->name('jobList');
-    Route::get('/autogen', [autoGenController::class, 'autoGen'])->name('autoGen');
+        
+        Route::get('/content/{id}', [WebController::class, 'subContent'])->name('view-sub-content');
+        Route::get('/search', [WebController::class, 'searchArticle'])->name('search-article');
+        Route::get('/sublink/{id}', [WebController::class, 'viewSublinkContent'])->name('view-sublink-content');
+        Route::get('/jobs', [WebController::class, 'jobList'])->name('jobList');
+        Route::get('/autogen', [autoGenController::class, 'autoGen'])->name('autoGen');
 
-    //pages
-    Route::get('/history', [WebController::class, 'history'])->name('history');
-    Route::get('/vgmo', [WebController::class, 'vgmo'])->name('vgmo');
-    Route::get('/enrollment-faqs', [WebController::class, 'enrollFaqs'])->name('enrollFaqs');
-    Route::get('/graduate-program', [WebController::class, 'gradProgram'])->name('gradProgram');
-    Route::get('/undergraduate-program', [WebController::class, 'undergradProgram'])->name('undergradProgram');
-    Route::get('/academic-calendar', [WebController::class, 'acadCalendar'])->name('academic-calendar');
+        //pages
+        Route::get('/history', [WebController::class, 'history'])->name('history');
+        Route::get('/vgmo', [WebController::class, 'vgmo'])->name('vgmo');
+        Route::get('/enrollment-faqs', [WebController::class, 'enrollFaqs'])->name('enrollFaqs');
+        Route::get('/graduate-program', [WebController::class, 'gradProgram'])->name('gradProgram');
+        Route::get('/undergraduate-program', [WebController::class, 'undergradProgram'])->name('undergradProgram');
+        Route::get('/academic-calendar', [WebController::class, 'acadCalendar'])->name('academic-calendar');
 
-    //facilities
-    Route::get('/facilities', [WebController::class, 'webFacilitiy'])->name('webFacilitiy');
-    Route::post('/track-visit', [WebController::class, 'trackVisitAjax'])->name('track.visit');
+        //facilities
+        Route::get('/facilities', [WebController::class, 'webFacilitiy'])->name('webFacilitiy');
+    });
+
+    Route::post('/visitors/count', [WebController::class, 'countVisitors'])->name('visit.count');
     
     //Website Admin
     Route::get('/syntax-error', function () {

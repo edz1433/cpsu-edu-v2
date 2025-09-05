@@ -15,8 +15,30 @@ use Illuminate\Support\Facades\Http;
 
 class WebController extends Controller
 {
+    public function countVisitors()
+    {
+        try {
+            $counts = Visit::selectRaw("
+                (SELECT COUNT(DISTINCT session_id) FROM visits WHERE last_seen_at >= ?) AS onlineVisitors,
+                (SELECT COUNT(DISTINCT session_id) FROM visits WHERE DATE(created_at) = ?) AS todaysVisitors,
+                (SELECT COUNT(*) FROM visits) AS totalPageViews
+            ", [now()->subMinutes(15), today()])->first();
+
+            return response()->json([
+                'onlineVisitors' => $counts->onlineVisitors,
+                'todaysVisitors' => $counts->todaysVisitors,
+                'totalPageViews' => $counts->totalPageViews,
+            ]);
+
+        } catch (\Exception $e) {
+            // For debugging
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function trackVisitAjax(Request $request)
     {
+        // Record visit
         Visit::create([
             'page'        => $request->input('page', 'home'),
             'ip_address'  => $request->ip(),
@@ -25,20 +47,17 @@ class WebController extends Controller
             'last_seen_at'=> now(),
         ]);
 
-        $onlineVisitors = Visit::where('last_seen_at', '>=', now()->subMinutes(15))
-            ->distinct('session_id')
-            ->count('session_id');
-
-        $todaysVisitors = Visit::whereDate('created_at', today())
-            ->distinct('session_id')
-            ->count('session_id');
-
-        $totalPageViews = Visit::count();
+        // Get counts in a single query
+        $counts = Visit::selectRaw("
+            (SELECT COUNT(DISTINCT session_id) FROM visits WHERE last_seen_at >= ?) AS onlineVisitors,
+            (SELECT COUNT(DISTINCT session_id) FROM visits WHERE DATE(created_at) = ?) AS todaysVisitors,
+            (SELECT COUNT(*) FROM visits) AS totalPageViews
+        ", [now()->subMinutes(15), today()])->first();
 
         return response()->json([
-            'onlineVisitors' => $onlineVisitors,
-            'todaysVisitors' => $todaysVisitors,
-            'totalPageViews' => $totalPageViews,
+            'onlineVisitors' => $counts->onlineVisitors,
+            'todaysVisitors' => $counts->todaysVisitors,
+            'totalPageViews' => $counts->totalPageViews,
         ]);
     }
 
