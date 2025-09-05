@@ -75,7 +75,9 @@
             <div class="row mt-4">
                 <div class="col-12 text-center">
                     <p style="margin: 0; color: rgb(236, 233, 233);">
-                        Online Visitors: <strong>67,803</strong> &nbsp;|&nbsp; Today's Visitors: <strong>609</strong> &nbsp;|&nbsp; Total Page Views: <strong>32,404</strong>
+                        Online Visitors: <strong>{{ number_format($onlineVisitors) }}</strong> &nbsp;|&nbsp; 
+                        Today's Visitors: <strong>{{ number_format($todaysVisitors) }}</strong> &nbsp;|&nbsp; 
+                        Total Page Views: <strong>{{ number_format($totalPageViews) }}</strong>
                     </p>
                 </div>
             </div>
