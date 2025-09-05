@@ -33,6 +33,7 @@ Route::middleware(['headers.security'])->group(function () {
 
     //facilities
     Route::get('/facilities', [WebController::class, 'webFacilitiy'])->name('webFacilitiy');
+    Route::post('/track-visit', [WebController::class, 'trackVisitAjax'])->name('track.visit');
     
     //Website Admin
     Route::get('/syntax-error', function () {

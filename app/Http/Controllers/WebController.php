@@ -15,18 +15,16 @@ use Illuminate\Support\Facades\Http;
 
 class WebController extends Controller
 {
-    public function trackVisit(Request $request, &$onlineVisitors, &$todaysVisitors, &$totalPageViews)
+    public function trackVisitAjax(Request $request)
     {
-        // Record the visit
         Visit::create([
-            'page'        => 'home',
+            'page'        => $request->input('page', 'home'),
             'ip_address'  => $request->ip(),
-            'session_id'  => session()->getId(),   // ✅ unique per device/browser
+            'session_id'  => session()->getId(),
             'user_agent'  => $request->header('User-Agent'),
             'last_seen_at'=> now(),
         ]);
 
-        // Assign values directly
         $onlineVisitors = Visit::where('last_seen_at', '>=', now()->subMinutes(15))
             ->distinct('session_id')
             ->count('session_id');
@@ -36,12 +34,16 @@ class WebController extends Controller
             ->count('session_id');
 
         $totalPageViews = Visit::count();
+
+        return response()->json([
+            'onlineVisitors' => $onlineVisitors,
+            'todaysVisitors' => $todaysVisitors,
+            'totalPageViews' => $totalPageViews,
+        ]);
     }
 
     public function webHome(Request $request)
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
-
         $file = File::all();
 
         // Paginate articles
@@ -100,13 +102,11 @@ class WebController extends Controller
         $categories = Category::all();
         $subcategories = SubCategory::all();
 
-        return view('web.home', compact("article", "submenu", "file", "categories", "subcategories", "onlineVisitors", "todaysVisitors", "totalPageViews", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.home', compact("article", "submenu", "file", "categories", "subcategories"));
     }
 
     public function viewMoreArticle(Request $request, $page = null)
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
-
         // Base query
         $query = Article::latest();
 
@@ -173,14 +173,12 @@ class WebController extends Controller
         $categories = Category::all();
         $subcategories = SubCategory::all();
 
-        return view('web.view-more-article', compact("articles", "submenu", "categories", "subcategories", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.view-more-article', compact("articles", "submenu", "categories", "subcategories"));
     }
 
 
-    public function viewArticle($id, Request $request)
+    public function viewArticle($id)
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $file = File::all();
@@ -191,12 +189,11 @@ class WebController extends Controller
         // }
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $category = Category::all();
-        return view('web.view-article', compact("article", "submenu", "category", "articles", "file", "categories", "subcategories", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.view-article', compact("article", "submenu", "category", "articles", "file", "categories", "subcategories"));
     }
 
-    public function subContent($id, Request $request)
+    public function subContent($id)
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $file = File::all();
@@ -211,12 +208,11 @@ class WebController extends Controller
         //     $submen->increment('visit');
         // }
         $category = Category::all();
-        return view('web.view-sub-content', compact("submenu", "subcontent", "category", "articles", "file", "categories", "subcategories", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.view-sub-content', compact("submenu", "subcontent", "category", "articles", "file", "categories", "subcategories"));
     }
     
     public function viewSublinkContent($id)
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $file = File::all();
@@ -227,12 +223,11 @@ class WebController extends Controller
         //     $sublink->increment('visit');
         // }
         $category = Category::all();
-        return view('web.view-sublink-content', compact("submenu", "sublink", "category", "articles", "file", "categories", "subcategories", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.view-sublink-content', compact("submenu", "sublink", "category", "articles", "file", "categories", "subcategories"));
     }
     
     
     public function searchArticle(Request $request){
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $searchTerm = $request->input('s'); 
@@ -243,75 +238,67 @@ class WebController extends Controller
 
         $article = Article::where('title', 'LIKE', '%' . $searchTerm . '%')->get();
 
-        return view('web.search-article', compact("articles", "article", "submenu", "file", "category", "categories", "subcategories", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.search-article', compact("articles", "article", "submenu", "file", "category", "categories", "subcategories"));
     }
 
     public function history()
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        return view('web.history', compact("categories", "subcategories", "submenu", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.history', compact("categories", "subcategories", "submenu"));
     }
 
-    public function vgmo(Request $request)
+    public function vgmo()
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        return view('web.vgmo', compact("categories", "subcategories", "submenu", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.vgmo', compact("categories", "subcategories", "submenu"));
     }
 
-    public function webFacilitiy(Request $request)
+    public function webFacilitiy()
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        return view('web.facilities', compact("categories", "subcategories", "submenu", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.facilities', compact("categories", "subcategories", "submenu"));
     }
 
-    public function acadCalendar(Request $request)
+    public function acadCalendar()
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        return view('web.academic-calendar', compact("categories", "subcategories", "submenu", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.academic-calendar', compact("categories", "subcategories", "submenu"));
     }
 
-    public function enrollFaqs(Request $request)
+    public function enrollFaqs()
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        return view('web.enrollment-faqs', compact("categories", "subcategories", "submenu", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.enrollment-faqs', compact("categories", "subcategories", "submenu"));
     }
 
-    public function gradProgram(Request $request)
+    public function gradProgram()
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        return view('web.graduate-program', compact("categories", "subcategories", "submenu", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.graduate-program', compact("categories", "subcategories", "submenu"));
     }
 
-    public function undergradProgram(Request $request)
+    public function undergradProgram()
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        return view('web.undergraduate-program', compact("categories", "subcategories", "submenu", "onlineVisitors", "todaysVisitors", "totalPageViews"));
+        return view('web.undergraduate-program', compact("categories", "subcategories", "submenu"));
     }
 
-    public function jobList(Request $request)
+    public function jobList()
     {
-        $this->trackVisit($request, $onlineVisitors, $todaysVisitors, $totalPageViews);
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();

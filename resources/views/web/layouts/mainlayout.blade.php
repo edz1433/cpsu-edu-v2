@@ -182,6 +182,27 @@
             }
         });
     </script>
-    
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch("{{ route('track.visit') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({
+                page: "home"
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            // Update UI dynamically
+            document.getElementById("onlineVisitors").innerText = data.onlineVisitors;
+            document.getElementById("todaysVisitors").innerText = data.todaysVisitors;
+            document.getElementById("totalPageViews").innerText = data.totalPageViews;
+        })
+        .catch(err => console.error("Visit tracking failed", err));
+    });
+    </script>
 </body>
 </html>
