@@ -21,18 +21,19 @@ class WebController extends Controller
         Visit::create([
             'page'        => 'home',
             'ip_address'  => $request->ip(),
+            'session_id'  => session()->getId(),   // ✅ unique per device/browser
             'user_agent'  => $request->header('User-Agent'),
             'last_seen_at'=> now(),
         ]);
 
         // Assign values directly
         $onlineVisitors = Visit::where('last_seen_at', '>=', now()->subMinutes(15))
-            ->distinct('ip_address')
-            ->count('ip_address');
+            ->distinct('session_id')
+            ->count('session_id');
 
         $todaysVisitors = Visit::whereDate('created_at', today())
-            ->distinct('ip_address')
-            ->count('ip_address');
+            ->distinct('session_id')
+            ->count('session_id');
 
         $totalPageViews = Visit::count();
     }
