@@ -125,13 +125,13 @@
 
 @php
     $partners = [
-        1 => '#',
-        2 => '#',
-        3 => '#',
-        4 => '#',
+        1 => 'https://ched.gov.ph/',
+        2 => 'https://www.foi.gov.ph/',
+        3 => 'https://www.dbm.gov.ph/',
         5 => 'https://cpsu.edu.ph/content/86',
-        6 => '#',
-        7 => '#',
+        4 => 'https://pasuc.org.ph/',
+        6 => 'https://notices.philgeps.gov.ph/',
+        7 => 'https://aaccup.com/',
     ];
 @endphp
 
