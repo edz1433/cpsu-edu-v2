@@ -245,6 +245,14 @@ class WebController extends Controller
         return view('web.academic-calendar', compact("categories", "subcategories", "submenu"));
     }
 
+    public function enrollFaqs()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.enrollment-faqs', compact("categories", "subcategories", "submenu"));
+    }
+
     public function jobList()
     {
         $categories = Category::all();
@@ -263,5 +271,6 @@ class WebController extends Controller
             'jobs'
         ));
     }
+    
 
 }   

@@ -26,6 +26,7 @@ Route::middleware(['headers.security'])->group(function () {
     //pages
     Route::get('/history', [WebController::class, 'history'])->name('history');
     Route::get('/vgmo', [WebController::class, 'vgmo'])->name('vgmo');
+    Route::get('/enrollment-faqs', [WebController::class, 'enrollFaqs'])->name('enrollFaqs');
     Route::get('/academic-calendar', [WebController::class, 'acadCalendar'])->name('academic-calendar');
 
     //facilities
