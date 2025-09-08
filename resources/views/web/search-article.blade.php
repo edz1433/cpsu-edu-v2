@@ -1,87 +1,55 @@
-
 @extends('web.layouts.mainlayout')
-@include('web.layouts.sidebar')
 @section('content')
-<style>
-    .article-content img {
-        max-width: 100%;
-        display: block; 
-        margin: 10px;
-    }
-</style>
-<div class="page-content bg-white">
-	<div class="page-banner ovbl-dark" style="background-image:url({{ asset("Uploads/Submenu/thumbnail/default-thumbnail.png") }}); top: -10px;">
-		<div class="container">
-			<div class="page-banner-entry">
-				<h1 class="text-white">Search Result For : {{ request()->input('s') }}</h1>
-			 </div>
-		</div>
-	</div>
-	<div class="breadcrumb-row">
-		<div class="container-custom">
-			<ul class="list-inline">
-				<li><a href="#">Home</a></li>
-				<li>Search Article</li>
-			</ul>
-		</div>
-	</div>
-	<div class="content-block">
+<div class="section-area section-sp2 popular-courses-bx" style="background-color: #f9f9f9;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="widget-title mb-4 text-success1" style="font-weight: 700; border-bottom: 2px solid #14532D; padding-bottom: 10px;">
+                    Search Results for "{{ request()->input('s') }}"
+                </h4>
 
-		<!-- Popular Courses -->
-		<div class="section-area section-sp2 popular-courses-bx" style="margin-top: -60px;">
-			<div class="container-custom">
-				<div class="row">
-					<div class="col-lg-8 col-md-7 col-sm-12">
-						<div class="widget recent-posts-entry">
-							<h6 class="widget-title">Search Result</h6>
-							<div class="widget-post-bx">
-								@foreach ($article as $art)
-								@php $date = date("M d Y", strtotime($art->created_at)); @endphp 
-								<div class="widget-post clearfix">
-									<div class="ttr-post-info mb-0">
-										<ul class="media-post ">
-											<li><a href="#"><i class="fa fa-calendar"></i>{{ $date }}</a></li>
-										</ul>
-										<div class="ttr-post-header mb-0">
-											<h6 class="post-title"><a href="{{ route('view-article', ['id' => $art->id]) }}">{{ $art->title }}</a></h6>
-										</div>
-										<div style="height: 100px; overflow-y: hidden;">
-											@php
-											$contentFilePath = 'Uploads/News/content/'.$art->content; 
-											$maxWords = 30;
-											$artid = $art->id;
-											
-											if (file_exists($contentFilePath)) {
-												$content = file_get_contents($contentFilePath);
-												
-												if ($content !== false) {
-													$words = explode(' ', $content);
-											
-													if (count($words) > $maxWords) {
-														echo implode(' ', array_slice($words, 0, $maxWords)) . '... <a href="'. route('view-article', ['id' => $artid]) . '" class="pt-btn text-success">Read More</a>';
-													} else {
-														echo $content;
-													}
-												} else {
-													echo "Error reading the file: $contentFilePath";
-												}
-											} else {
-												echo "File not found: $contentFilePath";
-											}
-											@endphp
-											
-										</div>
-									</div>
-								</div>
-								@endforeach
-							</div>
-						</div>   
-					</div>
-					<!-- sideabr -->
-					@yield('sidebar')
-					<!-- sidebar end -->
-				</div>
-			</div>
-		</div>
-	</div>
+                @forelse ($article as $art)
+                    <div class="search-result-item p-3 mb-4 border rounded shadow-sm hover-shadow" style="background-color: #fff;">
+                        <h5 class="post-title text-success1 mb-2">
+                            <a href="{{ route('view-article', ['id' => $art->id]) }}" class="text-success1 text-decoration-none">
+                                {{ $art->title }}
+                            </a>
+                        </h5>
+                        <p class="text-muted mb-2" style="font-size: 0.9rem;">
+                            {{ \Carbon\Carbon::parse($art->date)->format('F d, Y') }}
+                        </p>
+                        <p style="text-align: justify; line-height: 1.6;">
+                            {!! $art->excerpt !!}
+                        </p>
+                    </div>
+                @empty
+                    <p class="text-muted py-5 text-center">No articles found matching your search.</p>
+                @endforelse
+
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $article->links() }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-shadow:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    transition: all 0.3s ease;
+}
+.text-success1 {
+    color: #14532D !important;
+}
+.pt-btn {
+    font-weight: 500;
+    text-decoration: underline;
+    color: #14532D;
+}
+.pt-btn:hover {
+    color: #14532D;
+    text-decoration: none;
+}
+</style>
 @endsection

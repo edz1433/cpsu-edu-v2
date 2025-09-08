@@ -18,11 +18,11 @@
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
-                        <li>Bachelor in Elementary Education</li>
-                        <li>Bachelor in Secondary Education</li>
-                        <li>Bachelor in Physical Education</li>
-                        <li>Bachelor in Early Childhood Education</li>
-                        <li>BSEd major in English</li>
+                        <li class="text-success">Bachelor in Elementary Education</li>
+                        <li class="text-success">Bachelor in Secondary Education</li>
+                        <li class="text-success">Bachelor in Physical Education</li>
+                        <li class="text-success">Bachelor in Early Childhood Education</li>
+                        <li class="text-success">BSEd major in English</li>
                     </ul>
                 </div>
             </div>
@@ -31,18 +31,18 @@
         <!-- College of Agriculture and Forestry -->
         <div class="col-md-6 col-lg-4">
             <div class="program-card shadow-sm border-0 rounded-4">
-                <img src="{{ asset('images/default-thumbnail.png') }}" class="card-img-top rounded-top-4" alt="Agriculture">
+                <img src="{{ asset('images/CAF-thumbmnail.jpg') }}" class="card-img-top rounded-top-4" alt="Agriculture">
                 <div class="program-info">
                     <h5 class="fw-bold text-light">College of Agriculture & Forestry</h5>
                 </div>
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
-                        <li>BS in Agriculture</li>
-                        <li>Bachelor in Animal Science</li>
-                        <li>BS in Agribusiness</li>
-                        <li>BS in Forestry</li>
-                        <li>Bachelor in Sugar Technology</li>
+                        <li class="text-success">BS in Agriculture</li>
+                        <li class="text-success">Bachelor in Animal Science</li>
+                        <li class="text-success">BS in Agribusiness</li>
+                        <li class="text-success">BS in Forestry</li>
+                        <li class="text-success">Bachelor in Sugar Technology</li>
                     </ul>
                 </div>
             </div>
@@ -58,8 +58,8 @@
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
-                        <li>Bachelor of Arts (AB English, Social Science)</li>
-                        <li>BS in Statistics</li>
+                        <li class="text-success">Bachelor of Arts (AB English, Social Science)</li>
+                        <li class="text-success">BS in Statistics</li>
                     </ul>
                 </div>
             </div>
@@ -68,14 +68,14 @@
         <!-- College of Business and Hospitality Management -->
         <div class="col-md-6 col-lg-4">
             <div class="program-card shadow-sm border-0 rounded-4">
-                <img src="{{ asset('images/default-thumbnail.png') }}" class="card-img-top rounded-top-4" alt="Business">
+                <img src="{{ asset('images/CHM-thumbmnail.jpg') }}" class="card-img-top rounded-top-4" alt="Business">
                 <div class="program-info">
                     <h5 class="fw-bold text-light">College of Business & Hospitality Management</h5>
                 </div>
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
-                        <li>BS in Hotel & Restaurant Management</li>
+                        <li class="text-success">BS in Hotel & Restaurant Management</li>
                     </ul>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
-                        <li>BS in Information Technology</li>
+                        <li class="text-success">BS in Information Technology</li>
                     </ul>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
-                        <li>BS in Criminology</li>
+                        <li class="text-success">BS in Criminology</li>
                     </ul>
                 </div>
             </div>
@@ -123,9 +123,9 @@
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
-                        <li>BS in Agricultural & Biosystems Engineering</li>
-                        <li>BS in Mechanical Engineering</li>
-                        <li>BS in Electrical Engineering</li>
+                        <li class="text-success">BS in Agricultural & Biosystems Engineering</li>
+                        <li class="text-success">BS in Mechanical Engineering</li>
+                        <li class="text-success">BS in Electrical Engineering</li>
                     </ul>
                 </div>
             </div>

@@ -19,7 +19,7 @@ Route::middleware(['headers.security'])->group(function () {
 
         
         Route::get('/content/{id}', [WebController::class, 'subContent'])->name('view-sub-content');
-        Route::get('/search', [WebController::class, 'searchArticle'])->name('search-article');
+        Route::get('/search', [WebController::class, 'searchArticle'])->name('searchArticle');
         Route::get('/sublink/{id}', [WebController::class, 'viewSublinkContent'])->name('view-sublink-content');
         Route::get('/jobs', [WebController::class, 'jobList'])->name('jobList');
         Route::get('/autogen', [autoGenController::class, 'autoGen'])->name('autoGen');

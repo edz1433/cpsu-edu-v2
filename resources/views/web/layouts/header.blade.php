@@ -101,8 +101,8 @@
             <span></span>
             <span></span>
         </div>
-        <form action="#">
-            <input type="text" placeholder="Search by keyword">
+        <form action="{{ route('searchArticle') }}">
+            <input type="text" name="s" placeholder="Search by keyword">
             <button><i class="fa fa-search"></i></button>
         </form>
     </div>

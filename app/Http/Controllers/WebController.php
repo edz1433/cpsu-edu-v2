@@ -245,20 +245,82 @@ class WebController extends Controller
         return view('web.view-sublink-content', compact("submenu", "sublink", "category", "articles", "file", "categories", "subcategories"));
     }
     
-    
-    public function searchArticle(Request $request){
+    public function searchArticle(Request $request)
+    {
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $searchTerm = $request->input('s'); 
+
+        // All articles (maybe for sidebar or other purpose)
         $articles = Article::orderBy('created_at', 'desc')->paginate(3);
+
         $file = File::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         $category = Category::all();
 
-        $article = Article::where('title', 'LIKE', '%' . $searchTerm . '%')->get();
+        // Search query with pagination
+        $query = Article::where('title', 'LIKE', '%' . $searchTerm . '%')->orderBy('created_at', 'desc');
+        $article = $query->paginate(6)->appends($request->all());
 
-        return view('web.search-article', compact("articles", "article", "submenu", "file", "category", "categories", "subcategories"));
+        // Transform each article for optimized Blade rendering
+        $article->getCollection()->transform(function ($art) {
+            // Format date
+            $art->date = $art->created_at->format('M d, Y');
+
+            // Safe title
+            $title = strip_tags($art->title);
+            if (class_exists('\Normalizer')) {
+                $title = \Normalizer::normalize($title, \Normalizer::FORM_KC);
+            } elseif (function_exists('transliterator_transliterate')) {
+                $title = transliterator_transliterate('NFKC', $title);
+            }
+            $art->safe_title = preg_replace('/\p{Cf}/u', '', $title);
+
+            // Thumbnail image
+            $art->image = !empty($art->thumbnail) 
+                ? asset("Uploads/News/thumbnail/{$art->thumbnail}") 
+                : asset("Uploads/default-thumbnail.png");
+
+            // Excerpt
+            $art->excerpt = 'Content not available';
+            if (!empty($art->content)) {
+                $contentPath = public_path("Uploads/News/content/{$art->content}");
+                if (file_exists($contentPath)) {
+                    $text = strip_tags(file_get_contents($contentPath));
+
+                    if (class_exists('\Normalizer')) {
+                        $text = \Normalizer::normalize($text, \Normalizer::FORM_KC);
+                    } elseif (function_exists('transliterator_transliterate')) {
+                        $text = transliterator_transliterate('NFKC', $text);
+                    }
+                    $text = preg_replace('/\p{Cf}/u', '', $text);
+
+                    $words = preg_split('/\s+/', $text);
+                    $maxWords = 25;
+
+                    if (count($words) > $maxWords) {
+                        $art->excerpt = implode(' ', array_slice($words, 0, $maxWords)) 
+                            . '... <a href="'.route('view-article', $art->id).'" style="color:#14532D;text-decoration:none;">Read More</a>';
+                    } else {
+                        $art->excerpt = $text;
+                    }
+                }
+            }
+
+            return $art;
+        });
+
+        return view('web.search-article', compact(
+            "articles",
+            "article",
+            "submenu",
+            "file",
+            "category",
+            "categories",
+            "subcategories"
+        ));
     }
+
 
     public function history()
     {
