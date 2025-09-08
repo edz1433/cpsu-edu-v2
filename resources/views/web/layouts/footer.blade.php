@@ -16,7 +16,7 @@
                             </span>
                         </p>
                         <ul class="mt-20">
-                            <li><a href="#"><i class="fa fa-facebook-f"></i></a></li>
+                            <li><a href="https://www.facebook.com/CPSUpublicinformationoffice" target="_blank"><i class="fa fa-facebook-f"></i></a></li>
                             <li><a href="#"><i class="fa fa-youtube"></i></a></li>
                         </ul>
                     </div>
