@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'login_auth' => \App\Http\Middleware\LoginAuth::class,
         'role' => \App\Http\Middleware\LoginAuth::class,
         'track.visit' => \App\Http\Middleware\TrackVisit::class,
+        'api.token' => \App\Http\Middleware\ApiTokenMiddleware::class,
     ];
 }

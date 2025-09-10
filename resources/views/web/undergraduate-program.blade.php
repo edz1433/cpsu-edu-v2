@@ -19,7 +19,6 @@
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
                         <li class="text-success">Bachelor of Elementary Education</li>
-                        <li class="text-success">Bachelor of Secondary Education</li>
                         <li class="text-success">Bachelor of Physical Education</li>
                         <li class="text-success">Bachelor of Early Childhood Education</li>
                         <li class="text-success">Bachelor of Secondary Education major in English</li>
