@@ -30,7 +30,6 @@
 
 </section>
 
-
 <section id="course-part" class="pt-115 pb-120 gray-bg">
     {{-- Responsive container: fluid on mobile, normal on larger screens --}}
     <div class="container">
@@ -42,7 +41,7 @@
                 </div>
             </div>
         </div>
-         
+        
         <div class="row course-slied mt-10">
             @foreach($article as $art)
                 <div class="col-12 col-sm-12 col-md-6 col-lg-4">
