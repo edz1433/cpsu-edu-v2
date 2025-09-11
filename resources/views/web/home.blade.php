@@ -77,16 +77,21 @@
     <div class="container">
         <div class="row">
             <div class="col-6 col-lg-7">
-                <div class="about-image mt-50 hover-effect">
+                <div class="about-image hover-effect">
                     <a href="{{ route('academic-calendar') }}">
                         <img src="{{ asset('images/academic calendar.jpg') }}" alt="calendar" class="img-fluid">
                     </a>
                 </div>
+                <div class="about-image hover-effect">
+                    <a href="{{ url('content/36') }}">
+                        <img src="{{ asset('images/procurement.png') }}" alt="calendar" class="img-fluid mt-2">
+                    </a>
+                </div>
             </div>
             <div class="col-6 col-lg-5">
-                <div class="about-image hover-effect">
+                <div class="about-image hover-effect mt-30">
                     <a href="{{ route('jobList') }}">
-                        <img src="{{ asset('images/hiring logo.png') }}" alt="hiring" class="img-fluid">
+                        <img src="{{ asset('images/hiring logo.png') }}" alt="hiring" class="img-fluid w-100">
                     </a>
                 </div>
             </div>
