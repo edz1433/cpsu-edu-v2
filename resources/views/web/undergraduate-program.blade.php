@@ -11,7 +11,7 @@
         <!-- College of Teacher Education -->
         <div class="col-md-6 col-lg-4">
             <div class="program-card shadow-sm border-0 rounded-4">
-                <img src="{{ asset('images/default-thumbnail.png') }}" class="card-img-top rounded-top-4" alt="Teacher Education">
+                <img src="{{ asset('images/COTEd.jpg') }}" class="card-img-top rounded-top-4" alt="Teacher Education">
                 <div class="program-info">
                     <h5 class="fw-bold text-light">College of Teacher Education</h5>
                 </div>
@@ -33,7 +33,7 @@
         <!-- College of Agriculture and Forestry -->
         <div class="col-md-6 col-lg-4">
             <div class="program-card shadow-sm border-0 rounded-4">
-                <img src="{{ asset('images/CAF-thumbmnail.jpg') }}" class="card-img-top rounded-top-4" alt="Agriculture">
+                <img src="{{ asset('images/CAF-2.jpg') }}" class="card-img-top rounded-top-4" alt="Agriculture">
                 <div class="program-info">
                     <h5 class="fw-bold text-light">College of Agriculture & Forestry</h5>
                 </div>
@@ -53,7 +53,7 @@
         <!-- College of Arts and Sciences -->
         <div class="col-md-6 col-lg-4">
             <div class="program-card shadow-sm border-0 rounded-4">
-                <img src="{{ asset('images/default-thumbnail.png') }}" class="card-img-top rounded-top-4" alt="Arts and Sciences">
+                <img src="{{ asset('images/CAS.jpg') }}" class="card-img-top rounded-top-4" alt="Arts and Sciences">
                 <div class="program-info">
                     <h5 class="fw-bold text-light">College of Arts & Sciences</h5>
                 </div>
@@ -87,7 +87,7 @@
         <!-- College of Information and Computing Studies -->
         <div class="col-md-6 col-lg-4">
             <div class="program-card shadow-sm border-0 rounded-4">
-                <img src="{{ asset('images/default-thumbnail.png') }}" class="card-img-top rounded-top-4" alt="IT">
+                <img src="{{ asset('images/CCS.jpg') }}" class="card-img-top rounded-top-4" alt="IT">
                 <div class="program-info">
                     <h5 class="fw-bold text-light">College of Information & Computing Studies</h5>
                 </div>
@@ -103,7 +103,7 @@
         <!-- College of Criminal Justice Education -->
         <div class="col-md-6 col-lg-4">
             <div class="program-card shadow-sm border-0 rounded-4">
-                <img src="{{ asset('images/default-thumbnail.png') }}" class="card-img-top rounded-top-4" alt="Criminology">
+                <img src="{{ asset('images/CCJE.jpg') }}" class="card-img-top rounded-top-4" alt="Criminology">
                 <div class="program-info">
                     <h5 class="fw-bold text-light">College of Criminal Justice Education</h5>
                 </div>
@@ -119,7 +119,7 @@
         <!-- College of Engineering -->
         <div class="col-md-6 col-lg-4">
             <div class="program-card shadow-sm border-0 rounded-4">
-                <img src="{{ asset('images/default-thumbnail.png') }}" class="card-img-top rounded-top-4" alt="Engineering">
+                <img src="{{ asset('images/COE.jpg') }}" class="card-img-top rounded-top-4" alt="Engineering">
                 <div class="program-info">
                     <h5 class="fw-bold text-light">College of Engineering</h5>
                 </div>
@@ -138,13 +138,16 @@
 
 <style>
     .program-card {
-        position: relative;
-        overflow: hidden;
-        border-radius: 1rem;
-        cursor: pointer;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        height: 300px;
-    }
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 300px;
+    margin-bottom: 30px; /* Adds vertical breathing room */
+    margin-left: 10px;   /* Optional horizontal spacing */
+    margin-right: 10px;  /* Optional horizontal spacing */
+}
     .program-card img {
         width: 100%;
         height: 100%;

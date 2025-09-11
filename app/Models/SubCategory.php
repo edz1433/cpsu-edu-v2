@@ -12,4 +12,10 @@ class SubCategory extends Model
         'categories_id',
         'title',
     ];
+
+    public function submenus()
+    {
+        return $this->hasMany(Submenu::class, 'subcategory');
+    }
+
 }

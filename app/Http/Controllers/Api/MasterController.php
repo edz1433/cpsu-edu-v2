@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Submenu;
@@ -13,17 +14,21 @@ class MasterController extends Controller
 {
     public function webmenus(Request $request)
     {
-        $submenu = Submenu::where('status', 1)
-            ->orderBy('title', 'asc')
+        $categories = Cache::remember('categories_with_nested', 3600, function () {
+            return Category::with([
+                'subcategories.submenus' => function ($query) {
+                    $query->where('status', 1)->select('id', 'title', 'subcategory', 'url');
+                },
+                'submenus' => function ($query) {
+                    $query->where('status', 1)->select('id', 'title', 'category', 'url');
+                }
+            ])
+            ->select('id', 'cat_name', 'hasgrid')
             ->get();
+        });
 
-        $categories = Category::all();
-        $subcategories = SubCategory::all();
-        
         return response()->json([
-            'submenu' => $submenu,
-            'categories' => $categories,
-            'subcategories' => $subcategories,
+            'categories' => $categories
         ]);
     }
 }
