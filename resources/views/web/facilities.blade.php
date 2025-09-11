@@ -1,54 +1,54 @@
 @extends('web.layouts.mainlayout')
 @section('content')
 <style>
-    body {
-        background: #f8f9fa;
-    }
+body {
+    background: #f8f9fa;
+}
 
-    /* Make the row take full height */
-    .facilities-wrapper {
+/* Make the row take full height */
+.facilities-wrapper {
     display: flex;
     align-items: stretch; /* makes both columns equal height */
 }
 
-   /* Facilities list scroll */
+/* Facilities list scroll */
 .facility-list {
     width: 280px;       /* fixed width */
-    height: 100vh;      /* fixed full height of screen */
-    overflow-y: auto;   /* enable scroll inside */
+    height: 100%;      /* fixed full height of screen */
+    overflow: hidden;   /* enable scroll inside */
     padding-right: 8px;
     position: sticky;
     top: 0;             /* keep it pinned when scrolling */
     flex-shrink: 0;     /* prevent shrinking in flexbox */
 }
 
-    .facility-list .nav-link {
-        background: #fff;
-        border-radius: 12px;
-        margin-bottom: 10px;
-        padding: 14px 18px;
-        font-weight: 500;
-        color: #333;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        font-size: 16px;
-        white-space: nowrap;
-    }
-    .facility-list .nav-link:hover {
-        background: #e6f4ff;
-        transform: translateX(4px);
-        color: #1f5036;
-    }
-    .facility-list .nav-link.active {
-        background: #1f5036;
-        color: #fff !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
+.facility-list .nav-link {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 14px 18px;
+    font-weight: 500;
+    color: #333;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    white-space: nowrap;
+}
+.facility-list .nav-link:hover {
+    background: #e6f4ff;
+    transform: translateX(4px);
+    color: #1f5036;
+}
+.facility-list .nav-link.active {
+    background: #1f5036;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
 
-    /* Tab content scroll */
-    .tab-content {
+/* Tab content scroll */
+.tab-content {
     flex: 1;
     height: 100vh;   /* same height as left */
     overflow-y: auto;
@@ -57,45 +57,83 @@
     padding: 30px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-    .tab-content h3 {
-        color: #1f5036;
-        font-weight: 700;
-        margin-bottom: 15px;
-    }
-    .tab-content p, .tab-content li {
-        font-size: 15px;
-        line-height: 1.7;
-        color: #555;
-    }
-    .tab-content ul {
-        padding-left: 20px;
-    }
-    .tab-content ul li {
-        margin-bottom: 8px;
-        position: relative;
-    }
-    .tab-content ul li::before {
-        content: "•";
-        color: #1f5036;
-        font-weight: bold;
-        display: inline-block;
-        width: 1em;
-        margin-left: -1em;
-    }
+.tab-content h3 {
+    color: #1f5036;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.tab-content p, .tab-content li {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #555;
+}
+.tab-content ul {
+    padding-left: 20px;
+}
+.tab-content ul li {
+    margin-bottom: 8px;
+    position: relative;
+}
+.tab-content ul li::before {
+    content: "•";
+    color: #1f5036;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
 
-    /* Responsive adjustments */
-    @media (max-width: 767px) {
-        .facilities-wrapper {
-            flex-direction: column;
-            height: auto;
-        }
-        .facility-list {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-    }
+ .gallery-grid {
+    display: grid;
+    gap: 10px;
+    justify-content: center; /* centers last row */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
 
-    .facility-img .gallery {
+.gallery-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+/* Special case: 4 photos → 2 per row */
+.gallery-grid.four-photos {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    .gallery-grid.four-photos {
+        grid-template-columns: repeat(2, 1fr); /* still 2 per row */
+    }
+}
+
+@media (max-width: 576px) {
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    .gallery-grid.four-photos {
+        grid-template-columns: 1fr; /* stack vertically on mobile */
+    }
+}
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .facilities-wrapper {
+        flex-direction: column;
+        height: auto;
+    }
+    .facility-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+}
+
+.facility-img .gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 10px;
@@ -138,7 +176,7 @@
         </div>
 
         <!-- Facilities content -->
-        <div class="col-md-8">
+        <div class="col-md-8 w-100">
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="cafeteria">
                     <h3> Cafeteria/Restaurant</h3>
@@ -479,51 +517,7 @@
 
                     </ul>
                 </div>
-
-
-
             </div>
-                        <style>
-           .gallery-grid {
-    display: grid;
-    gap: 10px;
-    justify-content: center; /* centers last row */
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
-
-.gallery-grid img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 8px;
-    object-fit: cover;
-}
-
-/* Special case: 4 photos → 2 per row */
-.gallery-grid.four-photos {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-/* Responsive adjustments */
-@media (max-width: 992px) {
-    .gallery-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    }
-    .gallery-grid.four-photos {
-        grid-template-columns: repeat(2, 1fr); /* still 2 per row */
-    }
-}
-
-@media (max-width: 576px) {
-    .gallery-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    }
-    .gallery-grid.four-photos {
-        grid-template-columns: 1fr; /* stack vertically on mobile */
-    }
-}
-
-            </style>
         </div>
     </div>
 

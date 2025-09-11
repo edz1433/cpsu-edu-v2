@@ -16,12 +16,7 @@ class Category extends Model
 
     public function subcategories()
     {
-        return $this->hasMany(SubCategory::class, 'categories_id');
-    }
-
-    public function submenus()
-    {
-        return $this->hasMany(Submenu::class, 'category');
+        return $this->hasMany(Subcategory::class, 'categories_id');
     }
 
 }

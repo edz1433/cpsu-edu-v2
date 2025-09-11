@@ -20,4 +20,9 @@ class Submenu extends Model
         'visit',
         'status',
     ];
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class, 'subcategory');
+    }
 }
