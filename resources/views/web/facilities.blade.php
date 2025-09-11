@@ -184,11 +184,11 @@ body {
               
                          <div class="facility-img">
                                     <div class="gallery-grid">
-                                     <a target="_blank" href="{{ asset('images/cafeteria1.jpg') }}"><img src="{{ asset('images/cafeteria1.jpg') }}" alt="cafeteria 1"></a>
-                                    <a target="_blank" href="{{ asset('images/cafeteria2.jpg') }}"><img src="{{ asset('images/cafeteria2.jpg') }}" alt="cafeteria 2"></a>
-                                    <a target="_blank" href="{{ asset('images/cafeteria3.jpg') }}"><img src="{{ asset('images/cafeteria3.jpg') }}" alt="cafeteria 3"></a>
-                                    <a target="_blank" href="{{ asset('images/cafeteria4.jpg') }}"><img src="{{ asset('images/cafeteria4.jpg') }}" alt="cafeteria 4"></a>
-                                    <a target="_blank" href="{{ asset('images/cafeteria5.jpg') }}"><img src="{{ asset('images/cafeteria5.jpg') }}" alt="cafeteria 5"></a>
+                                     <a target="_blank" href="{{ asset('images/cafeteria1.JPG') }}"><img src="{{ asset('images/cafeteria1.JPG') }}" alt="cafeteria 1"></a>
+                                    <a target="_blank" href="{{ asset('images/cafeteria2.JPG') }}"><img src="{{ asset('images/cafeteria2.JPG') }}" alt="cafeteria 2"></a>
+                                    <a target="_blank" href="{{ asset('images/cafeteria3.JPG') }}"><img src="{{ asset('images/cafeteria3.JPG') }}" alt="cafeteria 3"></a>
+                                    <a target="_blank" href="{{ asset('images/cafeteria4.JPG') }}"><img src="{{ asset('images/cafeteria4.JPG') }}" alt="cafeteria 4"></a>
+                                    <a target="_blank" href="{{ asset('images/cafeteria5.JPG') }}"><img src="{{ asset('images/cafeteria5.JPG') }}" alt="cafeteria 5"></a>
                                     </div>
                         </div>
                 </div>
@@ -209,12 +209,12 @@ body {
 
                             <div class="facility-img">
                                 <div class="gallery-grid">
-                                    <a target="_blank" href="{{ asset('images/socialroom1.jpg') }}"><img src="{{ asset('images/socialroom1.jpg') }}" alt="Social Room 1"></a>
-                                    <a target="_blank" href="{{ asset('images/socialroom2.jpg') }}"><img src="{{ asset('images/socialroom2.jpg') }}" alt="Social Room 2"></a>
-                                    <a target="_blank" href="{{ asset('images/socialroom3.jpg') }}"><img src="{{ asset('images/socialroom3.jpg') }}" alt="Social Room 3"></a>
-                                    <a target="_blank" href="{{ asset('images/socialroom4.jpg') }}"><img src="{{ asset('images/socialroom4.jpg') }}" alt="Social Room 4"></a>
-                                    <a target="_blank" href="{{ asset('images/socialroom5.jpg') }}"><img src="{{ asset('images/socialroom5.jpg') }}" alt="Social Room 5"></a>
-                                    <a target="_blank" href="{{ asset('images/socialroom6.jpg') }}"><img src="{{ asset('images/socialroom6.jpg') }}" alt="Social Room 6"></a>
+                                    <a target="_blank" href="{{ asset('images/socialroom1.JPG') }}"><img src="{{ asset('images/socialroom1.JPG') }}" alt="Social Room 1"></a>
+                                    <a target="_blank" href="{{ asset('images/socialroom2.JPG') }}"><img src="{{ asset('images/socialroom2.JPG') }}" alt="Social Room 2"></a>
+                                    <a target="_blank" href="{{ asset('images/socialroom3.JPG') }}"><img src="{{ asset('images/socialroom3.JPG') }}" alt="Social Room 3"></a>
+                                    <a target="_blank" href="{{ asset('images/socialroom4.JPG') }}"><img src="{{ asset('images/socialroom4.JPG') }}" alt="Social Room 4"></a>
+                                    <a target="_blank" href="{{ asset('images/socialroom5.JPG') }}"><img src="{{ asset('images/socialroom5.JPG') }}" alt="Social Room 5"></a>
+                                    <a target="_blank" href="{{ asset('images/socialroom6.JPG') }}"><img src="{{ asset('images/socialroom6.JPG') }}" alt="Social Room 6"></a>
                                 </div>
                             </div>
                         </div>
@@ -235,8 +235,8 @@ body {
                         Behind the chapel, is the “CPSU Legacy Park” which houses flora and fauna protected by the university and can accommodate for more spiritual activities even overnight camps.</p>
                  <div class="facility-img">
                                 <div class="gallery-grid">
-                                    <a target="_blank" href="{{ asset('images/religious1.jpg') }}"><img src="{{ asset('images/religious1.jpg') }}" alt="religious 1"></a>
-                                    <a target="_blank" href="{{ asset('images/religious2.jpg') }}"><img src="{{ asset('images/religious2.jpg') }}" alt="religious2"></a>
+                                    <a target="_blank" href="{{ asset('images/religious1.JPG') }}"><img src="{{ asset('images/religious1.JPG') }}" alt="religious 1"></a>
+                                    <a target="_blank" href="{{ asset('images/religious2.JPG') }}"><img src="{{ asset('images/religious2.JPG') }}" alt="religious2"></a>
                                 </div>
                  </div>
                     </div>
@@ -254,8 +254,8 @@ body {
                     <p>Established and nestled in the rich and biodiverse countryside of Negros Occidental, the University and its stakeholders enjoy a slow-paced and serene way of life far from the buzzing noise of commerce in the metro. With limited business establishments offering printing services, the CPSU Library and Office of Student Services and Affairs (OSSA) free printing services for students in need.  </p>
                          <div class="facility-img">
                                 <div class="gallery-grid">
-                                    <a target="_blank" href="{{ asset('images/lib 1.jpg') }}"><img src="{{ asset('images/lib 1.jpg') }}" alt="lib 1"></a>
-                                    <a target="_blank" href="{{ asset('images/lib 2.jpg') }}"><img src="{{ asset('images/lib 2.jpg') }}" alt="lib 2"></a>
+                                    <a target="_blank" href="{{ asset('images/lib 1.JPG') }}"><img src="{{ asset('images/lib 1.JPG') }}" alt="lib 1"></a>
+                                    <a target="_blank" href="{{ asset('images/lib 2.JPG') }}"><img src="{{ asset('images/lib 2.JPG') }}" alt="lib 2"></a>
                                 </div>
                          </div>
                 </div>
@@ -264,10 +264,10 @@ body {
                     <p>The University understands that its students come from different backgrounds and thus experience diverse challenges. The free printing services its offices offer aim to address the needs of students who lack access to printing technology, encouraging them to stay resilient by providing ample support in their studies.</p>
                     <div class="facility-img ">
                                 <div class="gallery-grid gallery-grid four-photos">
-                                    <a target="_blank" href="{{ asset('images/print1.jpg') }}"><img src="{{ asset('images/print1.jpg') }}" alt="print 1"></a>
-                                    <a target="_blank" href="{{ asset('images/print2.jpg') }}"><img src="{{ asset('images/print2.jpg') }}" alt="print 2"></a>
-                                    <a target="_blank" href="{{ asset('images/print3.jpg') }}"><img src="{{ asset('images/print3.jpg') }}" alt="print 3"></a>
-                                    <a target="_blank" href="{{ asset('images/print4.jpg') }}"><img src="{{ asset('images/print4.jpg') }}" alt="print 4"></a>
+                                    <a target="_blank" href="{{ asset('images/print1.JPG') }}"><img src="{{ asset('images/print1.JPG') }}" alt="print 1"></a>
+                                    <a target="_blank" href="{{ asset('images/print2.JPG') }}"><img src="{{ asset('images/print2.JPG') }}" alt="print 2"></a>
+                                    <a target="_blank" href="{{ asset('images/print3.JPG') }}"><img src="{{ asset('images/print3.JPG') }}" alt="print 3"></a>
+                                    <a target="_blank" href="{{ asset('images/print4.JPG') }}"><img src="{{ asset('images/print4.JPG') }}" alt="print 4"></a>
                                 </div>
                          </div>
                
@@ -280,10 +280,10 @@ body {
                     </p>
                     <div class="facility-img ">
                                 <div class="gallery-grid gallery-grid four-photos">
-                                    <a target="_blank" href="{{ asset('images/av1.jpg') }}"><img src="{{ asset('images/av1.jpg') }}" alt="av 1"></a>
-                                    <a target="_blank" href="{{ asset('images/av2.jpg') }}"><img src="{{ asset('images/av2.jpg') }}" alt="pav 2"></a>
-                                    <a target="_blank" href="{{ asset('images/av3.jpg') }}"><img src="{{ asset('images/av3.jpg') }}" alt="av 3"></a>
-                                    <a target="_blank" href="{{ asset('images/av4.jpg') }}"><img src="{{ asset('images/av4.jpg') }}" alt="av 4"></a>
+                                    <a target="_blank" href="{{ asset('images/av1.JPG') }}"><img src="{{ asset('images/av1.JPG') }}" alt="av 1"></a>
+                                    <a target="_blank" href="{{ asset('images/av2.JPG') }}"><img src="{{ asset('images/av2.JPG') }}" alt="pav 2"></a>
+                                    <a target="_blank" href="{{ asset('images/av3.JPG') }}"><img src="{{ asset('images/av3.JPG') }}" alt="av 3"></a>
+                                    <a target="_blank" href="{{ asset('images/av4.JPG') }}"><img src="{{ asset('images/av4.JPG') }}" alt="av 4"></a>
                                 </div>
                          </div>
                 </div>
@@ -303,19 +303,19 @@ body {
                                                 </div>
                                                 <div class="facility-img">
                                                     <div class="gallery lightgallery">
-                                                        <a target="_blank" href="{{ asset('images/agri1.jpg') }}"><img src="{{ asset('images/agri1.jpg') }}" alt="Agriculture Lab 1"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri2.jpg') }}"><img src="{{ asset('images/agri2.jpg') }}" alt="Agriculture Lab 2"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri3.jpg') }}"><img src="{{ asset('images/agri3.jpg') }}" alt="Agriculture Lab 3"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri4.jpg') }}"><img src="{{ asset('images/agri4.jpg') }}" alt="Agriculture Lab 4"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri5.jpg') }}"><img src="{{ asset('images/agri5.jpg') }}" alt="Agriculture Lab 5"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri6.jpg') }}"><img src="{{ asset('images/agri6.jpg') }}" alt="Agriculture Lab 6"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri7.jpg') }}"><img src="{{ asset('images/agri7.jpg') }}" alt="Agriculture Lab 7"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri8.jpg') }}"><img src="{{ asset('images/agri8.jpg') }}" alt="Agriculture Lab 8"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri9.jpg') }}"><img src="{{ asset('images/agri9.jpg') }}" alt="Agriculture Lab 9"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri10.jpg') }}"><img src="{{ asset('images/agri10.jpg') }}" alt="Agriculture Lab 10"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri11.jpg') }}"><img src="{{ asset('images/agri11.jpg') }}" alt="Agriculture Lab 11"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri12.jpg') }}"><img src="{{ asset('images/agri12.jpg') }}" alt="Agriculture Lab 12"></a>
-                                                        <a target="_blank" href="{{ asset('images/agri13.jpg') }}"><img src="{{ asset('images/agri13.jpg') }}" alt="Agriculture Lab 13"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri1.JPG') }}"><img src="{{ asset('images/agri1.JPG') }}" alt="Agriculture Lab 1"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri2.JPG') }}"><img src="{{ asset('images/agri2.JPG') }}" alt="Agriculture Lab 2"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri3.JPG') }}"><img src="{{ asset('images/agri3.JPG') }}" alt="Agriculture Lab 3"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri4.JPG') }}"><img src="{{ asset('images/agri4.JPG') }}" alt="Agriculture Lab 4"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri5.JPG') }}"><img src="{{ asset('images/agri5.JPG') }}" alt="Agriculture Lab 5"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri6.JPG') }}"><img src="{{ asset('images/agri6.JPG') }}" alt="Agriculture Lab 6"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri7.JPG') }}"><img src="{{ asset('images/agri7.JPG') }}" alt="Agriculture Lab 7"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri8.JPG') }}"><img src="{{ asset('images/agri8.JPG') }}" alt="Agriculture Lab 8"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri9.JPG') }}"><img src="{{ asset('images/agri9.JPG') }}" alt="Agriculture Lab 9"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri10.JPG') }}"><img src="{{ asset('images/agri10.JPG') }}" alt="Agriculture Lab 10"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri11.JPG') }}"><img src="{{ asset('images/agri11.JPG') }}" alt="Agriculture Lab 11"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri12.JPG') }}"><img src="{{ asset('images/agri12.JPG') }}" alt="Agriculture Lab 12"></a>
+                                                        <a target="_blank" href="{{ asset('images/agri13.JPG') }}"><img src="{{ asset('images/agri13.JPG') }}" alt="Agriculture Lab 13"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -329,15 +329,15 @@ body {
                                                 </div>
                                                 <div class="facility-img">
                                                     <div class="gallery lightgallery">
-                                                        <a target="_blank" href="{{ asset('images/crim1.jpg') }}"><img src="{{ asset('images/crim1.jpg') }}" alt="Criminology Lab 1"></a>
-                                                        <a target="_blank" href="{{ asset('images/crim2.jpg') }}"><img src="{{ asset('images/crim2.jpg') }}" alt="Criminology Lab 2"></a>
-                                                        <a target="_blank" href="{{ asset('images/crim3.jpg') }}"><img src="{{ asset('images/crim3.jpg') }}" alt="Criminology Lab 3"></a>
-                                                        <a target="_blank" href="{{ asset('images/crim4.jpg') }}"><img src="{{ asset('images/crim4.jpg') }}" alt="Criminology Lab 4"></a>
-                                                        <a target="_blank" href="{{ asset('images/crim5.jpg') }}"><img src="{{ asset('images/crim5.jpg') }}" alt="Criminology Lab 5"></a>
-                                                        <a target="_blank" href="{{ asset('images/crim6.jpg') }}"><img src="{{ asset('images/crim6.jpg') }}" alt="Criminology Lab 6"></a>
-                                                        <a target="_blank" href="{{ asset('images/crim7.jpg') }}"><img src="{{ asset('images/crim7.jpg') }}" alt="Criminology Lab 7"></a>
-                                                        <a target="_blank" href="{{ asset('images/crim8.jpg') }}"><img src="{{ asset('images/crim8.jpg') }}" alt="Criminology Lab 8"></a>
-                                                        <a target="_blank" href="{{ asset('images/crim9.jpg') }}"><img src="{{ asset('images/crim9.jpg') }}" alt="Criminology Lab 9"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim1.JPG') }}"><img src="{{ asset('images/crim1.JPG') }}" alt="Criminology Lab 1"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim2.JPG') }}"><img src="{{ asset('images/crim2.JPG') }}" alt="Criminology Lab 2"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim3.JPG') }}"><img src="{{ asset('images/crim3.JPG') }}" alt="Criminology Lab 3"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim4.JPG') }}"><img src="{{ asset('images/crim4.JPG') }}" alt="Criminology Lab 4"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim5.JPG') }}"><img src="{{ asset('images/crim5.JPG') }}" alt="Criminology Lab 5"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim6.JPG') }}"><img src="{{ asset('images/crim6.JPG') }}" alt="Criminology Lab 6"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim7.JPG') }}"><img src="{{ asset('images/crim7.JPG') }}" alt="Criminology Lab 7"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim8.JPG') }}"><img src="{{ asset('images/crim8.JPG') }}" alt="Criminology Lab 8"></a>
+                                                        <a target="_blank" href="{{ asset('images/crim9.JPG') }}"><img src="{{ asset('images/crim9.JPG') }}" alt="Criminology Lab 9"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -351,9 +351,9 @@ body {
                                                 </div>
                                                 <div class="facility-img">
                                                     <div class="gallery lightgallery">
-                                                        <a target="_blank" href="{{ asset('images/eng1.jpg') }}"><img src="{{ asset('images/eng1.jpg') }}" alt="Engineering Lab 1"></a>
-                                                        <a target="_blank" href="{{ asset('images/eng4.jpg') }}"><img src="{{ asset('images/eng4.jpg') }}" alt="Engineering Lab 4"></a>
-                                                        <a target="_blank" href="{{ asset('images/eng5.jpg') }}"><img src="{{ asset('images/eng5.jpg') }}" alt="Engineering Lab 5"></a>
+                                                        <a target="_blank" href="{{ asset('images/eng1.JPG') }}"><img src="{{ asset('images/eng1.JPG') }}" alt="Engineering Lab 1"></a>
+                                                        <a target="_blank" href="{{ asset('images/eng4.JPG') }}"><img src="{{ asset('images/eng4.JPG') }}" alt="Engineering Lab 4"></a>
+                                                        <a target="_blank" href="{{ asset('images/eng5.JPG') }}"><img src="{{ asset('images/eng5.JPG') }}" alt="Engineering Lab 5"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -367,8 +367,8 @@ body {
                                                 </div>
                                                 <div class="facility-img">
                                                     <div class="gallery lightgallery">
-                                                        <a target="_blank" href="{{ asset('images/science1.jpg') }}"><img src="{{ asset('images/science1.jpg') }}" alt="Science Lab 1"></a>
-                                                        <a target="_blank" href="{{ asset('images/science2.jpg') }}"><img src="{{ asset('images/science2.jpg') }}" alt="Science Lab 2"></a>
+                                                        <a target="_blank" href="{{ asset('images/science1.JPG') }}"><img src="{{ asset('images/science1.JPG') }}" alt="Science Lab 1"></a>
+                                                        <a target="_blank" href="{{ asset('images/science2.JPG') }}"><img src="{{ asset('images/science2.JPG') }}" alt="Science Lab 2"></a>
 
                                                     </div>
                                                 </div>
@@ -383,7 +383,7 @@ body {
                                                 </div>
                                                 <div class="facility-img">
                                                     <div class="gallery lightgallery">
-                                                        <a target="_blank" href="{{ asset('images/speech1.jpg') }}"><img src="{{ asset('images/speech1.jpg') }}" alt="Speech Lab 1"></a>
+                                                        <a target="_blank" href="{{ asset('images/speech1.JPG') }}"><img src="{{ asset('images/speech1.JPG') }}" alt="Speech Lab 1"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -401,10 +401,10 @@ body {
                             Under the decades-old trees, the youth can lounge and meet with their schoolmates for their projects, and other collaborative endeavors in a lax mood to recuperate despite their workloads.</p>
                         <div class="facility-img ">
                                 <div class="gallery-grid gallery-grid four-photos">
-                                    <a target="_blank" href="{{ asset('images/wifi1.jpg') }}"><img src="{{ asset('images/wifi1.jpg') }}" alt="wifi 1"></a>
-                                    <a target="_blank" href="{{ asset('images/wifi2.jpg') }}"><img src="{{ asset('images/wifi2.jpg') }}" alt="wifi 2"></a>
-                                    <a target="_blank" href="{{ asset('images/wifi3.jpg') }}"><img src="{{ asset('images/wifi3.jpg') }}" alt="wifi 3"></a>
-                                    <a target="_blank" href="{{ asset('images/wifi4.jpg') }}"><img src="{{ asset('images/wifi4.jpg') }}" alt="wifi 4"></a>
+                                    <a target="_blank" href="{{ asset('images/wifi1.JPG') }}"><img src="{{ asset('images/wifi1.JPG') }}" alt="wifi 1"></a>
+                                    <a target="_blank" href="{{ asset('images/wifi2.JPG') }}"><img src="{{ asset('images/wifi2.JPG') }}" alt="wifi 2"></a>
+                                    <a target="_blank" href="{{ asset('images/wifi3.JPG') }}"><img src="{{ asset('images/wifi3.JPG') }}" alt="wifi 3"></a>
+                                    <a target="_blank" href="{{ asset('images/wifi4.JPG') }}"><img src="{{ asset('images/wifi4.JPG') }}" alt="wifi 4"></a>
                                 </div>
                          </div>
                         </div>
@@ -419,9 +419,9 @@ body {
                         Other health services offered in the facility are free consultation, free medicines, referrals, and more including free HIV testing which will be available soon. </p>
                 <div class="facility-img ">
                                 <div class="gallery-grid">
-                                    <a target="_blank" href="{{ asset('images/mdhu1.jpg') }}"><img src="{{ asset('images/mdhu1.jpg') }}" alt="mdhu 1"></a>
-                                    <a target="_blank" href="{{ asset('images/mdhu2.jpg') }}"><img src="{{ asset('images/mdhu2.jpg') }}" alt="mdhu 2"></a>
-                                    <a target="_blank" href="{{ asset('images/mdhu3.jpg') }}"><img src="{{ asset('images/mdhu3.jpg') }}" alt="mdhu 3"></a>
+                                    <a target="_blank" href="{{ asset('images/mdhu1.JPG') }}"><img src="{{ asset('images/mdhu1.JPG') }}" alt="mdhu 1"></a>
+                                    <a target="_blank" href="{{ asset('images/mdhu2.JPG') }}"><img src="{{ asset('images/mdhu2.JPG') }}" alt="mdhu 2"></a>
+                                    <a target="_blank" href="{{ asset('images/mdhu3.JPG') }}"><img src="{{ asset('images/mdhu3.JPG') }}" alt="mdhu 3"></a>
                                  </div>
                     </div>
                 </div>
@@ -441,9 +441,9 @@ body {
                                 </div>
                                 <div class="facility-img">
                                     <div class="gallery">
-                                        <a target="_blank" href="{{ asset('images/swimming1.jpg') }}"><img src="{{ asset('images/swimming1.jpg') }}" alt="Swimming Pool 1"></a>
-                                        <a target="_blank" href="{{ asset('images/swimming2.jpg') }}"><img src="{{ asset('images/swimming2.jpg') }}" alt="Swimming Pool 2"></a>
-                                        <a target="_blank" href="{{ asset('images/swimming3.jpg') }}"><img src="{{ asset('images/swimming3.jpg') }}" alt="Swimming Pool 3"></a>
+                                        <a target="_blank" href="{{ asset('images/swimming1.JPG') }}"><img src="{{ asset('images/swimming1.JPG') }}" alt="Swimming Pool 1"></a>
+                                        <a target="_blank" href="{{ asset('images/swimming2.JPG') }}"><img src="{{ asset('images/swimming2.JPG') }}" alt="Swimming Pool 2"></a>
+                                        <a target="_blank" href="{{ asset('images/swimming3.JPG') }}"><img src="{{ asset('images/swimming3.JPG') }}" alt="Swimming Pool 3"></a>
                                      </div>
                                 </div>
                             </div>
@@ -461,10 +461,10 @@ body {
                                 </div>
                                 <div class="facility-img">
                                     <div class="gallery lightgallery">
-                                        <a target="_blank" href="{{ asset('images/gym1.jpg') }}"><img src="{{ asset('images/gym1.jpg') }}" alt="Fitness Gym 1"></a>
-                                        <a target="_blank" href="{{ asset('images/gym2.jpg') }}"><img src="{{ asset('images/gym2.jpg') }}" alt="Fitness Gym 2"></a>
-                                        <a target="_blank" href="{{ asset('images/gym3.jpg') }}"><img src="{{ asset('images/gym3.jpg') }}" alt="Fitness Gym 3"></a>
-                                        <a target="_blank" href="{{ asset('images/gym4.jpg') }}"><img src="{{ asset('images/gym4.jpg') }}" alt="Fitness Gym 4"></a>
+                                        <a target="_blank" href="{{ asset('images/gym1.JPG') }}"><img src="{{ asset('images/gym1.JPG') }}" alt="Fitness Gym 1"></a>
+                                        <a target="_blank" href="{{ asset('images/gym2.JPG') }}"><img src="{{ asset('images/gym2.JPG') }}" alt="Fitness Gym 2"></a>
+                                        <a target="_blank" href="{{ asset('images/gym3.JPG') }}"><img src="{{ asset('images/gym3.JPG') }}" alt="Fitness Gym 3"></a>
+                                        <a target="_blank" href="{{ asset('images/gym4.JPG') }}"><img src="{{ asset('images/gym4.JPG') }}" alt="Fitness Gym 4"></a>
                                     </div>
                                 </div>
                             </div>
@@ -480,10 +480,10 @@ body {
                                 </div>
                                 <div class="facility-img">
                                     <div class="gallery lightgallery">
-                                        <a target="_blank" href="{{ asset('images/indoor1.jpg') }}"><img src="{{ asset('images/indoor1.jpg') }}" alt="Indoor Court 1"></a>
-                                        <a target="_blank" href="{{ asset('images/indoor2.jpg') }}"><img src="{{ asset('images/indoor2.jpg') }}" alt="Indoor Court 2"></a>
-                                        <a target="_blank" href="{{ asset('images/indoor3.jpg') }}"><img src="{{ asset('images/indoor3.jpg') }}" alt="Indoor Court 3"></a>
-                                        <a target="_blank" href="{{ asset('images/indoor4.jpg') }}"><img src="{{ asset('images/indoor4.jpg') }}" alt="Indoor Court 4"></a>
+                                        <a target="_blank" href="{{ asset('images/indoor1.JPG') }}"><img src="{{ asset('images/indoor1.JPG') }}" alt="Indoor Court 1"></a>
+                                        <a target="_blank" href="{{ asset('images/indoor2.JPG') }}"><img src="{{ asset('images/indoor2.JPG') }}" alt="Indoor Court 2"></a>
+                                        <a target="_blank" href="{{ asset('images/indoor3.JPG') }}"><img src="{{ asset('images/indoor3.JPG') }}" alt="Indoor Court 3"></a>
+                                        <a target="_blank" href="{{ asset('images/indoor4.JPG') }}"><img src="{{ asset('images/indoor4.JPG') }}" alt="Indoor Court 4"></a>
                                       </div>
                                 </div>
                             </div>
