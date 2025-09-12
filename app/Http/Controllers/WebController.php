@@ -378,6 +378,14 @@ class WebController extends Controller
         return view('web.undergraduate-program', compact("categories", "subcategories", "submenu"));
     }
 
+    public function keyOfficials()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.key-officials', compact("categories", "subcategories", "submenu"));
+    }
+    
     public function jobList()
     {
         $categories = Category::all();

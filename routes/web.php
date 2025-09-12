@@ -31,9 +31,8 @@ Route::middleware(['headers.security'])->group(function () {
         Route::get('/graduate-program', [WebController::class, 'gradProgram'])->name('gradProgram');
         Route::get('/undergraduate-program', [WebController::class, 'undergradProgram'])->name('undergradProgram');
         Route::get('/academic-calendar', [WebController::class, 'acadCalendar'])->name('academic-calendar');
-
-        //facilities
         Route::get('/facilities', [WebController::class, 'webFacilitiy'])->name('webFacilitiy');
+        Route::get('/key-officials', [WebController::class, 'keyOfficials'])->name('keyOfficials');
     });
 
     Route::post('/visitors/count', [WebController::class, 'countVisitors'])->name('visit.count');

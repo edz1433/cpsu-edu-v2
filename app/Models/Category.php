@@ -19,4 +19,9 @@ class Category extends Model
         return $this->hasMany(Subcategory::class, 'categories_id');
     }
 
+    public function submenus()
+    {
+        return $this->hasMany(SubMenu::class, 'category')->where('status', 1)->orderBy('title', 'asc');
+    }
+
 }
