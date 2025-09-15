@@ -117,3 +117,93 @@
 .slick-arrow.slick-hidden {
     display: none;
 }
+
+/* Wrapper */
+.highlights-wrapper {
+  max-width: 100%;
+  margin: 2px auto;
+  position: relative;
+  padding: 0 0 0 0px;
+  box-sizing: border-box;
+}
+
+/* Slick slide container */
+.highlights-slider .highlight-item {
+  padding-right: 50px;
+  padding-left: 50px;
+  box-sizing: border-box;
+}
+
+/* Card container - no border radius */
+.highlight-card {
+  background: #fff;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+/* Image - natural aspect ratio, no fixed height */
+.highlight-card img {
+  width: 100%;
+  height: auto;      /* let it scale naturally */
+  object-fit: contain; /* or 'cover' if you want fill effect */
+  display: block;
+  border-radius: 0;  /* remove curves */
+}
+
+/* Title */
+.highlight-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin: 8px 0 0 0;
+  line-height: 1.3;
+}
+
+/* Hover effect */
+.highlight-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+}
+
+/* Arrows */
+.highlights-wrapper .slick-prev,
+.highlights-wrapper .slick-next {
+  background: none !important;
+  border: none !important;
+  color: #111827 !important;
+  font-size: 22px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  cursor: pointer;
+}
+
+.highlights-wrapper .slick-prev { left: 2px; }
+.highlights-wrapper .slick-next { right: 2px; }
+
+.highlights-wrapper .slick-prev:hover,
+.highlights-wrapper .slick-next:hover {
+  color: #fc204f !important;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.highlights-wrapper .slick-prev:before,
+.highlights-wrapper .slick-next:before {
+  content: "" !important;
+}
+
+.highlights-wrapper .slick-prev i,
+.highlights-wrapper .slick-next i {
+  font-size: 20px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .highlights-wrapper .slick-prev,
+  .highlights-wrapper .slick-next {
+    display: none !important;
+  }
+}

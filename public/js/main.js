@@ -65,31 +65,36 @@ $(function() {
         
     }
     
-    
-    
     //===== Slick Slider
-    
-        function mainSlider() {
-            
+    function mainSlider() {
         var BasicSlider = $('.slider-active');
-            
+        var slideTimer; // custom timer
+
         BasicSlider.on('init', function(e, slick) {
             var $firstAnimatingElements = $('.single-slider:first-child').find('[data-animation]');
             doAnimations($firstAnimatingElements);
+
+            // start custom timer on first slide
+            setCustomTimer($(slick.$slides[0]));
         });
-            
+
         BasicSlider.on('beforeChange', function(e, slick, currentSlide, nextSlide) {
             var $animatingElements = $('.single-slider[data-slick-index="' + nextSlide + '"]').find('[data-animation]');
             doAnimations($animatingElements);
+
+            clearTimeout(slideTimer); // reset timer when changing
         });
-            
+
+        BasicSlider.on('afterChange', function(e, slick, currentSlide) {
+            var $current = $(slick.$slides[currentSlide]);
+            setCustomTimer($current);
+        });
+
         BasicSlider.slick({
-            autoplay: true,
-            autoplaySpeed: 10000,
-            pauseOnHover: false,
+            autoplay: false, // we’ll handle timing ourselves
             dots: false,
             fade: true,
-			arrows: true,
+            arrows: true,
             prevArrow:'<span class="prev"><i class="fa fa-angle-left"></i></span>',
             nextArrow: '<span class="next"><i class="fa fa-angle-right"></i></span>',
             responsive: [
@@ -97,6 +102,7 @@ $(function() {
             ]
         });
 
+        // Helper for animations
         function doAnimations(elements) {
             var animationEndEvents = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
             elements.each(function() {
@@ -112,10 +118,29 @@ $(function() {
                 });
             });
         }
+
+        // Set custom timing depending on slide type
+        function setCustomTimer($slide) {
+            var delay;
+
+            if ($slide.hasClass('video-slide')) {
+                delay = 77000; // 1 min 17s = 77,000 ms
+                var $video = $slide.find('video');
+                if ($video.length) {
+                    $video.get(0).currentTime = 0;
+                    $video.get(0).play();
+                }
+            } else {
+                delay = 10000; // images = 10s
+            }
+
+            slideTimer = setTimeout(function() {
+                BasicSlider.slick('slickNext');
+            }, delay);
+        }
     }
     mainSlider();
-    
-    
+
     //===== Slick Category Slied
     
     $('.category-slied').slick({
@@ -155,7 +180,29 @@ $(function() {
         ]
     });
     
-    
+
+ $('.highlights-slider').slick({
+    slidesToShow: 4,       // show 6 at once
+    slidesToScroll: 1,     // shift by 1 (123456 -> 234567)
+    autoplay: true,
+    autoplaySpeed: 3000,
+    infinite: true,
+    arrows: true,
+    dots: false,
+    prevArrow: '<button type="button" class="slick-prev"><i class="fa fa-angle-left"></i></button>',
+    nextArrow: '<button type="button" class="slick-next"><i class="fa fa-angle-right"></i></button>',
+    responsive: [
+      { breakpoint: 1400, settings: { slidesToShow: 5 } },
+      { breakpoint: 1280, settings: { slidesToShow: 4 } },
+      { breakpoint: 1024, settings: { slidesToShow: 3 } },
+      { breakpoint: 768,  settings: { slidesToShow: 2 } },
+      { breakpoint: 480,  settings: { slidesToShow: 1 } }
+    ]
+  });
+
+  // Optional: pause on hover for better UX
+  $('.highlights-slider').on('mouseenter', function(){ $(this).slick('slickPause'); });
+  $('.highlights-slider').on('mouseleave', function(){ $(this).slick('slickPlay'); });
     //===== Slick Course Slied
     
     $('.course-slied').slick({
@@ -260,7 +307,7 @@ $(function() {
         dots: false,
         infinite: true,
         autoplay: true,
-        autoplaySpeed: 5000,
+        autoplaySpeed: 500,
         speed: 800,
         slidesToShow: 4,
         slidesToScroll: 1,

@@ -31,26 +31,78 @@
 <section id="slider-part" class="slider-active">
 
     <!-- Video Slide -->
-    <div class="single-slider fixed-slider">
-        <video autoplay muted loop playsinline class="video-background">
+    <div class="single-slider fixed-slider video-slide">
+        <video autoplay muted playsinline class="video-background" id="bannerVideo">
             <source src="{{ asset('Uploads/Videos/banner_video.mp4') }}" type="video/mp4">
         </video>
-        <div class="slider-cont">
-
-        </div>
+        <div class="slider-cont"></div>
     </div>
 
     <!-- Image Slides -->
     @foreach(range(1,5) as $i)
-    <div class="single-slider">
+    <div class="single-slider image-slide">
         <img src="{{ asset('Uploads/page-banner/banner-'.$i.'.jpg') }}" alt="Banner {{$i}}" class="slider-image">
-        <div class="slider-cont">
-
-        </div>
+        <div class="slider-cont"></div>
     </div>
     @endforeach
 
 </section>
+
+<!-- Put this where you want the slider (Blade example uses asset() for images) -->
+<section class="highlights-wrapper p-3" style="background: url('{{ asset('images/s-1.jpg') }}') no-repeat center center; background-size: cover;">
+  <div class="highlights-slider">
+    <!-- Repeat these slides as needed. Use your real images (asset) or placeholders -->
+    <div class="highlight-item">
+      <div class="highlight-card">
+        <img src="{{ asset('Uploads/highlights/1.jpg') }}" alt="Highlight 1">
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="highlight-card">
+        <img src="{{ asset('Uploads/highlights/2.jpg') }}" alt="Highlight 2">
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="highlight-card">
+        <img src="{{ asset('Uploads/highlights/3.jpg') }}" alt="Highlight 3">
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="highlight-card">
+        <img src="{{ asset('Uploads/highlights/4.png') }}" alt="Highlight 4">
+      </div>
+    </div>
+
+        <div class="highlight-item">
+      <div class="highlight-card">
+        <img src="{{ asset('Uploads/highlights/1.jpg') }}" alt="Highlight 1">
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="highlight-card">
+        <img src="{{ asset('Uploads/highlights/2.jpg') }}" alt="Highlight 2">
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="highlight-card">
+        <img src="{{ asset('Uploads/highlights/3.jpg') }}" alt="Highlight 3">
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="highlight-card">
+        <img src="{{ asset('Uploads/highlights/4.png') }}" alt="Highlight 4">
+      </div>
+    </div>
+
+  </div>
+</section>
+
 
 <section id="course-part" class="pt-115 pb-120 gray-bg reactive-section delay-2">
     {{-- Responsive container: fluid on mobile, normal on larger screens --}}

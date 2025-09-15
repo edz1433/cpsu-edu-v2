@@ -153,33 +153,8 @@
         localStorage.setItem("cookiesAccepted", "true");
     }
     </script>
-    <script>
-        $(document).ready(function () {
-            var $slider = $('.slider-active');
-            var hasIntro = $slider.find('.slider-intro').length > 0;
 
-            $slider.slick({
-                autoplay: !hasIntro,          // Off if intro exists
-                autoplaySpeed: 1000,         // 1 second for normal slides
-                arrows: false,
-                fade: false,                 // Needed for drag/swipe
-                speed: 800,
-                pauseOnHover: false,
-                pauseOnFocus: false,
-                draggable: true,
-                swipe: true,
-                touchThreshold: 5,
-                infinite: true
-            });
 
-            if (hasIntro) {
-                setTimeout(function () {
-                    $slider.slick('slickNext'); // Move to slide 2
-                    $slider.slick('slickSetOption', 'autoplay', true, true); // Start 1s autoplay
-                }, 120000); // 2 minutes
-            }
-        });
-    </script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
 
