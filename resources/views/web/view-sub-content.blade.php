@@ -60,9 +60,16 @@ $current_route = request()->route()->getName();
 								url('view-content'),
 								url('view-sublink-content'),
 								'http://localhost/cpsu-edu/public/view-sublink-content',
-								'http://localhost/cpsu-edu/public/view-content'
+								'http://localhost/cpsu-edu/public/view-content',
+								'view-article' // replace this
 							],
-							$baseUrl . '/sublink',
+							[
+								$baseUrl . '/sublink',
+								$baseUrl . '/sublink',
+								$baseUrl . '/sublink',
+								$baseUrl . '/sublink',
+								$baseUrl . '/news' // full base URL + news
+							],
 							$content
 						);
 					} else {
