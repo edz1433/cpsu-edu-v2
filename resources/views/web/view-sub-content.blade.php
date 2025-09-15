@@ -61,7 +61,8 @@ $current_route = request()->route()->getName();
 								url('view-sublink-content'),
 								'http://localhost/cpsu-edu/public/view-sublink-content',
 								'http://localhost/cpsu-edu/public/view-content',
-								'view-article' // replace this
+								'http://localhost/cpsu-edu/public/view-article',
+								'https://cpsu.edu.ph/view-article',
 							],
 							[
 								$baseUrl . '/sublink',
