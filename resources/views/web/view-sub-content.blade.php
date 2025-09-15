@@ -69,7 +69,8 @@ $current_route = request()->route()->getName();
 								$baseUrl . '/sublink',
 								$baseUrl . '/sublink',
 								$baseUrl . '/sublink',
-								$baseUrl . '/news' // full base URL + news
+								$baseUrl . '/news',
+								$baseUrl . '/news'
 							],
 							$content
 						);
