@@ -58,8 +58,8 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="section-title pb-45">
-                    <h5>Our News</h5>
-                    <h2>Featured News</h2>
+                    <h5 class="text-dark">Our News</h5>
+                    <h2 class="">Featured News</h2>
                 </div>
             </div>
         </div>
