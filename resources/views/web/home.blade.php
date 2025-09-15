@@ -3,15 +3,37 @@
 @php
     $current_route = request()->route()->getName();
 @endphp
-<!--====== SLIDER PART START ======-->
-<!--====== SLIDER PART START ======-->
-<!--====== SLIDER PART START ======-->
+<style>
+/* Base animation */
+.reactive-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease-out;
+}
+
+/* Active state */
+.reactive-section.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delay variations */
+.delay-1 {
+  transition-delay: 0.2s;
+}
+.delay-2 {
+  transition-delay: 0.4s;
+}
+.delay-3 {
+  transition-delay: 0.6s;
+}
+</style>
 <section id="slider-part" class="slider-active">
 
     <!-- Video Slide -->
     <div class="single-slider fixed-slider">
         <video autoplay muted loop playsinline class="video-background">
-            <source src="{{ asset('Uploads/Videos/banner_video.webm') }}" type="video/webm">
+            <source src="{{ asset('Uploads/Videos/banner_video.mp4') }}" type="video/mp4">
         </video>
         <div class="slider-cont">
 
@@ -30,7 +52,7 @@
 
 </section>
 
-<section id="course-part" class="pt-115 pb-120 gray-bg">
+<section id="course-part" class="pt-115 pb-120 gray-bg reactive-section delay-2">
     {{-- Responsive container: fluid on mobile, normal on larger screens --}}
     <div class="container">
         <div class="row">
@@ -77,19 +99,19 @@
     <div class="container">
         <div class="row">
             <div class="col-6 col-lg-7">
-                <div class="about-image hover-effect">
+                <div class="about-image hover-effect reactive-section delay-1">
                     <a href="{{ route('academic-calendar') }}">
                         <img src="{{ asset('images/academic calendar.jpg') }}" alt="calendar" class="img-fluid">
                     </a>
                 </div>
-                <div class="about-image hover-effect">
+                <div class="about-image hover-effect reactive-section delay-2">
                     <a href="{{ url('content/36') }}">
                         <img src="{{ asset('images/procurement.png') }}" alt="calendar" class="img-fluid mt-2">
                     </a>
                 </div>
             </div>
             <div class="col-6 col-lg-5">
-                <div class="about-image hover-effect mt-30">
+                <div class="about-image hover-effect reactive-section delay-3 mt-30">
                     <a href="{{ route('jobList') }}">
                         <img src="{{ asset('images/hiring logo.png') }}" alt="hiring" class="img-fluid w-100">
                     </a>
@@ -99,8 +121,7 @@
     </div>
 </section>
 
-
-<section id="testimonial" class="pt-115 pb-115" style="background: url('{{ asset('images/s-12.jpg') }}') no-repeat center center; background-size: cover;">
+<section id="testimonial" class="pt-115 pb-115 reactive-section delay-1" style="background: url('{{ asset('images/s-12.jpg') }}') no-repeat center center; background-size: cover;">
    <div class="container">
     <div class="hive-container">
         <div class="row-hive row1">
@@ -203,6 +224,25 @@
     scaleToFit();
   });
 })();
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const sections = document.querySelectorAll(".reactive-section");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active");
+          // observer.unobserve(entry.target); // uncomment if one-time only
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+});
 </script>
 
 @endsection
