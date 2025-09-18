@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Leaflet in Laravel</title>
+    <title>Global Partner Institutions</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <style>
         #map {
@@ -11,13 +11,22 @@
             border-radius: 10px;
             margin-bottom: 20px;
         }
-        .partner-list {
-            margin-top: 20px;
+        .partners-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
-        .partner-item {
+        .partner-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+        .partner-header {
             display: flex;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .color-box {
             width: 20px;
@@ -25,66 +34,106 @@
             margin-right: 10px;
             border-radius: 4px;
         }
+        .partner-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .partner-location {
+            font-size: 14px;
+            color: #555;
+        }
+        .partner-desc {
+            margin-top: 8px;
+            font-size: 13px;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
-    <h2>🌍 Partner Countries</h2>
+    <h2 class="mb-3">🌍 International Partner Institutions</h2>
     <div id="map"></div>
 
-    <div class="partner-list">
-        <h3>Partner List</h3>
-        <div class="partner-item">
-            <div class="color-box" style="background-color: #e74c3c;"></div>Philippines
-        </div>
-        <div class="partner-item">
-            <div class="color-box" style="background-color: #3498db;"></div>Japan
-        </div>
-        <div class="partner-item">
-            <div class="color-box" style="background-color: #2ecc71;"></div>Australia
-        </div>
+    <div class="partners-container">
+        @php
+            $partners = [
+                [
+                    "name" => "Kansas State University",
+                    "location" => "Manhattan, KS 66506, United States",
+                    "desc" => "Exchange of scholars and scientists, professors for lectures, participation in conferences, exchange of academic information and materials.",
+                    "coords" => [39.1911, -96.5761],
+                    "color" => "#e74c3c"
+                ],
+                [
+                    "name" => "Phranakhon Rajabhat University",
+                    "location" => "Thailand",
+                    "desc" => "Exchange of lectures for academic staff, trainings, and development of research.",
+                    "coords" => [13.8806, 100.5856],
+                    "color" => "#3498db"
+                ],
+                [
+                    "name" => "Federal University of Sao Carlos",
+                    "location" => "Brazil",
+                    "desc" => "Joint research programs, exchange of students and faculty.",
+                    "coords" => [-21.9797, -47.8819],
+                    "color" => "#2ecc71"
+                ],
+                [
+                    "name" => "Universitas Negeri Malang (UM)",
+                    "location" => "Indonesia",
+                    "desc" => "Research, education, community service, and human resource development.",
+                    "coords" => [-7.9570, 112.6145],
+                    "color" => "#f39c12"
+                ],
+                [
+                    "name" => "Royal University of Agriculture",
+                    "location" => "Cambodia",
+                    "desc" => "Research collaboration and student exchange.",
+                    "coords" => [11.5466, 104.9339],
+                    "color" => "#9b59b6"
+                ],
+                [
+                    "name" => "Wadwhani Operating Foundation",
+                    "location" => "California, USA",
+                    "desc" => "Entrepreneurial education and training programs.",
+                    "coords" => [37.7749, -122.4194],
+                    "color" => "#16a085"
+                ]
+            ];
+        @endphp
+
+        @foreach ($partners as $p)
+            <div class="partner-card">
+                <div class="partner-header">
+                    <div class="color-box" style="background-color: {{ $p['color'] }};"></div>
+                    <div>
+                        <p class="partner-title">{{ $p['name'] }}</p>
+                        <p class="partner-location">{{ $p['location'] }}</p>
+                    </div>
+                </div>
+                <p class="partner-desc">{{ $p['desc'] }}</p>
+            </div>
+        @endforeach
     </div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-ajax"></script>
-
     <script>
-        // Initialize map
-        var map = L.map('map').setView([10.3157, 123.8854], 3);
+        var map = L.map('map').setView([20, 0], 2);
 
-        // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Partner countries (sample coordinates using GeoJSON rectangles)
-        var partners = [
-            {
-                name: "Philippines",
-                coords: [[5, 115], [20, 128]], // rough bounding box
-                color: "#e74c3c"
-            },
-            {
-                name: "Japan",
-                coords: [[30, 129], [46, 146]],
-                color: "#3498db"
-            },
-            {
-                name: "Australia",
-                coords: [[-44, 113], [-10, 154]],
-                color: "#2ecc71"
-            }
-        ];
+        var partners = @json($partners);
 
-        // Draw countries on map
         partners.forEach(p => {
-            var rect = L.rectangle(p.coords, {
+            var marker = L.circleMarker(p.coords, {
                 color: p.color,
-                weight: 2,
-                fillOpacity: 0.4
+                radius: 8,
+                fillOpacity: 0.8
             }).addTo(map);
-            
-            rect.bindPopup("<b>" + p.name + "</b>");
+
+            marker.bindPopup("<b>" + p.name + "</b><br>" + p.location + "<br><small>" + p.desc + "</small>");
         });
     </script>
 </body>
