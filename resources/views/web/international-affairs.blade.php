@@ -80,7 +80,32 @@
             color: #444;
         }
 
-        /* Responsive layout */
+        /* Pulsing effect for selected marker */
+        .pulse-marker {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: red;
+            position: relative;
+        }
+        .pulse-marker::after {
+            content: "";
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: red;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: pulse 1s infinite;
+            opacity: 0.5;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(2); opacity: 0; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
         @media (max-width: 992px) {
             .container-partners {
                 grid-template-columns: 1fr;
@@ -99,52 +124,15 @@
     <h2>🌍 International Partner Institutions</h2>
 
     <div class="container-partners">
-        <!-- Left side: details -->
         <div class="partner-list">
             @php
                 $partners = [
-                    [
-                        "name" => "Kansas State University",
-                        "location" => "Manhattan, KS 66506, United States",
-                        "desc" => "Exchange of scholars and scientists, professors for lectures, participation in conferences, exchange of academic information and materials.",
-                        "coords" => [39.1911, -96.5761],
-                        "color" => "#e74c3c"
-                    ],
-                    [
-                        "name" => "Phranakhon Rajabhat University",
-                        "location" => "Thailand",
-                        "desc" => "Exchange of lectures for academic staff, trainings, and development of research.",
-                        "coords" => [13.8806, 100.5856],
-                        "color" => "#3498db"
-                    ],
-                    [
-                        "name" => "Federal University of Sao Carlos",
-                        "location" => "Brazil",
-                        "desc" => "Joint research programs, exchange of students and faculty.",
-                        "coords" => [-21.9797, -47.8819],
-                        "color" => "#2ecc71"
-                    ],
-                    [
-                        "name" => "Universitas Negeri Malang (UM)",
-                        "location" => "Indonesia",
-                        "desc" => "Research, education, community service, and human resource development.",
-                        "coords" => [-7.9570, 112.6145],
-                        "color" => "#f39c12"
-                    ],
-                    [
-                        "name" => "Royal University of Agriculture",
-                        "location" => "Cambodia",
-                        "desc" => "Research collaboration and student exchange.",
-                        "coords" => [11.5466, 104.9339],
-                        "color" => "#9b59b6"
-                    ],
-                    [
-                        "name" => "Wadwhani Operating Foundation",
-                        "location" => "California, USA",
-                        "desc" => "Entrepreneurial education and training programs.",
-                        "coords" => [37.7749, -122.4194],
-                        "color" => "#16a085"
-                    ]
+                    ["name"=>"Kansas State University","location"=>"Manhattan, KS 66506, United States","desc"=>"Exchange of scholars and scientists, professors for lectures, participation in conferences, exchange of academic information and materials.","coords"=>[39.1911, -96.5761],"color"=>"#e74c3c"],
+                    ["name"=>"Phranakhon Rajabhat University","location"=>"Thailand","desc"=>"Exchange of lectures for academic staff, trainings, and development of research.","coords"=>[13.8806, 100.5856],"color"=>"#3498db"],
+                    ["name"=>"Federal University of Sao Carlos","location"=>"Brazil","desc"=>"Joint research programs, exchange of students and faculty.","coords"=>[-21.9797, -47.8819],"color"=>"#2ecc71"],
+                    ["name"=>"Universitas Negeri Malang (UM)","location"=>"Indonesia","desc"=>"Research, education, community service, and human resource development.","coords"=>[-7.9570, 112.6145],"color"=>"#f39c12"],
+                    ["name"=>"Royal University of Agriculture","location"=>"Cambodia","desc"=>"Research collaboration and student exchange.","coords"=>[11.5466, 104.9339],"color"=>"#9b59b6"],
+                    ["name"=>"Wadwhani Operating Foundation","location"=>"California, USA","desc"=>"Entrepreneurial education and training programs.","coords"=>[37.7749, -122.4194],"color"=>"#16a085"]
                 ];
             @endphp
 
@@ -162,7 +150,6 @@
             @endforeach
         </div>
 
-        <!-- Right side: map -->
         <div id="map"></div>
     </div>
 
@@ -188,15 +175,34 @@
             markers[i] = marker;
         });
 
-        // Make partner cards clickable
+        let activePulse;
+
         document.querySelectorAll('.partner-card').forEach(card => {
             card.addEventListener('click', () => {
                 var index = card.getAttribute('data-index');
                 var partner = partners[index];
                 var marker = markers[index];
 
-                map.setView(partner.coords, 6, { animate: true });
+                // Zoom slightly (level 5 is a nice middle ground)
+                map.setView(partner.coords, 5, { animate: true });
                 marker.openPopup();
+
+                // Remove old pulse
+                if (activePulse) {
+                    map.removeLayer(activePulse);
+                }
+
+                // Add pulsing marker
+                var pulseIcon = L.divIcon({ className: 'pulse-marker' });
+                activePulse = L.marker(partner.coords, { icon: pulseIcon }).addTo(map);
+
+                // Auto remove pulse after 3 seconds
+                setTimeout(() => {
+                    if (activePulse) {
+                        map.removeLayer(activePulse);
+                        activePulse = null;
+                    }
+                }, 3000);
             });
         });
     </script>
