@@ -405,5 +405,12 @@ class WebController extends Controller
         ));
     }
     
+    public function internationalAffairs()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.international-affairs', compact("categories", "subcategories", "submenu"));
+    }
 
 }   

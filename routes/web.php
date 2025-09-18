@@ -33,6 +33,7 @@ Route::middleware(['headers.security'])->group(function () {
         Route::get('/academic-calendar', [WebController::class, 'acadCalendar'])->name('academic-calendar');
         Route::get('/facilities', [WebController::class, 'webFacilitiy'])->name('webFacilitiy');
         Route::get('/key-officials', [WebController::class, 'keyOfficials'])->name('keyOfficials');
+        Route::get('/international-affairs', [WebController::class, 'internationalAffairs'])->name('internationalAffairs');
     });
 
     Route::post('/visitors/count', [WebController::class, 'countVisitors'])->name('visit.count');
