@@ -1,22 +1,36 @@
 @extends('web.layouts.mainlayout')
 @section('content')
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Global Partner Institutions</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h2 {
+            margin: 20px;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            text-align: center;
+        }
         .container-partners {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 20px;
-            margin-top: 20px;
+            margin: 20px;
         }
         #map {
             height: 600px;
             width: 100%;
             border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
         .partner-list {
             overflow-y: auto;
@@ -24,12 +38,17 @@
             padding-right: 10px;
         }
         .partner-card {
-            border: 1px solid #ddd;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
             background: #fff;
+            transition: all 0.2s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+        .partner-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         }
         .partner-header {
             display: flex;
@@ -46,20 +65,36 @@
             font-size: 16px;
             font-weight: bold;
             margin: 0;
+            color: #2c3e50;
         }
         .partner-location {
             font-size: 14px;
-            color: #555;
+            color: #7f8c8d;
         }
         .partner-desc {
             font-size: 13px;
             margin-top: 8px;
             line-height: 1.4;
+            color: #444;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 992px) {
+            .container-partners {
+                grid-template-columns: 1fr;
+            }
+            #map {
+                height: 400px;
+            }
+            .partner-list {
+                max-height: unset;
+                overflow-y: visible;
+            }
         }
     </style>
 </head>
 <body>
-    <h2 class="mb-3">🌍 International Partner Institutions</h2>
+    <h2>🌍 International Partner Institutions</h2>
 
     <div class="container-partners">
         <!-- Left side: details -->
