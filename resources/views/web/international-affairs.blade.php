@@ -4,147 +4,186 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Partner Institutions Map</title>
+    <title>Global Partner Institutions</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background: #f9fafb;
             margin: 0;
             padding: 0;
         }
-        .container {
-            display: flex;
-            height: 100vh;
+        h2 {
+            margin: 20px;
+            font-size: 1.8rem;
+            color: #2c3e50;
+            text-align: center;
         }
-        .sidebar {
-            width: 35%;
-            background: #fff;
-            border-right: 1px solid #ddd;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        .sidebar h2 {
-            margin-bottom: 20px;
-            color: #1e3a8a;
-        }
-        .partner {
-            padding: 15px;
-            margin-bottom: 12px;
-            border-radius: 10px;
-            background: #f1f5f9;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .partner:hover {
-            background: #e2e8f0;
-        }
-        .partner strong {
-            display: block;
-            color: #0f172a;
-        }
-        .partner small {
-            display: block;
-            color: #475569;
-            margin-top: 3px;
+        .container-partners {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin: 20px;
         }
         #map {
-            flex: 1;
-            height: 100%;
+            height: 600px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .partner-list {
+            overflow-y: auto;
+            max-height: 600px;
+            padding-right: 10px;
+        }
+        .partner-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #fff;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+        .partner-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+        .partner-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .color-box {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            border-radius: 4px;
+        }
+        .partner-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            color: #2c3e50;
+        }
+        .partner-location {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .partner-desc {
+            font-size: 13px;
+            margin-top: 8px;
+            line-height: 1.4;
+            color: #444;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 992px) {
+            .container-partners {
+                grid-template-columns: 1fr;
+            }
+            #map {
+                height: 400px;
+            }
+            .partner-list {
+                max-height: unset;
+                overflow-y: visible;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- Left Sidebar -->
-    <div class="sidebar">
-        <h2>Partner Institutions</h2>
-        <div class="partner" onclick="focusMap('kansas')">
-            <strong>Kansas State University</strong>
-            <small>Manhattan, KS, USA</small>
-            <small>Exchange of Scholars and Scientists</small>
+    <h2>🌍 International Partner Institutions</h2>
+
+    <div class="container-partners">
+        <!-- Left side: details -->
+        <div class="partner-list">
+            @php
+                $partners = [
+                    [
+                        "name" => "Kansas State University",
+                        "location" => "Manhattan, KS 66506, United States",
+                        "desc" => "Exchange of scholars and scientists, professors for lectures, participation in conferences, exchange of academic information and materials.",
+                        "coords" => [39.1911, -96.5761],
+                        "color" => "#e74c3c"
+                    ],
+                    [
+                        "name" => "Phranakhon Rajabhat University",
+                        "location" => "Thailand",
+                        "desc" => "Exchange of lectures for academic staff, trainings, and development of research.",
+                        "coords" => [13.8806, 100.5856],
+                        "color" => "#3498db"
+                    ],
+                    [
+                        "name" => "Federal University of Sao Carlos",
+                        "location" => "Brazil",
+                        "desc" => "Joint research programs, exchange of students and faculty.",
+                        "coords" => [-21.9797, -47.8819],
+                        "color" => "#2ecc71"
+                    ],
+                    [
+                        "name" => "Universitas Negeri Malang (UM)",
+                        "location" => "Indonesia",
+                        "desc" => "Research, education, community service, and human resource development.",
+                        "coords" => [-7.9570, 112.6145],
+                        "color" => "#f39c12"
+                    ],
+                    [
+                        "name" => "Royal University of Agriculture",
+                        "location" => "Cambodia",
+                        "desc" => "Research collaboration and student exchange.",
+                        "coords" => [11.5466, 104.9339],
+                        "color" => "#9b59b6"
+                    ],
+                    [
+                        "name" => "Wadwhani Operating Foundation",
+                        "location" => "California, USA",
+                        "desc" => "Entrepreneurial education and training programs.",
+                        "coords" => [37.7749, -122.4194],
+                        "color" => "#16a085"
+                    ]
+                ];
+            @endphp
+
+            @foreach ($partners as $p)
+                <div class="partner-card">
+                    <div class="partner-header">
+                        <div class="color-box" style="background-color: {{ $p['color'] }};"></div>
+                        <div>
+                            <p class="partner-title">{{ $p['name'] }}</p>
+                            <p class="partner-location">{{ $p['location'] }}</p>
+                        </div>
+                    </div>
+                    <p class="partner-desc">{{ $p['desc'] }}</p>
+                </div>
+            @endforeach
         </div>
-        <div class="partner" onclick="focusMap('thailand')">
-            <strong>Phranakhon Rajabhat University</strong>
-            <small>Thailand</small>
-            <small>Lecturer Exchange, Training, Research</small>
-        </div>
-        <div class="partner" onclick="focusMap('brazil')">
-            <strong>Federal University of Sao Carlos</strong>
-            <small>Brazil</small>
-            <small>Research & Student Exchange</small>
-        </div>
-        <div class="partner" onclick="focusMap('indonesia')">
-            <strong>Universitas Negeri Malang (UM)</strong>
-            <small>Indonesia</small>
-            <small>Research, Education, HR Development</small>
-        </div>
-        <div class="partner" onclick="focusMap('cambodia')">
-            <strong>Royal University of Agriculture</strong>
-            <small>Cambodia</small>
-            <small>Research & Student Exchange</small>
-        </div>
-        <div class="partner" onclick="focusMap('california')">
-            <strong>Wadwhani Operating Foundation</strong>
-            <small>California, USA</small>
-            <small>Entrepreneurial Education</small>
-        </div>
+
+        <!-- Right side: map -->
+        <div id="map"></div>
     </div>
 
-    <!-- Right Map -->
-    <div id="map"></div>
-</div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([20, 0], 2);
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-    // Initialize map
-    var map = L.map('map').setView([20, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-    // Add modern basemap
-    L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors, HOT'
-    }).addTo(map);
+        var partners = @json($partners);
 
-    // Locations with markers
-    var locations = {
-        kansas: {
-            coords: [39.1974, -96.5847],
-            popup: "<b>Kansas State University</b><br>Exchange of Scholars and Scientists"
-        },
-        thailand: {
-            coords: [13.8476, 100.5696],
-            popup: "<b>Phranakhon Rajabhat University</b><br>Lecturer Exchange, Training, Research"
-        },
-        brazil: {
-            coords: [-21.9856, -47.8796],
-            popup: "<b>Federal University of Sao Carlos</b><br>Research & Student Exchange"
-        },
-        indonesia: {
-            coords: [-7.9666, 112.6326],
-            popup: "<b>Universitas Negeri Malang (UM)</b><br>Research, Education, HR Development"
-        },
-        cambodia: {
-            coords: [11.5449, 104.8922],
-            popup: "<b>Royal University of Agriculture</b><br>Research & Student Exchange"
-        },
-        california: {
-            coords: [37.7749, -122.4194],
-            popup: "<b>Wadwhani Operating Foundation</b><br>Entrepreneurial Education"
-        }
-    };
+        partners.forEach(p => {
+            var marker = L.circleMarker(p.coords, {
+                color: p.color,
+                radius: 8,
+                fillOpacity: 0.9
+            }).addTo(map);
 
-    // Add all markers
-    var markers = {};
-    for (var key in locations) {
-        var loc = locations[key];
-        markers[key] = L.marker(loc.coords).addTo(map).bindPopup(loc.popup);
-    }
-
-    // Focus function
-    function focusMap(key) {
-        var loc = locations[key];
-        map.setView(loc.coords, 6);
-        markers[key].openPopup();
-    }
-</script>
+            marker.bindPopup("<b>" + p.name + "</b><br>" + p.location + "<br><small>" + p.desc + "</small>");
+        });
+    </script>
+</body>
+</html>
 @endsection

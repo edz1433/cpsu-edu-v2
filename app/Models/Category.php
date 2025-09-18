@@ -12,6 +12,7 @@ class Category extends Model
     protected $fillable = [
         'cat_name',
         'hasgrid',
+        'cat_url',
     ];
 
     public function subcategories()
