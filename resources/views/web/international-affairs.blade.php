@@ -45,10 +45,12 @@
             background: #fff;
             transition: all 0.2s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            cursor: pointer;
         }
         .partner-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            background: #f8f9fa;
         }
         .partner-header {
             display: flex;
@@ -146,8 +148,8 @@
                 ];
             @endphp
 
-            @foreach ($partners as $p)
-                <div class="partner-card">
+            @foreach ($partners as $index => $p)
+                <div class="partner-card" data-index="{{ $index }}">
                     <div class="partner-header">
                         <div class="color-box" style="background-color: {{ $p['color'] }};"></div>
                         <div>
@@ -173,8 +175,9 @@
         }).addTo(map);
 
         var partners = @json($partners);
+        var markers = [];
 
-        partners.forEach(p => {
+        partners.forEach((p, i) => {
             var marker = L.circleMarker(p.coords, {
                 color: p.color,
                 radius: 8,
@@ -182,6 +185,19 @@
             }).addTo(map);
 
             marker.bindPopup("<b>" + p.name + "</b><br>" + p.location + "<br><small>" + p.desc + "</small>");
+            markers[i] = marker;
+        });
+
+        // Make partner cards clickable
+        document.querySelectorAll('.partner-card').forEach(card => {
+            card.addEventListener('click', () => {
+                var index = card.getAttribute('data-index');
+                var partner = partners[index];
+                var marker = markers[index];
+
+                map.setView(partner.coords, 6, { animate: true });
+                marker.openPopup();
+            });
         });
     </script>
 </body>
