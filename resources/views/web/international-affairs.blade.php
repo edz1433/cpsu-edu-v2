@@ -1,99 +1,63 @@
 @extends('web.layouts.mainlayout')
 @section('content')
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Global Partner Institutions</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <style>
         body {
-            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 0;
-        }
-        h2 {
-            margin: 20px;
-            font-size: 1.8rem;
-            color: #2c3e50;
-            text-align: center;
+            font-family: "Segoe UI", sans-serif;
+            background: #f9fafb;
+            display: flex;
+            height: 100vh;
         }
         .container-partners {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-            margin: 20px;
-        }
-        #map {
-            height: 600px;
+            grid-template-columns: 300px 1fr;
+            height: 100%;
             width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
-        .partner-list {
+        .partners-list {
+            background: #fff;
+            border-right: 1px solid #ddd;
             overflow-y: auto;
-            max-height: 600px;
-            padding-right: 10px;
+            padding: 1rem;
         }
         .partner-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            background: #fff;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+            padding: 0.8rem;
+            margin-bottom: 0.8rem;
+            border-radius: 8px;
+            background: #f0f4f8;
             cursor: pointer;
+            transition: background 0.3s;
+            border-left: 5px solid transparent;
         }
         .partner-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-            background: #f8f9fa;
+            background: #e0e7ef;
         }
-        .partner-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+        .map-container {
+            width: 100%;
+            height: 100%;
         }
-        .color-box {
-            width: 18px;
-            height: 18px;
-            margin-right: 10px;
-            border-radius: 4px;
-        }
-        .partner-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0;
-            color: #2c3e50;
-        }
-        .partner-location {
-            font-size: 14px;
-            color: #7f8c8d;
-        }
-        .partner-desc {
-            font-size: 13px;
-            margin-top: 8px;
-            line-height: 1.4;
-            color: #444;
+        #map {
+            width: 100%;
+            height: 100%;
         }
 
-        /* Pulsing effect for selected marker */
+        /* Pulse marker styles */
         .pulse-marker {
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background-color: red;
             position: relative;
         }
-        .pulse-marker::after {
-            content: "";
+        .pulse-ring {
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background-color: red;
             position: absolute;
             top: 0;
             left: 0;
@@ -105,107 +69,94 @@
             50% { transform: scale(2); opacity: 0; }
             100% { transform: scale(1); opacity: 0.7; }
         }
-
-        @media (max-width: 992px) {
-            .container-partners {
-                grid-template-columns: 1fr;
-            }
-            #map {
-                height: 400px;
-            }
-            .partner-list {
-                max-height: unset;
-                overflow-y: visible;
-            }
-        }
     </style>
 </head>
 <body>
-    <h2>🌍 International Partner Institutions</h2>
+<div class="container-partners">
+    <div class="partners-list" id="partners-list"></div>
+    <div class="map-container"><div id="map"></div></div>
+</div>
 
-    <div class="container-partners">
-        <div class="partner-list">
-            @php
-                $partners = [
-                    ["name"=>"Kansas State University","location"=>"Manhattan, KS 66506, United States","desc"=>"Exchange of scholars and scientists, professors for lectures, participation in conferences, exchange of academic information and materials.","coords"=>[39.1911, -96.5761],"color"=>"#e74c3c"],
-                    ["name"=>"Phranakhon Rajabhat University","location"=>"Thailand","desc"=>"Exchange of lectures for academic staff, trainings, and development of research.","coords"=>[13.8806, 100.5856],"color"=>"#3498db"],
-                    ["name"=>"Federal University of Sao Carlos","location"=>"Brazil","desc"=>"Joint research programs, exchange of students and faculty.","coords"=>[-21.9797, -47.8819],"color"=>"#2ecc71"],
-                    ["name"=>"Universitas Negeri Malang (UM)","location"=>"Indonesia","desc"=>"Research, education, community service, and human resource development.","coords"=>[-7.9570, 112.6145],"color"=>"#f39c12"],
-                    ["name"=>"Royal University of Agriculture","location"=>"Cambodia","desc"=>"Research collaboration and student exchange.","coords"=>[11.5466, 104.9339],"color"=>"#9b59b6"],
-                    ["name"=>"Wadwhani Operating Foundation","location"=>"California, USA","desc"=>"Entrepreneurial education and training programs.","coords"=>[37.7749, -122.4194],"color"=>"#16a085"]
-                ];
-            @endphp
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    // Example partner data
+    var partners = [
+        { name: "Harvard University", country: "USA", coords: [42.3770, -71.1167], color: "#e74c3c" },
+        { name: "University of Tokyo", country: "Japan", coords: [35.7126, 139.7610], color: "#3498db" },
+        { name: "University of Melbourne", country: "Australia", coords: [-37.7963, 144.9614], color: "#2ecc71" },
+        { name: "Oxford University", country: "UK", coords: [51.7548, -1.2544], color: "#9b59b6" }
+    ];
 
-            @foreach ($partners as $index => $p)
-                <div class="partner-card" data-index="{{ $index }}">
-                    <div class="partner-header">
-                        <div class="color-box" style="background-color: {{ $p['color'] }};"></div>
-                        <div>
-                            <p class="partner-title">{{ $p['name'] }}</p>
-                            <p class="partner-location">{{ $p['location'] }}</p>
-                        </div>
+    // Initialize map
+    var map = L.map('map').setView([20, 0], 2);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    var markers = [];
+    var activePulse = null;
+
+    // Add partner list + markers
+    partners.forEach((partner, index) => {
+        // Add to list
+        var card = document.createElement('div');
+        card.className = 'partner-card';
+        card.style.borderLeftColor = partner.color;
+        card.setAttribute('data-index', index);
+        card.innerHTML = `<strong>${partner.name}</strong><br><small>${partner.country}</small>`;
+        document.getElementById('partners-list').appendChild(card);
+
+        // Add marker
+        var marker = L.circleMarker(partner.coords, {
+            radius: 8,
+            color: partner.color,
+            fillColor: partner.color,
+            fillOpacity: 0.8
+        }).addTo(map).bindPopup(`<b>${partner.name}</b><br>${partner.country}`);
+        markers.push(marker);
+    });
+
+    // Handle card click
+    document.querySelectorAll('.partner-card').forEach(card => {
+        card.addEventListener('click', () => {
+            var index = card.getAttribute('data-index');
+            var partner = partners[index];
+            var marker = markers[index];
+
+            // Slight zoom (level 4)
+            map.setView(partner.coords, 4, { animate: true });
+            marker.openPopup();
+
+            // Remove old pulse
+            if (activePulse) {
+                map.removeLayer(activePulse);
+            }
+
+            // Create a dynamic pulse
+            var pulseIcon = L.divIcon({
+                className: '',
+                html: `
+                    <div class="pulse-marker" style="background-color:${partner.color}">
+                        <div class="pulse-ring" style="background-color:${partner.color}"></div>
                     </div>
-                    <p class="partner-desc">{{ $p['desc'] }}</p>
-                </div>
-            @endforeach
-        </div>
+                `,
+                iconSize: [16, 16]
+            });
 
-        <div id="map"></div>
-    </div>
+            activePulse = L.marker(partner.coords, { icon: pulseIcon }).addTo(map);
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        var map = L.map('map').setView([20, 0], 2);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        var partners = @json($partners);
-        var markers = [];
-
-        partners.forEach((p, i) => {
-            var marker = L.circleMarker(p.coords, {
-                color: p.color,
-                radius: 8,
-                fillOpacity: 0.9
-            }).addTo(map);
-
-            marker.bindPopup("<b>" + p.name + "</b><br>" + p.location + "<br><small>" + p.desc + "</small>");
-            markers[i] = marker;
-        });
-
-        let activePulse;
-
-        document.querySelectorAll('.partner-card').forEach(card => {
-            card.addEventListener('click', () => {
-                var index = card.getAttribute('data-index');
-                var partner = partners[index];
-                var marker = markers[index];
-
-                // Zoom slightly (level 5 is a nice middle ground)
-                map.setView(partner.coords, 4, { animate: true });
-                marker.openPopup();
-
-                // Remove old pulse
+            // Auto remove after 3 seconds
+            setTimeout(() => {
                 if (activePulse) {
                     map.removeLayer(activePulse);
+                    activePulse = null;
                 }
-
-                // Add pulsing marker
-                var pulseIcon = L.divIcon({ className: 'pulse-marker' });
-                activePulse = L.marker(partner.coords, { icon: pulseIcon }).addTo(map);
-
-                // Auto remove pulse after 3 seconds
-                setTimeout(() => {
-                    if (activePulse) {
-                        map.removeLayer(activePulse);
-                        activePulse = null;
-                    }
-                }, 3000);
-            });
+            }, 3000);
         });
-    </script>
+    });
+</script>
 </body>
 </html>
+
 @endsection
