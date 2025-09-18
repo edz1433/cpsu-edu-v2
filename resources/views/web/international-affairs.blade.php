@@ -184,7 +184,7 @@
                 var marker = markers[index];
 
                 // Zoom slightly (level 5 is a nice middle ground)
-                map.setView(partner.coords, 5, { animate: true });
+                map.setView(partner.coords, 4, { animate: true });
                 marker.openPopup();
 
                 // Remove old pulse
