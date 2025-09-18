@@ -1,17 +1,12 @@
 @extends('web.layouts.mainlayout')
+
 @section('content')
-<meta charset="UTF-8">
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
 <style>
-    body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: #f9fafb;
-        margin: 0;
-        padding: 0;
-    }
     .container {
         display: flex;
-        height: 100vh;
+        height: calc(100vh - 60px); /* adjust if navbar/header exists */
     }
     .sidebar {
         width: 35%;
@@ -23,6 +18,7 @@
     .sidebar h2 {
         margin-bottom: 20px;
         color: #1e3a8a;
+        font-weight: bold;
     }
     .partner {
         padding: 15px;
@@ -30,7 +26,7 @@
         border-radius: 10px;
         background: #f1f5f9;
         cursor: pointer;
-        transition: 0.3s;
+        transition: background 0.3s;
     }
     .partner:hover {
         background: #e2e8f0;
@@ -49,8 +45,9 @@
         height: 100%;
     }
 </style>
+
 <div class="container">
-    <!-- Left Sidebar -->
+    <!-- Sidebar -->
     <div class="sidebar">
         <h2>Partner Institutions</h2>
         <div class="partner" onclick="focusMap('kansas')">
@@ -85,7 +82,7 @@
         </div>
     </div>
 
-    <!-- Right Map -->
+    <!-- Map -->
     <div id="map"></div>
 </div>
 
@@ -94,12 +91,12 @@
     // Initialize map
     var map = L.map('map').setView([20, 0], 2);
 
-    // Add modern basemap
+    // Tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors, HOT'
     }).addTo(map);
 
-    // Locations with markers
+    // Locations
     var locations = {
         kansas: {
             coords: [39.1974, -96.5847],
@@ -127,14 +124,14 @@
         }
     };
 
-    // Add all markers
+    // Add markers
     var markers = {};
     for (var key in locations) {
         var loc = locations[key];
         markers[key] = L.marker(loc.coords).addTo(map).bindPopup(loc.popup);
     }
 
-    // Focus function
+    // Focus map on partner
     function focusMap(key) {
         var loc = locations[key];
         map.setView(loc.coords, 6);
