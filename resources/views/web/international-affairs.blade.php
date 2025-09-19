@@ -110,16 +110,6 @@
     </style>
 </head>
 <body>
-    <section id="slider-part" class="slider-active">
-        <!-- Image Slides -->
-        @foreach(range(2,4) as $i)
-        <div class="single-slider image-slide">
-            <img src="{{ asset('Uploads/page-banner/banner-'.$i.'.jpg') }}" alt="Banner {{$i}}" class="slider-image">
-            <div class="slider-cont"></div>
-        </div>
-        @endforeach
-
-    </section>
 
     <div class="container-partners">
         <div class="partner-list">
