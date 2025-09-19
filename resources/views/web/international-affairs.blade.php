@@ -109,13 +109,20 @@
     <!-- Image Slides -->
     @foreach(range(2,4) as $i)
     <div class="single-slider image-slide">
-        <img src="{{ asset('Uploads/page-banner/banner-'.$i.'.jpg') }}" alt="Banner {{$i}}" class="slider-image">
+        <img src="{{ asset('Uploads/international-banner/banner-'.$i.'.jpg') }}" alt="Banner {{$i}}" class="slider-image">
         <div class="slider-cont"></div>
     </div>
-    @endforeach
+    @endforeach 
 </section>
 <section id="courses-part" class="pt-50 pb-120 gray-bg">
     <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="section-title pb-45">
+                    <h5 class="text-dark">Featured News</h5>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 <!-- Top Search and View Tabs -->
