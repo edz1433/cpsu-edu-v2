@@ -80,20 +80,26 @@
             color: #444;
         }
 
-        /* Pulsing effect */
-        .pulse-marker div::after {
+        /* Pulsing effect for selected marker */
+        .pulse-marker {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: red;
+            position: relative;
+        }
+        .pulse-marker::after {
             content: "";
             width: 16px;
             height: 16px;
             border-radius: 50%;
+            background-color: red;
             position: absolute;
             top: 0;
             left: 0;
             animation: pulse 1s infinite;
             opacity: 0.5;
-            background-color: inherit;
         }
-
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.7; }
             50% { transform: scale(2); opacity: 0; }
@@ -126,7 +132,7 @@
                     ["name"=>"Federal University of Sao Carlos","location"=>"Brazil","desc"=>"Joint research programs, exchange of students and faculty.","coords"=>[-21.9797, -47.8819],"color"=>"#2ecc71"],
                     ["name"=>"Universitas Negeri Malang (UM)","location"=>"Indonesia","desc"=>"Research, education, community service, and human resource development.","coords"=>[-7.9570, 112.6145],"color"=>"#f39c12"],
                     ["name"=>"Royal University of Agriculture","location"=>"Cambodia","desc"=>"Research collaboration and student exchange.","coords"=>[11.5466, 104.9339],"color"=>"#9b59b6"],
-                    ["name"=>"Wadwhani Operating Foundation","location"=>"California, USA","desc"=>"Entrepreneurial education and training programs.","coords"=>[37.7749, -122.4194],"color"=>"#16a085"]
+                    ["name"=>"Wadwhani Operating Foundation","location"=>"San Francisco, CA 94111, United States","desc"=>"Entrepreneurial education and training programs.","coords"=>[37.7947, -122.3965],"color"=>"#16a085"]
                 ];
             @endphp
 
@@ -158,7 +164,6 @@
         var partners = @json($partners);
         var markers = [];
 
-        // Add static markers
         partners.forEach((p, i) => {
             var marker = L.circleMarker(p.coords, {
                 color: p.color,
@@ -178,9 +183,8 @@
                 var partner = partners[index];
                 var marker = markers[index];
 
-                // Center map on partner marker
+                // Zoom to the marker and center it in the map container
                 map.setView(partner.coords, 4, { animate: true });
-
                 marker.openPopup();
 
                 // Remove old pulse
@@ -188,27 +192,17 @@
                     map.removeLayer(activePulse);
                 }
 
-                // Add pulsing marker with partner color
-                var pulseIcon = L.divIcon({ 
-                    className: 'pulse-marker', 
-                    html: `<div style="
-                        width: 16px; height: 16px; border-radius: 50%; 
-                        background-color: ${partner.color}; position: relative;
-                    "></div>`
-                });
-
+                // Add pulsing marker
+                var pulseIcon = L.divIcon({ className: 'pulse-marker' });
                 activePulse = L.marker(partner.coords, { icon: pulseIcon }).addTo(map);
 
-                // Remove pulse after 1 minute (60000ms)
+                // Auto remove pulse after 1 minute
                 setTimeout(() => {
                     if (activePulse) {
                         map.removeLayer(activePulse);
                         activePulse = null;
                     }
                 }, 60000);
-
-                // Ensure marker is centered in map container
-                map.panTo(partner.coords, { animate: true });
             });
         });
     </script>
