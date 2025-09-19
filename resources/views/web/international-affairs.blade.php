@@ -1,6 +1,10 @@
 @extends('web.layouts.mainlayout')
 @section('content')
 <style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
     h2 {
         margin: 20px 0;
         font-size: 1.8rem;
@@ -15,6 +19,7 @@
         margin: 0 auto 40px auto;
         max-width: 1200px;
         padding: 0 20px;
+        width: 100%;
     }
 
     .partner-list {
@@ -73,7 +78,8 @@
     }
 
     #map {
-        height: 600px;
+        height: 100%;
+        min-height: 600px;
         width: 100%;
         border-radius: 10px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.15);
@@ -111,7 +117,7 @@
         }
 
         #map {
-            height: 400px;
+            min-height: 400px;
         }
     }
 
@@ -122,17 +128,7 @@
     }
 </style>
 
-<section id="slider-part" class="slider-active">
-    <!-- Image Slides -->
-    @foreach(range(2,4) as $i)
-    <div class="single-slider image-slide">
-        <img src="{{ asset('Uploads/page-banner/banner-'.$i.'.jpg') }}" alt="Banner {{$i}}" class="slider-image">
-        <div class="slider-cont"></div>
-    </div>
-    @endforeach
-
-</section>
-
+<h2>🌍 International Partner Institutions</h2>
 
 <div class="container-partners">
     <div class="partner-list">
@@ -164,7 +160,6 @@
     <div id="map"></div>
 </div>
 
-<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
     var map = L.map('map').setView([20, 0], 2);
@@ -195,21 +190,17 @@
             var partner = partners[index];
             var marker = markers[index];
 
-            // Center map and open popup
             map.setView(partner.coords, 4, { animate: true });
             marker.openPopup();
 
-            // Remove old pulse
             if (activePulse) map.removeLayer(activePulse);
 
-            // Add pulsing marker
             var pulseIcon = L.divIcon({ 
                 className: 'pulse-marker', 
                 html: `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${partner.color}; position: relative;"></div>`
             });
             activePulse = L.marker(partner.coords, { icon: pulseIcon }).addTo(map);
 
-            // Remove pulse after 1 minute
             setTimeout(() => {
                 if (activePulse) {
                     map.removeLayer(activePulse);
@@ -217,7 +208,6 @@
                 }
             }, 60000);
 
-            // Ensure marker is centered in map
             map.panTo(partner.coords, { animate: true });
         });
     });
