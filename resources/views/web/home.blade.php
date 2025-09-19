@@ -103,7 +103,6 @@
   </div>
 </section>
 
-
 <section id="course-part" class="pt-115 pb-120 gray-bg reactive-section delay-2">
     {{-- Responsive container: fluid on mobile, normal on larger screens --}}
     <div class="container">

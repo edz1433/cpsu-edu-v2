@@ -405,12 +405,79 @@ class WebController extends Controller
         ));
     }
     
-    public function internationalAffairs()
+    public function internationalAffairs(Request $request)
     {
+               // Base query
+        $query = Article::latest();
+
+        // Only include these IDs
+        $allowedIds = [304, 241, 249, 269, 291, 298, 299, 300];
+        $query->whereIn('id', $allowedIds);
+
+        // Apply search filter if present
+        if ($request->has('search') && !empty($request->search)) {
+            $keyword = $request->search;
+            $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', "%{$keyword}%")
+                ->orWhere('content', 'like', "%{$keyword}%");
+            });
+        }
+
+        // Paginate results and keep search query in pagination links
+        $articles = $query->paginate(6)->appends($request->all());
+
+        // Transform each article for optimized Blade rendering
+        $articles->transform(function ($art) {
+            // Format date
+            $art->date = $art->created_at->format('M d, Y');
+
+            // Safe title
+            $title = strip_tags($art->title);
+            if (class_exists('\Normalizer')) {
+                $title = \Normalizer::normalize($title, \Normalizer::FORM_KC);
+            } elseif (function_exists('transliterator_transliterate')) {
+                $title = transliterator_transliterate('NFKC', $title);
+            }
+            $art->safe_title = preg_replace('/\p{Cf}/u', '', $title);
+
+            // Thumbnail image
+            $art->image = !empty($art->thumbnail) 
+                ? asset("Uploads/News/thumbnail/{$art->thumbnail}") 
+                : asset("Uploads/default-thumbnail.png");
+
+            // Excerpt
+            $art->excerpt = 'Content not available';
+            if (!empty($art->content)) {
+                $contentPath = public_path("Uploads/News/content/{$art->content}");
+                if (file_exists($contentPath)) {
+                    $text = strip_tags(file_get_contents($contentPath));
+
+                    if (class_exists('\Normalizer')) {
+                        $text = \Normalizer::normalize($text, \Normalizer::FORM_KC);
+                    } elseif (function_exists('transliterator_transliterate')) {
+                        $text = transliterator_transliterate('NFKC', $text);
+                    }
+                    $text = preg_replace('/\p{Cf}/u', '', $text);
+
+                    $words = preg_split('/\s+/', $text);
+                    $maxWords = 25;
+
+                    if (count($words) > $maxWords) {
+                        $art->excerpt = implode(' ', array_slice($words, 0, $maxWords)) 
+                            . '... <a href="'.route('view-article', $art->id).'" style="color:#14532D;text-decoration:none;">Read More</a>';
+                    } else {
+                        $art->excerpt = $text;
+                    }
+                }
+            }
+
+            return $art;
+        });
+        
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
-        return view('web.international-affairs', compact("categories", "subcategories", "submenu"));
+        return view('web.international-affairs', compact("categories", "subcategories", "submenu", "articles"));
     }
 
 }   
