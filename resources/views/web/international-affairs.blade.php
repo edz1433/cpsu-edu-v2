@@ -80,26 +80,20 @@
             color: #444;
         }
 
-        /* Pulsing effect for selected marker */
-        .pulse-marker {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-color: red;
-            position: relative;
-        }
-        .pulse-marker::after {
+        /* Pulsing effect */
+        .pulse-marker div::after {
             content: "";
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background-color: red;
             position: absolute;
             top: 0;
             left: 0;
             animation: pulse 1s infinite;
             opacity: 0.5;
+            background-color: inherit;
         }
+
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.7; }
             50% { transform: scale(2); opacity: 0; }
@@ -164,6 +158,7 @@
         var partners = @json($partners);
         var markers = [];
 
+        // Add static markers
         partners.forEach((p, i) => {
             var marker = L.circleMarker(p.coords, {
                 color: p.color,
@@ -183,8 +178,9 @@
                 var partner = partners[index];
                 var marker = markers[index];
 
-                // Zoom to the marker and center it in the map container
+                // Center map on partner marker
                 map.setView(partner.coords, 4, { animate: true });
+
                 marker.openPopup();
 
                 // Remove old pulse
@@ -192,17 +188,27 @@
                     map.removeLayer(activePulse);
                 }
 
-                // Add pulsing marker
-                var pulseIcon = L.divIcon({ className: 'pulse-marker' });
+                // Add pulsing marker with partner color
+                var pulseIcon = L.divIcon({ 
+                    className: 'pulse-marker', 
+                    html: `<div style="
+                        width: 16px; height: 16px; border-radius: 50%; 
+                        background-color: ${partner.color}; position: relative;
+                    "></div>`
+                });
+
                 activePulse = L.marker(partner.coords, { icon: pulseIcon }).addTo(map);
 
-                // Auto remove pulse after 1 minute
+                // Remove pulse after 1 minute (60000ms)
                 setTimeout(() => {
                     if (activePulse) {
                         map.removeLayer(activePulse);
                         activePulse = null;
                     }
                 }, 60000);
+
+                // Ensure marker is centered in map container
+                map.panTo(partner.coords, { animate: true });
             });
         });
     </script>
