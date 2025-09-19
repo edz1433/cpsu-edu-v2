@@ -1,28 +1,34 @@
 @extends('web.layouts.mainlayout')
 @section('content')
 <style>
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
     h2 {
-        margin: 20px 0;
+        margin: 20px;
         font-size: 1.8rem;
         color: #2c3e50;
         text-align: center;
     }
-
     .container-partners {
         display: grid;
-        grid-template-columns: 350px 1fr; /* Fixed width for list, remaining for map */
+        grid-template-columns: 1fr 2fr;
         gap: 20px;
-        margin: 0 auto 40px auto;
-        max-width: 1200px;
-        padding: 0 20px;
+        margin: 20px;
     }
-
+    #map {
+        height: 600px;
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
     .partner-list {
         overflow-y: auto;
         max-height: 600px;
         padding-right: 10px;
     }
-
     .partner-card {
         border: 1px solid #e0e0e0;
         border-radius: 12px;
@@ -33,38 +39,32 @@
         box-shadow: 0 2px 5px rgba(0,0,0,0.08);
         cursor: pointer;
     }
-
     .partner-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         background: #f8f9fa;
     }
-
     .partner-header {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
     }
-
     .color-box {
         width: 18px;
         height: 18px;
         margin-right: 10px;
         border-radius: 4px;
     }
-
     .partner-title {
         font-size: 16px;
         font-weight: bold;
         margin: 0;
         color: #2c3e50;
     }
-
     .partner-location {
         font-size: 14px;
         color: #7f8c8d;
     }
-
     .partner-desc {
         font-size: 13px;
         margin-top: 8px;
@@ -72,14 +72,7 @@
         color: #444;
     }
 
-    #map {
-        height: 600px;
-        width: 100%;
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
-
-    /* Pulsing marker */
+    /* Pulsing effect */
     .pulse-marker div::after {
         content: "";
         width: 16px;
@@ -99,29 +92,19 @@
         100% { transform: scale(1); opacity: 0.7; }
     }
 
-    /* Responsive adjustments */
     @media (max-width: 992px) {
         .container-partners {
             grid-template-columns: 1fr;
         }
-
-        .partner-list {
-            max-height: none;
-            margin-bottom: 20px;
-        }
-
         #map {
             height: 400px;
         }
-    }
-
-    @media (max-width: 576px) {
-        h2 {
-            font-size: 1.5rem;
+        .partner-list {
+            max-height: unset;
+            overflow-y: visible;
         }
     }
 </style>
-
 <section id="slider-part" class="slider-active">
     <!-- Image Slides -->
     @foreach(range(2,4) as $i)
@@ -130,6 +113,7 @@
         <div class="slider-cont"></div>
     </div>
     @endforeach
+
 </section>
 
 <div class="container-partners">
@@ -173,6 +157,7 @@
     var partners = @json($partners);
     var markers = [];
 
+    // Add static markers
     partners.forEach((p, i) => {
         var marker = L.circleMarker(p.coords, {
             color: p.color,
@@ -192,21 +177,28 @@
             var partner = partners[index];
             var marker = markers[index];
 
-            // Center map and open popup
+            // Center map on partner marker
             map.setView(partner.coords, 4, { animate: true });
+
             marker.openPopup();
 
             // Remove old pulse
-            if (activePulse) map.removeLayer(activePulse);
+            if (activePulse) {
+                map.removeLayer(activePulse);
+            }
 
-            // Add pulsing marker
+            // Add pulsing marker with partner color
             var pulseIcon = L.divIcon({ 
                 className: 'pulse-marker', 
-                html: `<div style="width: 16px; height: 16px; border-radius: 50%; background-color: ${partner.color}; position: relative;"></div>`
+                html: `<div style="
+                    width: 16px; height: 16px; border-radius: 50%; 
+                    background-color: ${partner.color}; position: relative;
+                "></div>`
             });
+
             activePulse = L.marker(partner.coords, { icon: pulseIcon }).addTo(map);
 
-            // Remove pulse after 1 minute
+            // Remove pulse after 1 minute (60000ms)
             setTimeout(() => {
                 if (activePulse) {
                     map.removeLayer(activePulse);
@@ -214,9 +206,10 @@
                 }
             }, 60000);
 
-            // Ensure marker is centered in map
+            // Ensure marker is centered in map container
             map.panTo(partner.coords, { animate: true });
         });
     });
 </script>
 @endsection
+
