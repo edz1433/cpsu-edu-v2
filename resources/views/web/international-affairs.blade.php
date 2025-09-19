@@ -137,7 +137,7 @@
                     </ul> 
 
                     <div class="courses-search float-right">
-						<form action="{{ route('viewMoreArticle') }}" method="GET">
+						<form action="{{ route('internationalAffairs') }}" method="GET">
 							<input type="text" name="search" value="{{ request('search') }}" placeholder="Search">
 							<button type="submit"><i class="fa fa-search"></i></button>
 						</form>

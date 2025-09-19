@@ -22,58 +22,60 @@
                                     <ul class="navbar-nav mr-auto">
                                         @foreach($categories as $cat)
                                             <li class="nav-item {{ $cat->hasgrid ? 'has-grid' : 'active' }}">
-                                                <a href="#" class="{{ (isset($subcontent) && $subcontent->category == $cat->id) ? 'active' : '' }} {{ (url()->current() == config('app.url') && $cat->id == 1) ? 'active' : '' }}">{{ $cat->cat_name }} <i class="fa fa-chevron-right fa-xs submenu-icon"></i></a>
-                                                <ul class="sub-menu">
-                                                    @if($cat->hasgrid == 2)
-                                                        {{-- Category has subcategories --}}
-                                                        @foreach($subcategories as $subcat)
-                                                            @if($subcat->categories_id == $cat->id)
-                                                                <li>
-                                                                    <strong>{{ $subcat->title }}</strong>
-                                                                    <ul>
-                                                                        @foreach($submenu as $submen)
-                                                                            @if($submen->subcategory == $subcat->id)
-                                                                                <li>
-                                                                                    <a href="{{ $submen->url ?? route('view-sub-content', $submen->id) }}">
-                                                                                        {{ $submen->title }}
-                                                                                    </a>
-                                                                                </li>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </ul>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    @else
-                                                        {{-- Category has direct submenu --}}
-                                                            @php $count = 0; @endphp
-                                                            @foreach($submenu as $submen)
-                                                                @if($submen->category == $cat->id)
-                                                                    @if($count % 2 == 0)
-                                                                        <li><ul>
-                                                                    @endif
-
+                                                <a href="{{ url($cat->cat_url) }}" class="{{ (isset($subcontent) && $subcontent->category == $cat->id) ? 'active' : '' }} {{ (url()->current() == config('app.url') && $cat->id == 1) ? 'active' : '' }}">{{ $cat->cat_name }} <i class="fa fa-chevron-right fa-xs submenu-icon"></i></a>
+                                                @if($cat->cat_url == '#')
+                                                    <ul class="sub-menu">
+                                                        @if($cat->hasgrid == 2)
+                                                            {{-- Category has subcategories --}}
+                                                            @foreach($subcategories as $subcat)
+                                                                @if($subcat->categories_id == $cat->id)
                                                                     <li>
-                                                                        <a href="{{ $submen->url ?? route('view-sub-content', $submen->id) }}">
-                                                                            {{ $submen->title }}
-                                                                        </a>
+                                                                        <strong>{{ $subcat->title }}</strong>
+                                                                        <ul>
+                                                                            @foreach($submenu as $submen)
+                                                                                @if($submen->subcategory == $subcat->id)
+                                                                                    <li>
+                                                                                        <a href="{{ $submen->url ?? route('view-sub-content', $submen->id) }}">
+                                                                                            {{ $submen->title }}
+                                                                                        </a>
+                                                                                    </li>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </ul>
                                                                     </li>
-
-                                                                    @php $count++; @endphp
-
-                                                                    @if($count % 2 == 0)
-                                                                        </ul></li>
-                                                                    @endif
                                                                 @endif
                                                             @endforeach
+                                                        @else
+                                                            {{-- Category has direct submenu --}}
+                                                                @php $count = 0; @endphp
+                                                                @foreach($submenu as $submen)
+                                                                    @if($submen->category == $cat->id)
+                                                                        @if($count % 2 == 0)
+                                                                            <li><ul>
+                                                                        @endif
 
-                                                            {{-- Close last group if not multiple of 4 --}}
-                                                            @if($count % 2 != 0)
-                                                                </ul></li>
-                                                            @endif
+                                                                        <li>
+                                                                            <a href="{{ $submen->url ?? route('view-sub-content', $submen->id) }}">
+                                                                                {{ $submen->title }}
+                                                                            </a>
+                                                                        </li>
 
-                                                    @endif
-                                                </ul>
+                                                                        @php $count++; @endphp
+
+                                                                        @if($count % 2 == 0)
+                                                                            </ul></li>
+                                                                        @endif
+                                                                    @endif
+                                                                @endforeach
+
+                                                                {{-- Close last group if not multiple of 4 --}}
+                                                                @if($count % 2 != 0)
+                                                                    </ul></li>
+                                                                @endif
+
+                                                        @endif
+                                                    </ul>
+                                                @endif
                                             </li>
                                         @endforeach
                                     </ul>
