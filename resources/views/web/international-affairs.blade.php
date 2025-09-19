@@ -172,15 +172,15 @@
 
         let activePulse;
 
-        // Clickable partner cards
         document.querySelectorAll('.partner-card').forEach(card => {
             card.addEventListener('click', () => {
                 var index = card.getAttribute('data-index');
                 var partner = partners[index];
                 var marker = markers[index];
 
-                // Center map on partner
+                // Center map on partner marker
                 map.setView(partner.coords, 4, { animate: true });
+
                 marker.openPopup();
 
                 // Remove old pulse
@@ -188,7 +188,7 @@
                     map.removeLayer(activePulse);
                 }
 
-                // Add pulsing marker with partner's color
+                // Add pulsing marker with partner color
                 var pulseIcon = L.divIcon({ 
                     className: 'pulse-marker', 
                     html: `<div style="
@@ -199,13 +199,16 @@
 
                 activePulse = L.marker(partner.coords, { icon: pulseIcon }).addTo(map);
 
-                // Auto remove pulse after 3 seconds
+                // Remove pulse after 1 minute (60000ms)
                 setTimeout(() => {
                     if (activePulse) {
                         map.removeLayer(activePulse);
                         activePulse = null;
                     }
-                }, 3000);
+                }, 60000);
+
+                // Ensure marker is centered in map container
+                map.panTo(partner.coords, { animate: true });
             });
         });
     </script>
