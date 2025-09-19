@@ -107,7 +107,7 @@
 </head>
 <section id="slider-part" class="slider-active">
     <!-- Image Slides -->
-    @foreach(range(2,4) as $i)
+    @foreach(range(1,7) as $i)
     <div class="single-slider image-slide">
         <img src="{{ asset('Uploads/international-banner/banner-'.$i.'.jpg') }}" alt="Banner {{$i}}" class="slider-image">
         <div class="slider-cont"></div>
