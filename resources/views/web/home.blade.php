@@ -173,27 +173,26 @@
 </section>
 
 <section id="testimonial" class="pt-115 pb-115 reactive-section delay-1" style="background: url('{{ asset('images/s-12.jpg') }}') no-repeat center center; background-size: cover;">
-   <div class="container">
+   <div class="container"> 
     <div class="hive-container">
         <div class="row-hive row1">
-            <div class="hex planning  hive-white"><div><h4></h4><span></span></div></div>
+            <div class="hex wuri"><div><h4></h4><span></span></div></div>
+            <div class="hex the"><div><h4></h4><span></span></div></div>
             <div class="hex qs"><div><h4></h4><span></span></div></div>
-            <div class="hex audit"><div><h4></h4><span></span></div></div>
         </div>
         <div class="row-hive offset">
-            <div class="hex admin"><div><h4></h4><span></span></div></div>
-            <div class="hex the"><div><h4></h4><span></span></div></div>
+            <div class="hex"><div><h4></h4><span></span></div></div>
             <div class="hex uigreen"><div><h4></h4><span></span></div></div>
-            <div class="hex rnd">
-                <div><h3>CPSU SECURES 105TH SPOT IN THE WURI RANKING 2025</h3><span></span></div>
+            <div class="hex" style="background-image: url('https://cpsu.edu.ph/images/cpsu-iso.png');"><div><h4></h4><span></span></div></div>
+            <div class="hex">
+                <div><h4></h4><span></span></div>
+                {{-- <div><h3>CPSU SECURES 105TH SPOT IN THE WURI RANKING 2025</h3><span></span></div> --}}
             </div>
         </div>
         <div class="row-hive row3">
-            <div class="hex" style="background-image: url('https://cpsu.edu.ph/images/cpsu-iso.png');">
-                <div><h4></h4><span></span></div>
-            </div>
-            <div class="hex it"><div><h4></h4><span></span></div></div>
-            <div class="hex wuri"><div><h4></h4><span></span></div></div>
+            <div class="hex aun-qa" ><div><h4></h4><span></span></div></div>
+            <div class="hex umap"><div><h4></h4><span></span></div></div>
+            <div class="hex auap"><div><h4></h4><span></span></div></div>
         </div>
     </div>
 </div>

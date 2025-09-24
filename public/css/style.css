@@ -3987,8 +3987,11 @@ p.form-message.error {
 .hive-container .uigreen   { background-image: url('../images/uigreen.png'); }
 .hive-container .the       { background-image: url('../images/the.png'); }
 .hive-container .wuri      { background-image: url('../images/wuri.png'); }
+.hive-container .umap      { background-image: url('../images/umap.png'); }
+.hive-container .auap      { background-image: url('../images/auap.png'); }
+.hive-container .aun-qa      { background-image: url('../images/aun-qa.png'); }
 
-.hive-container .transparent {
+.hive-container .transparent { 
     background-color: transparent !important;
     box-shadow: none !important;
 }

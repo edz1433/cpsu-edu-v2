@@ -18,7 +18,11 @@
                                 Salary: ₱{{ number_format((float) $job['salary'], 2) }}
                             </p>
                         </div>
-                        <a href="" class="btn btn-danger btn-sm apply-btn" data-toggle="modal" data-target="#requirement-modal">Requirements</a>
+                        <a href="{{ route('google.login', ['jobId' => $job['id']]) }}" 
+                        class="btn btn-danger btn-sm apply-btn">
+                        Apply Now
+                        </a>
+                        {{-- <a href="" class="btn btn-danger btn-sm apply-btn" data-toggle="modal" data-target="#requirement-modal">Requirements</a> --}}
                     </div>
 
                     {{-- Job details --}}
@@ -39,7 +43,7 @@
                             <span class="font-weight-bold text-success">Experience:</span> {{ $job['experience'] }}
                         </div>
                         <div class="col-12 mb-1">
-                            <span class="font-weight-bold text-success">Competency:</span> {{ $job['competency'] }}
+                            <span class="font-weight-bold text-success">Competency:</span> {!! nl2br(e($job['competency'])) !!}
                         </div>
                     </div>
 

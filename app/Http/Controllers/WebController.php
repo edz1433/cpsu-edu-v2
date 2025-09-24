@@ -480,4 +480,12 @@ class WebController extends Controller
         return view('web.international-affairs', compact("categories", "subcategories", "submenu", "articles"));
     }
 
+    public function jobApplicationForm()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.job-form', compact("categories", "subcategories", "submenu"));
+    }
+
 }   
