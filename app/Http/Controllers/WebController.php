@@ -488,4 +488,11 @@ class WebController extends Controller
         return view('web.job-form', compact("categories", "subcategories", "submenu"));
     }
 
+    public function campusMap()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        return view('web.map', compact("categories", "subcategories", "submenu"));
+    }
 }   

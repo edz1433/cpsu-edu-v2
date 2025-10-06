@@ -38,6 +38,7 @@ Route::middleware(['headers.security'])->group(function () {
         Route::get('/facilities', [WebController::class, 'webFacilitiy'])->name('webFacilitiy');
         Route::get('/key-officials', [WebController::class, 'keyOfficials'])->name('keyOfficials');
         Route::get('/international-affairs', [WebController::class, 'internationalAffairs'])->name('internationalAffairs');
+        Route::get('/campus-map', [WebController::class, 'campusMap'])->name('campusMap');
     });
 
     Route::post('/visitors/count', [WebController::class, 'countVisitors'])->name('visit.count');
