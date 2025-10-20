@@ -18,6 +18,7 @@ Route::middleware(['headers.security'])->group(function () {
         Route::get('/apply/{jobId}/{jobTitle}', [GoogleAuthController::class, 'applyJob'])->name('apply.job');
         Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.login');
         Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
+        Route::get('/application/status', [WebController::class, 'applicationStatus'])->name('application.status');
 
         Route::get('/',[WebController::class,'webHome'])->name('web-home');
         Route::get('/news/{id}', [WebController::class, 'viewArticle'])->name('view-article');
