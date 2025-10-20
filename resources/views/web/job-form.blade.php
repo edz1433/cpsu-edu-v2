@@ -1037,6 +1037,7 @@
     closeModal();
     const form = document.getElementById('applicationForm');
     const formData = new FormData(form);
+    const HRIS_API_URL = "{{ env('HRIS_API_URL') }}";
 
     // Show loading indicator
     document.querySelector('.loading').style.display = 'block';
@@ -1049,7 +1050,7 @@
     });
 
     // AJAX submission
-    fetch('http://localhost/hris/public/api/application/store', {
+    fetch(`${HRIS_API_URL}/application/store`, {
       method: 'POST',
       body: formData,
       headers: {
