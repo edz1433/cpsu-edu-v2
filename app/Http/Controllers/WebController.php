@@ -485,7 +485,18 @@ class WebController extends Controller
         $categories = Category::all();
         $subcategories = SubCategory::all();
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        
         return view('web.job-form', compact("categories", "subcategories", "submenu"));
+    }
+
+    public function applicationStatus(Request $request)
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        $appnumber = $request->app_number;
+
+        return view('web.application-status', compact("categories", "subcategories", "submenu", "appnumber"));
     }
 
     public function campusMap()

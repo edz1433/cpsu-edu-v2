@@ -1,5 +1,17 @@
-RewriteEngine On
-RewriteBase /
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.+)$ index.php [QSA,L]
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect all requests to index.php except existing files/directories
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.+)$ index.php [QSA,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Remove invalid Permissions-Policy headers
+    Header unset Permissions-Policy
+
+    # Optional: set modern valid Permissions-Policy directives
+    Header set Permissions-Policy "geolocation=(self), microphone=(self), camera=(self), fullscreen=(self)"
+</IfModule>

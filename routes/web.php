@@ -12,22 +12,24 @@ use App\Http\Controllers\WebController;
 use App\Http\Controllers\autoGenController;
 use App\Http\Controllers\GoogleAuthController;
 
+
 Route::middleware(['headers.security'])->group(function () {
     Route::middleware(['track.visit'])->group(function () {
+        Route::get('/apply/{jobId}/{jobTitle}', [GoogleAuthController::class, 'applyJob'])->name('apply.job');
+        Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.login');
+        Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
+
         Route::get('/',[WebController::class,'webHome'])->name('web-home');
         Route::get('/news/{id}', [WebController::class, 'viewArticle'])->name('view-article');
         Route::get('/load-news', [WebController::class, 'viewMoreArticle'])->name('viewMoreArticle');
-
-        Route::get('/auth/google/{jobId}', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.login');
-        Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
         
         Route::get('/content/{id}', [WebController::class, 'subContent'])->name('view-sub-content');
         Route::get('/search', [WebController::class, 'searchArticle'])->name('searchArticle');
         Route::get('/sublink/{id}', [WebController::class, 'viewSublinkContent'])->name('view-sublink-content');
         Route::get('/jobs', [WebController::class, 'jobList'])->name('jobList');
-        Route::get('/jobs/application-form/{jobId}', [WebController::class, 'jobApplicationForm'])->name('jobApplicationForm');
+        Route::get('/jobs/application-form', [WebController::class, 'jobApplicationForm'])->name('jobApplicationForm');
         Route::get('/autogen', [autoGenController::class, 'autoGen'])->name('autoGen');
-
+        
         //pages
         Route::get('/history', [WebController::class, 'history'])->name('history');
         Route::get('/vgmo', [WebController::class, 'vgmo'])->name('vgmo');

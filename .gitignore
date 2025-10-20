@@ -4,6 +4,7 @@
 /storage/*.key
 /vendor
 /files
+/edrive
 .env
 .env.backup
 .htaccess
@@ -17,3 +18,8 @@ yarn-error.log
 /.vscode
 /public/Uploads/*
 /v1*
+
+# Ignore all logs
+*.log
+/storage/logs/*
+/bootstrap/cache/*.log

@@ -13,27 +13,21 @@ use Illuminate\Support\Facades\Log;
 
 class GoogleAuthController extends Controller
 {
-    public function redirectToGoogle($jobId)
+    public function applyJob($jobId, $jobTitle)
     {
-        // Save jobId in session before redirecting to Google
         session(['job_id' => $jobId]);
+        session(['job_title' => $jobTitle]);
+        
+        return redirect()->route('google.login');
+    }
 
+    public function redirectToGoogle()
+    {
         return Socialite::driver('google')->redirect();
     }
 
-public function handleGoogleCallback(Request $request)
-{
-    try {
-        // 🟢 Step 1: Check if Socialite config is correct
-        if (!config('services.google.client_id') || !config('services.google.redirect')) {
-            \Log::error('Google config missing', [
-                'client_id' => config('services.google.client_id'),
-                'redirect'  => config('services.google.redirect'),
-            ]);
-            return redirect()->route('login')->with('error', 'Google config is missing.');
-        }
-
-        // 🟢 Step 2: Try to get user from Google
+    public function handleGoogleCallback(Request $request)
+    {
         try {
             $google_user = Socialite::driver('google')->user();
         } catch (\Exception $ex) {
@@ -41,37 +35,35 @@ public function handleGoogleCallback(Request $request)
             return redirect()->route('login')->with('error', 'Failed to authenticate with Google.');
         }
 
-        // 🟢 Step 3: Store user info in session
+        $fullName = $google_user->getName();
+        $nameParts = explode(' ', $fullName, 2);
+
+        $firstName = $nameParts[0] ?? '';
+        $lastName  = $nameParts[1] ?? '';
+
         session([
             'google_id'     => $google_user->getId(),
-            'google_name'   => $google_user->getName(),
+            'google_name'   => $fullName,
+            'google_fname'  => $firstName,
+            'google_lname'  => $lastName,
             'google_email'  => $google_user->getEmail(),
             'google_avatar' => $google_user->getAvatar(),
             'logged_in'     => true,
         ]);
 
-        // 🟢 Step 4: Retrieve jobId
         $jobId = session('job_id');
-        session()->forget('job_id');
 
-        // Log for debugging
         \Log::info('Google login success', [
             'google_id' => $google_user->getId(),
             'job_id'    => $jobId,
         ]);
 
-        // 🟢 Step 5: Redirect
         if ($jobId) {
-            return redirect()->route('jobApplicationForm', ['id' => $jobId]);
+            return redirect()->route('jobApplicationForm');
         }
 
-        return redirect()->route('dashboard'); // fallback
-
-    } catch (\Exception $e) {
-        \Log::error('Google login exception', ['exception' => $e->getMessage()]);
-        return redirect()->route('login')->with('error', 'Google login failed. Please try again.');
+        return redirect()->route('web-home'); // fallback
     }
-}
 
 
 }
