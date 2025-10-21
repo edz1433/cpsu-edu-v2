@@ -1078,11 +1078,8 @@
       const data = await response.json();
       if (data.message === 'Application submitted successfully!') {
         document.querySelector('.success-message').style.display = 'block';
-        let statusUrlTemplate = "{{ route('application.status', ['id' => ':id']) }}";
-        const statusUrl = statusUrlTemplate.replace(':id', data.data.id);
         document.querySelector('.success-message').innerHTML = `
-          Application submitted successfully! 
-          Check your application status at: <a href="${statusUrl}" target="_blank">${statusUrl}</a>
+          Application submitted successfully! Please check your email for your application number.
         `;
         form.reset();
         document.querySelector('.success-message').scrollIntoView({ behavior: 'smooth' });
