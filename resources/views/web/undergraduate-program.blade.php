@@ -73,12 +73,12 @@
             <div class="program-card shadow-sm border-0 rounded-4">
                 <img src="{{ asset('images/CHM-thumbmnail.jpg') }}" class="card-img-top rounded-top-4" alt="Business">
                 <div class="program-info">
-                    <h5 class="fw-bold text-light">College of Business & Hospitality Management</h5>
+                    <h5 class="fw-bold text-light">College of Hospitality Management</h5>
                 </div>
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
                     <ul class="list-unstyled small mb-0">
-                        <li class="text-success">Bachelor of Science in Hotel and Restaurant Management</li>
+                        <li class="text-success">Bachelor of Science in Hospitality Management</li>
                     </ul>
                 </div>
             </div>
@@ -89,7 +89,7 @@
             <div class="program-card shadow-sm border-0 rounded-4">
                 <img src="{{ asset('images/CCS.jpg') }}" class="card-img-top rounded-top-4" alt="IT">
                 <div class="program-info">
-                    <h5 class="fw-bold text-light">College of Information & Computing Studies</h5>
+                    <h5 class="fw-bold text-light">College of Computer Studies</h5>
                 </div>
                 <div class="program-overlay">
                     <h6 class="fw-bold text-light">Programs:</h6>
