@@ -11,7 +11,13 @@ use App\Http\Controllers\SubmenuController;
 use App\Http\Controllers\WebController; 
 use App\Http\Controllers\autoGenController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\ChatbotController;
 
+Route::get('/chat', function () {
+    return view('chatbot.chat'); // Blade file
+})->name('chatbot.chat');
+
+Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat.ask');
 
 Route::middleware(['headers.security'])->group(function () {
     Route::middleware(['track.visit'])->group(function () {
@@ -42,6 +48,7 @@ Route::middleware(['headers.security'])->group(function () {
         Route::get('/key-officials', [WebController::class, 'keyOfficials'])->name('keyOfficials');
         Route::get('/international-affairs', [WebController::class, 'internationalAffairs'])->name('internationalAffairs');
         Route::get('/campus-map', [WebController::class, 'campusMap'])->name('campusMap');
+
     });
 
     Route::post('/visitors/count', [WebController::class, 'countVisitors'])->name('visit.count');

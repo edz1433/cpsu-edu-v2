@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\MasterController;
+use App\Http\Controllers\Api\ChatbotController;
 
+Route::get('/chatbot-data', [ChatbotController::class, 'chatbotData'])->name('chatbot-data');
 
 Route::middleware('api.token')->group(function () {
     Route::post('/news', [ArticleController::class, 'newsList'])->name('news-list');
