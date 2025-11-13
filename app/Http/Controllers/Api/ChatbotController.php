@@ -12,7 +12,8 @@ class ChatbotController extends Controller
 {
     public function chatbotData()
     {
-        $articles = Article::latest()->get(['id', 'title', 'content']); // or adjust columns as needed
+        // Include created_at and updated_at columns
+        $articles = Article::latest()->get(['id', 'title', 'content', 'created_at', 'updated_at']);
 
         $data = $articles->map(function ($article) {
             $contentPath = public_path("Uploads/News/content/{$article->content}");
@@ -41,13 +42,15 @@ class ChatbotController extends Controller
             return [
                 'title' => $title,
                 'content' => $contentText,
-                'url' => route('view-article', ['id' => $article->id]), // adjust to your actual route
+                'url' => route('view-article', ['id' => $article->id]),
+                'created_at' => $article->created_at->toDateTimeString(),
+                'updated_at' => $article->updated_at->toDateTimeString(),
             ];
         });
 
         return response()->json([
-            'source' => 'CPSU ChatBot',
-            'total' => count($data),
+            'source' => 'CPSU Website - Articles',
+            'total' => $data->count(),
             'data' => $data,
         ]);
     }
