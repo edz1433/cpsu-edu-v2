@@ -14,4 +14,6 @@
 
     # Optional: set modern valid Permissions-Policy directives
     Header set Permissions-Policy "geolocation=(self), microphone=(self), camera=(self), fullscreen=(self)"
+
+    Header set Content-Security-Policy "default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' http://172.16.126.253:5000 https:; font-src 'self' data: https:;"
 </IfModule>

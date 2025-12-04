@@ -6,12 +6,17 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "deepseek-php/deepseek-laravel": "^2.0",
         "fruitcake/laravel-cors": "^2.0.5",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
         "laravel/socialite": "^5.23",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "openai-php/laravel": "^0.11.0",
+        "symfony/css-selector": "^7.3",
+        "symfony/dom-crawler": "^7.3",
+        "symfony/http-client": "^7.3"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -56,7 +61,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
