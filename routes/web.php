@@ -11,13 +11,14 @@ use App\Http\Controllers\SubmenuController;
 use App\Http\Controllers\WebController; 
 use App\Http\Controllers\autoGenController;
 use App\Http\Controllers\GoogleAuthController;
-use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\Api\ChatbotController;
 
 Route::get('/chat', function () {
     return view('chatbot.chat'); // Blade file
 })->name('chatbot.chat');
 
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat.ask');
+Route::post('/chatbot-data', [ChatbotController::class, 'chatbotData'])->name('chatbot-data');
 
 Route::middleware(['headers.security'])->group(function () {
     Route::middleware(['track.visit'])->group(function () {
