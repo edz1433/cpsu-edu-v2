@@ -457,217 +457,260 @@
     </script>
 
     <!-- Active Chatbot Script (fixed syntax) -->
-<!-- Active Chatbot Script (FULLY FIXED - Toggle + Chat Logic) -->
-<script>
-document.addEventListener("DOMContentLoaded", () => {
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
 
-    /* ================= ELEMENTS ================= */
-    const chatContainer = document.getElementById("chatContainer");
-    const chatToggle = document.querySelector(".chat-toggle");
-    const chatHeader = document.querySelector(".chat-header");
-    const closeBtn = document.querySelector(".chat-header .close-btn");
-    const chatBody = document.getElementById("chatBody");
-
-    /* ================= TOGGLE CHATBOX ================= */
-    window.toggleChat = () => {
-        if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
-            chatContainer.style.display = "flex";
-            chatContainer.setAttribute("aria-hidden", "false");
-            chatToggle.setAttribute("aria-expanded", "true");
-            chatBody.scrollTop = chatBody.scrollHeight;
-        } else {
-            chatContainer.style.display = "none";
-            chatContainer.setAttribute("aria-hidden", "true");
-            chatToggle.setAttribute("aria-expanded", "false");
-        }
-    };
-
-    // Close when clicking the × button
-    closeBtn.addEventListener("click", (e) => {
-        e.stopPropagation(); // Prevent header click from reopening
+        /* ================= ELEMENTS ================= */
+        const chatContainer = document.getElementById("chatContainer");
+        const chatToggle = document.querySelector(".chat-toggle");
+        const chatHeader = document.querySelector(".chat-header");
+        const closeBtn = document.querySelector(".chat-header .close-btn");
+        const chatBody = document.getElementById("chatBody");
+        const userInput = document.getElementById("userInput");
+        const sendBtn = document.getElementById("sendBtn");
         chatContainer.style.display = "none";
-        chatContainer.setAttribute("aria-hidden", "true");
-        chatToggle.setAttribute("aria-expanded", "false");
-    });
 
-    // Optional: Click header (except close button) to minimize
-    chatHeader.addEventListener("click", (e) => {
-        if (e.target === closeBtn) return;
-        toggleChat();
-    });
+        /* ================= TOGGLE ================= */
+        const toggleChat = () => {
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "flex";
+                chatContainer.setAttribute("aria-hidden", "false");
+                chatToggle.setAttribute("aria-expanded", "true");
+                chatBody.scrollTop = chatBody.scrollHeight;
+            } else {
+                chatContainer.style.display = "none";
+                chatContainer.setAttribute("aria-hidden", "true");
+                chatToggle.setAttribute("aria-expanded", "false");
+            }
+        };
+        window.toggleChat = toggleChat;
 
-    // Ensure it's hidden on load
-    chatContainer.style.display = "none";
+        closeBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleChat(); });
+        chatHeader.addEventListener("click", e => { if(e.target !== closeBtn) toggleChat(); });
 
-    /* ================= CONFIG ================= */
-    const DATA_URL = "{{ route('chatbot-data') }}";
-    const OPENROUTER_API_KEY = "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";
-    const MODEL = "deepseek/deepseek-r1-0528:free";
+        /* ================= CONFIG ================= */
+        const OPENROUTER_API_KEY = "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";
+        const MODEL = "mistralai/mistral-7b-instruct:free";
+        const CACHE_KEY = "cpsu_chat_history";
+        const CACHE_TIME_KEY = "cpsu_chat_timestamp";
+        const CACHE_KNOWLEDGE_KEY = "cpsu_chat_knowledge";
+        const CACHE_KNOWLEDGE_TIME_KEY = "cpsu_chat_knowledge_time";
+        const CACHE_DURATION = 4 * 60 * 60 * 1000; // 4 hours
+        const FALLBACK_MESSAGE = "I do not have that information in my knowledge base.";
 
-    const CACHE_KEY = "cpsu_chat_history";
-    const CACHE_TIME_KEY = "cpsu_chat_timestamp";
-    const CACHE_DURATION = 2 * 60 * 60 * 1000;
+        let isWaiting = false;
+        let conversationHistory = [];
+        let activeLoadingDiv = null;
+        let knowledgeCache = "";
 
-    const FALLBACK_MESSAGE = "I do not have that information in my knowledge base.";
+        /* ================= CACHE ================= */
+        const loadConversation = () => {
+            try {
+                const data = localStorage.getItem(CACHE_KEY);
+                const time = +localStorage.getItem(CACHE_TIME_KEY);
+                if (data && time && Date.now() - time < CACHE_DURATION)
+                    return JSON.parse(data);
+            } catch {}
+            return [];
+        };
+        const saveConversation = history => {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(history));
+            localStorage.setItem(CACHE_TIME_KEY, Date.now());
+        };
+        const loadKnowledge = () => {
+            try {
+                const data = localStorage.getItem(CACHE_KNOWLEDGE_KEY);
+                const time = +localStorage.getItem(CACHE_KNOWLEDGE_TIME_KEY);
+                if (data && time && Date.now() - time < CACHE_DURATION) {
+                    console.log("📥 Knowledge loaded from cache.");
+                    return data;
+                }
+            } catch {}
+            return null;
+        };
+        const saveKnowledge = knowledge => {
+            localStorage.setItem(CACHE_KNOWLEDGE_KEY, knowledge);
+            localStorage.setItem(CACHE_KNOWLEDGE_TIME_KEY, Date.now());
+            console.log("✅ Knowledge cached successfully.");
+        };
 
-    let isWaiting = false;
-    let conversationHistory = [];
-    let activeLoadingDiv = null;
+        conversationHistory = loadConversation();
+        knowledgeCache = loadKnowledge();
 
-    /* ================= CACHE ================= */
-    const loadConversation = () => {
-        try {
-            const data = localStorage.getItem(CACHE_KEY);
-            const time = +localStorage.getItem(CACHE_TIME_KEY);
-            if (data && time && Date.now() - time < CACHE_DURATION)
-                return JSON.parse(data);
-        } catch {}
-        return [];
-    };
+        /* ================= MARKDOWN ================= */
+        const parseMarkdown = txt =>
+            (typeof marked !== "undefined" && marked.parse)
+                ? marked.parse(txt)
+                : txt.replace(/\n/g, "<br>");
+        const removeLoading = () => {
+            if (activeLoadingDiv?.parentNode) activeLoadingDiv.parentNode.removeChild(activeLoadingDiv);
+            activeLoadingDiv = null;
+        };
 
-    const saveConversation = history => {
-        localStorage.setItem(CACHE_KEY, JSON.stringify(history));
-        localStorage.setItem(CACHE_TIME_KEY, Date.now());
-    };
+        /* ================= FETCH KNOWLEDGE ================= */
+        const fetchKnowledgeOnce = async () => {
+            if (knowledgeCache) return knowledgeCache;
+            const token = document.querySelector('meta[name="csrf-token"]').content;
+            const res = await fetch("{{ route('chatbot-data') }}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": token },
+                body: JSON.stringify({ input: "" })
+            });
+            if (!res.ok) throw new Error("Knowledge base unavailable");
+            const data = await res.json();
+            knowledgeCache = JSON.stringify(data.data || []);
+            saveKnowledge(knowledgeCache);
+            console.log("📚 Knowledge fetched from server.");
+            return knowledgeCache;
+        };
 
-    conversationHistory = loadConversation();
+        /* ================= HELPER: GET RELEVANT ARTICLES ================= */
+        const getRelevantArticles = (msg, max = 20) => {
+            if (!knowledgeCache) return [];
+            try {
+                const articles = JSON.parse(knowledgeCache);
+                const keyword = msg.toLowerCase().replace(/[^a-z0-9 ]/gi, '').split(' ');
+                const filtered = articles.filter(a => {
+                    const text = (a.title + " " + a.content).toLowerCase();
+                    // match if all words in keyword exist somewhere in article
+                    return keyword.every(k => text.includes(k));
+                });
+                filtered.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+                return filtered.slice(0, max);
+            } catch {
+                return [];
+            }
+        };
 
-    /* ================= MARKDOWN ================= */
-    const parseMarkdown = txt =>
-        (typeof marked !== "undefined" && marked.parse)
-            ? marked.parse(txt)
-            : txt.replace(/\n/g, "<br>");
+        const flattenArticles = (articles) => {
+            return articles.map(a =>
+                `Title: ${a.title}\nContent: ${a.content}\nURL: ${a.url}`
+            ).join("\n\n");
+        };
 
-    /* ================= LOADING ================= */
-    const removeLoading = () => {
-        if (activeLoadingDiv?.parentNode) {
-            activeLoadingDiv.parentNode.removeChild(activeLoadingDiv);
-        }
-        activeLoadingDiv = null;
-    };
+        /* ================= OPENROUTER CALL ================= */
+        const callOpenRouter = async (history, question) => {
+            const relevantArticles = getRelevantArticles(question, 20); // top 20 relevant
+            const readableKnowledge = flattenArticles(relevantArticles);
 
-    /* ================= FETCH KNOWLEDGE ================= */
-    const fetchKnowledge = async (question) => {
-        const token = document.querySelector('meta[name="csrf-token"]').content;
+            if (!readableKnowledge) return FALLBACK_MESSAGE;
 
-        const res = await fetch(DATA_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": token
-            },
-            body: JSON.stringify({ input: question })
-        });
+            const messages = [
+                {
+                    role: "system",
+                    content: `
+                        You are Kaloy, a friendly CPSU ChatBot.
+                        Answer only using the knowledge provided.
+                        NEVER invent information outside it.
+                        If unsure, reply exactly: "${FALLBACK_MESSAGE}".
+                        
+                        Knowledge Base:
+                        ${readableKnowledge}
+                    `
+                },
+                ...history,
+                { role: "user", content: question }
+            ];
 
-        if (!res.ok) throw new Error("Knowledge base unavailable");
-        const data = await res.json();
-        return (data.context || data.answer || "").trim();
-    };
+            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    model: MODEL,
+                    temperature: 0.7,
+                    top_p: 0.95,
+                    messages
+                })
+            });
 
-    /* ================= OPENROUTER ================= */
-    const callOpenRouter = async (context, question) => {
-        if (!context) return FALLBACK_MESSAGE;
+            const data = await response.json();
+            return data.choices?.[0]?.message?.content?.trim() || FALLBACK_MESSAGE;
+        };
 
-        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: MODEL,
-                temperature: 0,
-                top_p: 0.1,
-                messages: [
-                    {
-                        role: "system",
-                        content: `
-                            You are a STRICTLY RESTRICTED university assistant.
+        /* ================= SEND MESSAGE ================= */
+        const sendMessage = async () => {
+            const msg = userInput.value.trim();
+            if (!msg || isWaiting) return;
 
-                            CRITICAL RULES:
-                            - Use ONLY the CONTEXT below.
-                            - DO NOT guess, infer, or add external knowledge.
-                            - If the answer is not explicitly in the CONTEXT, reply EXACTLY with:
-                            "${FALLBACK_MESSAGE}"
+            isWaiting = true;
+            sendBtn.disabled = true;
+            userInput.value = "";
 
-                            CONTEXT:
-                            ${context}
-                        `
-                    },
-                    { role: "user", content: question }
-                ]
-            })
-        });
-
-        const data = await response.json();
-        return data.choices?.[0]?.message?.content?.trim() || FALLBACK_MESSAGE;
-    };
-
-    /* ================= SEND MESSAGE ================= */
-    window.sendMessage = async () => {
-        const input = document.getElementById("userInput");
-        const btn = document.getElementById("sendBtn");
-        const msg = input.value.trim();
-
-        if (!msg || isWaiting) return;
-
-        isWaiting = true;
-        btn.disabled = true;
-        input.value = "";
-
-        // User message
-        const userDiv = document.createElement("div");
-        userDiv.className = "user-message message";
-        userDiv.textContent = msg;
-        chatBody.appendChild(userDiv);
-
-        // Loading
-        removeLoading();
-        activeLoadingDiv = document.createElement("div");
-        activeLoadingDiv.className = "bot-message message loading";
-        activeLoadingDiv.textContent = "Thinking...";
-        chatBody.appendChild(activeLoadingDiv);
-        chatBody.scrollTop = chatBody.scrollHeight;
-
-        try {
-            const knowledge = await fetchKnowledge(msg);
-            const reply = await callOpenRouter(knowledge, msg);
-
-            removeLoading();
-
-            const botDiv = document.createElement("div");
-            botDiv.className = "bot-message message";
-            botDiv.innerHTML = parseMarkdown(reply);
-            chatBody.appendChild(botDiv);
-
-            conversationHistory.push(
-                { role: "user", content: msg },
-                { role: "assistant", content: reply }
-            );
-            saveConversation(conversationHistory);
-
-        } catch (err) {
-            removeLoading();
-            const errDiv = document.createElement("div");
-            errDiv.className = "bot-message message";
-            errDiv.textContent = "❌ Unable to retrieve information right now.";
-            chatBody.appendChild(errDiv);
-        } finally {
-            isWaiting = false;
-            btn.disabled = false;
+            // User message
+            const userDiv = document.createElement("div");
+            userDiv.className = "user-message message";
+            userDiv.textContent = msg;
+            chatBody.appendChild(userDiv);
             chatBody.scrollTop = chatBody.scrollHeight;
-        }
-    };
 
-    // Enter key to send
-    document.getElementById("userInput")?.addEventListener("keypress", e => {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            sendMessage();
-        }
+            // Bot typing...
+            removeLoading();
+            activeLoadingDiv = document.createElement("div");
+            activeLoadingDiv.className = "bot-message message loading";
+            activeLoadingDiv.textContent = "Kaloy is typing...";
+            chatBody.appendChild(activeLoadingDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            try {
+                await fetchKnowledgeOnce();
+
+                // Local greetings/small talk
+                let reply = "";
+                const lowerMsg = msg.toLowerCase();
+                const greetings = ["hi","hello","hey","good morning","good afternoon","good evening"];
+                if (greetings.some(g => lowerMsg.includes(g))) {
+                    reply = "Hi! 👋 I’m Kaloy, your CPSU ChatBot. How’s your day going?";
+                } else if (/how are you/.test(lowerMsg)) {
+                    reply = "I’m just a chatbot 🤖, but I’m happy to chat with you! How are you today?";
+                } else {
+                    // Knowledge-based response
+                    reply = await callOpenRouter(conversationHistory, msg);
+                }
+
+                // simulate typing delay
+                await new Promise(res => setTimeout(res, 500 + Math.random() * 800));
+
+                removeLoading();
+                const botDiv = document.createElement("div");
+                botDiv.className = "bot-message message";
+                botDiv.innerHTML = parseMarkdown(reply);
+                chatBody.appendChild(botDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+
+                conversationHistory.push(
+                    { role: "user", content: msg },
+                    { role: "assistant", content: reply }
+                );
+                saveConversation(conversationHistory);
+
+            } catch (err) {
+                removeLoading();
+                const errDiv = document.createElement("div");
+                errDiv.className = "bot-message message";
+                errDiv.textContent = "❌ Unable to retrieve information right now.";
+                chatBody.appendChild(errDiv);
+            } finally {
+                isWaiting = false;
+                sendBtn.disabled = false;
+            }
+        };
+
+        userInput?.addEventListener("keypress", e => { if (e.key === "Enter") { e.preventDefault(); sendMessage(); } });
+        sendBtn?.addEventListener("click", sendMessage);
+
+        /* ================= REFRESH KNOWLEDGE EVERY 4 HOURS ================= */
+        setInterval(async () => {
+            const lastFetchTime = +localStorage.getItem(CACHE_KNOWLEDGE_TIME_KEY) || 0;
+            if (Date.now() - lastFetchTime >= CACHE_DURATION) {
+                console.log("⏳ Knowledge cache expired, refreshing...");
+                try { await fetchKnowledgeOnce(); } catch(e) { console.warn("⚠️ Failed to refresh knowledge:", e); }
+            }
+        }, 5 * 60 * 1000);
+
     });
-
-});
-</script>
+    </script>
 </body>
 </html>

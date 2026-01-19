@@ -837,44 +837,44 @@
           <h3><i class="fas fa-paperclip"></i> Attachments</h3>
           <div class="attachments">
             <div class="input-group file-input-container">
-              <label class="required">Personal Data Sheet (PDF)</label>
+              <label class="required">Personal Data Sheet </label>
               <input type="file" name="pds" accept=".pdf" autocomplete="off" required>
               <p class="note">Upload your Personal Data Sheet. (max 20MB)</p>
               <div class="invalid-feedback">Please upload your Personal Data Sheet</div>
               <div class="server-error"></div>
             </div>
             <div class="input-group file-input-container">
-              <label class="required">Work Experience Sheet (PDF)</label>
+              <label class="required">Work Experience Sheet </label>
               <input type="file" name="wes" accept=".pdf" required>
               <p class="note">Upload your WES detailing roles. (max 20MB)</p>
               <div class="invalid-feedback">Please upload your Work Experience Sheet</div>
               <div class="server-error"></div>
             </div>
             <div class="input-group file-input-container">
-              <label class="required">Intent Letter (PDF)</label>
+              <label class="required">Intent Letter </label>
               <input type="file" name="intent" accept=".pdf" required>
               <div class="invalid-feedback">Please upload your Intent Letter</div>
               <div class="server-error"></div>
             </div>
             <div class="input-group file-input-container">
-              <label class="required">Resume (PDF)</label>
+              <label class="required">Certificate of Eligibility </label>
               <input type="file" name="resume" accept=".pdf" required>
               <div class="invalid-feedback">Please upload your Resume</div>
               <div class="server-error"></div>
             </div>
             <div class="input-group file-input-container">
-              <label class="required">Transcript of Records (PDF)</label>
+              <label class="required">Transcript of Records </label>
               <input type="file" name="tor" accept=".pdf" required>
               <div class="invalid-feedback">Please upload your Transcript of Records</div>
               <div class="server-error"></div>
             </div>
             <div class="input-group file-input-container">
-              <label>Certificate of Employment (PDF)</label>
+              <label>Certificate of Employment </label>
               <input type="file" name="coe" accept=".pdf">
               <div class="server-error"></div>
             </div>
             <div class="input-group file-input-container">
-              <label>Certificate of Training (PDF)</label>
+              <label>Certificate of Training </label>
               <input type="file" name="cert_training[]" accept=".pdf" multiple>
               <div class="server-error"></div>
             </div>
