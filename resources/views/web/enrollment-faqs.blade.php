@@ -1,6 +1,5 @@
 @extends('web.layouts.mainlayout')
 @section('content')
-@section('content')
 
 <style>
     .admission-title {

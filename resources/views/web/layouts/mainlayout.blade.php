@@ -434,7 +434,7 @@
     <!--====== Main js ======-->
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const cookiePopup = document.getElementById("cookie-popup");

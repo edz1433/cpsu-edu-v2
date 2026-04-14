@@ -506,4 +506,15 @@ class WebController extends Controller
         $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
         return view('web.map', compact("categories", "subcategories", "submenu"));
     }
+
+    public function gad()
+    {
+        $categories = Category::all();
+        $subcategories = SubCategory::all();
+        $submenu = Submenu::orderBy('title', 'asc')->where('status', 1)->get();
+        $apiUrl = env('HRIS_API_URL');
+        $apicoasUrl = env('COAS_API_URL');
+
+        return view('web.gad', compact("categories", "subcategories", "submenu", "apiUrl", "apicoasUrl"));
+    }
 }   
