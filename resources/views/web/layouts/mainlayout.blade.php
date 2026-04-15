@@ -52,12 +52,14 @@
             height: 500px;
             background: #ffffff;
             border-radius: 15px;
-            display: flex;
             flex-direction: column;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             z-index: 1000;
-            display: none; /* Initially hidden */
+            display: none; /* Initially hidden; JS adds display:flex via .chat-open class */
+        }
+        .chat-container.chat-open {
+            display: flex;
         }
         .chat-header {
             background-color: #28a745;
@@ -368,7 +370,7 @@
     </button>
     <!-- Chatbot Container -->
     <div class="chat-container" id="chatContainer" role="dialog" aria-modal="true" aria-labelledby="chatHeader" aria-hidden="true">
-        <div class="chat-header" id="chatHeader" onclick="toggleChat()" tabindex="0" role="button" aria-label="Close CPSU ChatBot">
+        <div class="chat-header" id="chatHeader" tabindex="0" role="button" aria-label="Close CPSU ChatBot">
             <div class="header-left">
                 <img src="{{ asset('Uploads/chatbot.png') }}" alt="" aria-hidden="true">
                 <span>CPSU ChatBot</span>
@@ -377,7 +379,7 @@
         </div>
         <div class="chat-body" id="chatBody" role="log" aria-live="polite">
             <div class="bot-message message">
-                Hi! I'm Kaloy👋 I’m your CPSU ChatBot. How can I help you today?
+                Hi! I'm Kaloy👋 I'm your CPSU ChatBot. How can I help you today?
             </div>
         </div>
         <div class="chat-footer">
@@ -435,6 +437,7 @@
     <script src="{{ asset('js/main.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function () {
         const cookiePopup = document.getElementById("cookie-popup");
@@ -458,6 +461,25 @@
 
     <!-- Active Chatbot Script (fixed syntax) -->
     <script>
+    /* ================= TOGGLE (global — must be defined before DOMContentLoaded) ================= */
+    function toggleChat() {
+        var chatContainer = document.getElementById("chatContainer");
+        var chatToggle    = document.querySelector(".chat-toggle");
+        var chatBody      = document.getElementById("chatBody");
+        if (!chatContainer) return;
+        var isOpen = chatContainer.classList.contains("chat-open");
+        if (isOpen) {
+            chatContainer.classList.remove("chat-open");
+            chatContainer.setAttribute("aria-hidden", "true");
+            if (chatToggle) chatToggle.setAttribute("aria-expanded", "false");
+        } else {
+            chatContainer.classList.add("chat-open");
+            chatContainer.setAttribute("aria-hidden", "false");
+            if (chatToggle) chatToggle.setAttribute("aria-expanded", "true");
+            if (chatBody) chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
 
         /* ================= ELEMENTS ================= */
@@ -468,166 +490,70 @@
         const chatBody = document.getElementById("chatBody");
         const userInput = document.getElementById("userInput");
         const sendBtn = document.getElementById("sendBtn");
-        chatContainer.style.display = "none";
-
-        /* ================= TOGGLE ================= */
-        const toggleChat = () => {
-            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
-                chatContainer.style.display = "flex";
-                chatContainer.setAttribute("aria-hidden", "false");
-                chatToggle.setAttribute("aria-expanded", "true");
-                chatBody.scrollTop = chatBody.scrollHeight;
-            } else {
-                chatContainer.style.display = "none";
-                chatContainer.setAttribute("aria-hidden", "true");
-                chatToggle.setAttribute("aria-expanded", "false");
-            }
-        };
-        window.toggleChat = toggleChat;
 
         closeBtn.addEventListener("click", (e) => { e.stopPropagation(); toggleChat(); });
         chatHeader.addEventListener("click", e => { if(e.target !== closeBtn) toggleChat(); });
 
         /* ================= CONFIG ================= */
-        const OPENROUTER_API_KEY = "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";
-        const MODEL = "mistralai/mistral-7b-instruct:free";
-        const CACHE_KEY = "cpsu_chat_history";
+        const CACHE_KEY      = "cpsu_chat_history";
         const CACHE_TIME_KEY = "cpsu_chat_timestamp";
-        const CACHE_KNOWLEDGE_KEY = "cpsu_chat_knowledge";
-        const CACHE_KNOWLEDGE_TIME_KEY = "cpsu_chat_knowledge_time";
         const CACHE_DURATION = 4 * 60 * 60 * 1000; // 4 hours
-        const FALLBACK_MESSAGE = "I do not have that information in my knowledge base.";
 
-        let isWaiting = false;
+        let isWaiting           = false;
         let conversationHistory = [];
-        let activeLoadingDiv = null;
-        let knowledgeCache = "";
+        let activeLoadingDiv    = null;
 
-        /* ================= CACHE ================= */
+        /* ================= CONVERSATION CACHE ================= */
         const loadConversation = () => {
             try {
-                const data = localStorage.getItem(CACHE_KEY);
-                const time = +localStorage.getItem(CACHE_TIME_KEY);
-                if (data && time && Date.now() - time < CACHE_DURATION)
-                    return JSON.parse(data);
+                const d = localStorage.getItem(CACHE_KEY);
+                const t = +localStorage.getItem(CACHE_TIME_KEY);
+                if (d && t && Date.now() - t < CACHE_DURATION) return JSON.parse(d);
             } catch {}
             return [];
         };
-        const saveConversation = history => {
-            localStorage.setItem(CACHE_KEY, JSON.stringify(history));
+        const saveConversation = h => {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(h));
             localStorage.setItem(CACHE_TIME_KEY, Date.now());
-        };
-        const loadKnowledge = () => {
-            try {
-                const data = localStorage.getItem(CACHE_KNOWLEDGE_KEY);
-                const time = +localStorage.getItem(CACHE_KNOWLEDGE_TIME_KEY);
-                if (data && time && Date.now() - time < CACHE_DURATION) {
-                    console.log("📥 Knowledge loaded from cache.");
-                    return data;
-                }
-            } catch {}
-            return null;
-        };
-        const saveKnowledge = knowledge => {
-            localStorage.setItem(CACHE_KNOWLEDGE_KEY, knowledge);
-            localStorage.setItem(CACHE_KNOWLEDGE_TIME_KEY, Date.now());
-            console.log("✅ Knowledge cached successfully.");
         };
 
         conversationHistory = loadConversation();
-        knowledgeCache = loadKnowledge();
 
         /* ================= MARKDOWN ================= */
+        if (typeof marked !== "undefined") {
+            marked.use({
+                renderer: {
+                    link({ href, title, text }) {
+                        const t = title ? ` title="${title}"` : "";
+                        return `<a href="${href}"${t} target="_blank" rel="noopener noreferrer">${text || href}</a>`;
+                    }
+                }
+            });
+        }
         const parseMarkdown = txt =>
             (typeof marked !== "undefined" && marked.parse)
                 ? marked.parse(txt)
                 : txt.replace(/\n/g, "<br>");
+
         const removeLoading = () => {
             if (activeLoadingDiv?.parentNode) activeLoadingDiv.parentNode.removeChild(activeLoadingDiv);
             activeLoadingDiv = null;
         };
 
-        /* ================= FETCH KNOWLEDGE ================= */
-        const fetchKnowledgeOnce = async () => {
-            if (knowledgeCache) return knowledgeCache;
+        /* ================= CALL LOCAL CLAUDE ENDPOINT ================= */
+        const callChatAPI = async (history, message) => {
             const token = document.querySelector('meta[name="csrf-token"]').content;
-            const res = await fetch("{{ route('chatbot-data') }}", {
-                method: "POST",
-                headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": token },
-                body: JSON.stringify({ input: "" })
-            });
-            if (!res.ok) throw new Error("Knowledge base unavailable");
-            const data = await res.json();
-            knowledgeCache = JSON.stringify(data.data || []);
-            saveKnowledge(knowledgeCache);
-            console.log("📚 Knowledge fetched from server.");
-            return knowledgeCache;
-        };
-
-        /* ================= HELPER: GET RELEVANT ARTICLES ================= */
-        const getRelevantArticles = (msg, max = 20) => {
-            if (!knowledgeCache) return [];
-            try {
-                const articles = JSON.parse(knowledgeCache);
-                const keyword = msg.toLowerCase().replace(/[^a-z0-9 ]/gi, '').split(' ');
-                const filtered = articles.filter(a => {
-                    const text = (a.title + " " + a.content).toLowerCase();
-                    // match if all words in keyword exist somewhere in article
-                    return keyword.every(k => text.includes(k));
-                });
-                filtered.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
-                return filtered.slice(0, max);
-            } catch {
-                return [];
-            }
-        };
-
-        const flattenArticles = (articles) => {
-            return articles.map(a =>
-                `Title: ${a.title}\nContent: ${a.content}\nURL: ${a.url}`
-            ).join("\n\n");
-        };
-
-        /* ================= OPENROUTER CALL ================= */
-        const callOpenRouter = async (history, question) => {
-            const relevantArticles = getRelevantArticles(question, 20); // top 20 relevant
-            const readableKnowledge = flattenArticles(relevantArticles);
-
-            if (!readableKnowledge) return FALLBACK_MESSAGE;
-
-            const messages = [
-                {
-                    role: "system",
-                    content: `
-                        You are Kaloy, a friendly CPSU ChatBot.
-                        Answer only using the knowledge provided.
-                        NEVER invent information outside it.
-                        If unsure, reply exactly: "${FALLBACK_MESSAGE}".
-                        
-                        Knowledge Base:
-                        ${readableKnowledge}
-                    `
-                },
-                ...history,
-                { role: "user", content: question }
-            ];
-
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            const res = await fetch("{{ route('chatbot.send') }}", {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": token
                 },
-                body: JSON.stringify({
-                    model: MODEL,
-                    temperature: 0.7,
-                    top_p: 0.95,
-                    messages
-                })
+                body: JSON.stringify({ message, history })
             });
-
-            const data = await response.json();
-            return data.choices?.[0]?.message?.content?.trim() || FALLBACK_MESSAGE;
+            if (!res.ok) throw new Error("Server error " + res.status);
+            const data = await res.json();
+            return data.reply || "I'm sorry, I couldn't process your request.";
         };
 
         /* ================= SEND MESSAGE ================= */
@@ -639,14 +565,12 @@
             sendBtn.disabled = true;
             userInput.value = "";
 
-            // User message
             const userDiv = document.createElement("div");
             userDiv.className = "user-message message";
             userDiv.textContent = msg;
             chatBody.appendChild(userDiv);
             chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Bot typing...
             removeLoading();
             activeLoadingDiv = document.createElement("div");
             activeLoadingDiv.className = "bot-message message loading";
@@ -655,23 +579,7 @@
             chatBody.scrollTop = chatBody.scrollHeight;
 
             try {
-                await fetchKnowledgeOnce();
-
-                // Local greetings/small talk
-                let reply = "";
-                const lowerMsg = msg.toLowerCase();
-                const greetings = ["hi","hello","hey","good morning","good afternoon","good evening"];
-                if (greetings.some(g => lowerMsg.includes(g))) {
-                    reply = "Hi! 👋 I’m Kaloy, your CPSU ChatBot. How’s your day going?";
-                } else if (/how are you/.test(lowerMsg)) {
-                    reply = "I’m just a chatbot 🤖, but I’m happy to chat with you! How are you today?";
-                } else {
-                    // Knowledge-based response
-                    reply = await callOpenRouter(conversationHistory, msg);
-                }
-
-                // simulate typing delay
-                await new Promise(res => setTimeout(res, 500 + Math.random() * 800));
+                const reply = await callChatAPI(conversationHistory, msg);
 
                 removeLoading();
                 const botDiv = document.createElement("div");
@@ -681,7 +589,7 @@
                 chatBody.scrollTop = chatBody.scrollHeight;
 
                 conversationHistory.push(
-                    { role: "user", content: msg },
+                    { role: "user",      content: msg   },
                     { role: "assistant", content: reply }
                 );
                 saveConversation(conversationHistory);
@@ -690,7 +598,7 @@
                 removeLoading();
                 const errDiv = document.createElement("div");
                 errDiv.className = "bot-message message";
-                errDiv.textContent = "❌ Unable to retrieve information right now.";
+                errDiv.textContent = "❌ Unable to connect right now. Please try again shortly.";
                 chatBody.appendChild(errDiv);
             } finally {
                 isWaiting = false;
@@ -701,16 +609,32 @@
         userInput?.addEventListener("keypress", e => { if (e.key === "Enter") { e.preventDefault(); sendMessage(); } });
         sendBtn?.addEventListener("click", sendMessage);
 
-        /* ================= REFRESH KNOWLEDGE EVERY 4 HOURS ================= */
-        setInterval(async () => {
-            const lastFetchTime = +localStorage.getItem(CACHE_KNOWLEDGE_TIME_KEY) || 0;
-            if (Date.now() - lastFetchTime >= CACHE_DURATION) {
-                console.log("⏳ Knowledge cache expired, refreshing...");
-                try { await fetchKnowledgeOnce(); } catch(e) { console.warn("⚠️ Failed to refresh knowledge:", e); }
-            }
-        }, 5 * 60 * 1000);
-
     });
+    </script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            var dataTable = $('#alltablegendercampus').DataTable({
+                "ajax": {
+                    "url": '{{ $apicoasUrl }}/gad-gender-student-count',
+                    "type": "GET",
+                },
+                destroy: true,
+                info: false,
+                responsive: true,
+                lengthChange: true,
+                searching: false,
+                paging: false,
+                "columns": [
+                    {data: 'campus'},
+                    {data: 'male'},
+                    {data: 'female'},
+                ],
+                "createdRow": function (row, data, index) {
+                    $(row).attr('id', 'tr-' + data.id); 
+                }
+            });
+        });
     </script>
 </body>
 </html>
