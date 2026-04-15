@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep:*)",
+      "Bash(ollama --version)",
+      "Bash(powershell -Command \"Invoke-WebRequest -Uri 'https://ollama.com/download/OllamaSetup.exe' -OutFile 'C:\\\\Users\\\\ACER\\\\Downloads\\\\OllamaSetup.exe' -UseBasicParsing\")",
+      "Bash(powershell -Command \"if \\(Test-Path 'C:\\\\Users\\\\ACER\\\\Downloads\\\\OllamaSetup.exe'\\) { \\(Get-Item 'C:\\\\Users\\\\ACER\\\\Downloads\\\\OllamaSetup.exe'\\).Length } else { 'NOT FOUND' }\")",
+      "Bash(powershell -Command \"Start-Process 'C:\\\\Users\\\\ACER\\\\Downloads\\\\OllamaSetup.exe' -ArgumentList '/S' -Wait\")",
+      "Bash(powershell -Command 'Get-Process | Where-Object { $_.Name -like '\\\\''*ollama*'\\\\'' -or $_.Name -like '\\\\''*Ollama*'\\\\'' } | Select-Object Name, Id')",
+      "Bash(powershell -Command \"& 'C:\\\\Users\\\\ACER\\\\AppData\\\\Local\\\\Programs\\\\Ollama\\\\ollama.exe' --version\")",
+      "Bash(powershell -Command \"& 'C:\\\\Users\\\\ACER\\\\AppData\\\\Local\\\\Programs\\\\Ollama\\\\ollama.exe' pull llama3.2\")",
+      "Bash(curl -s http://localhost:11434/api/chat -d \"{\\\\\"model\\\\\":\\\\\"llama3.2\\\\\",\\\\\"messages\\\\\":[{\\\\\"role\\\\\":\\\\\"user\\\\\",\\\\\"content\\\\\":\\\\\"say hi\\\\\"}],\\\\\"stream\\\\\":false}\")",
+      "Bash(php artisan:*)",
+      "Bash(powershell -Command \"& 'C:\\\\Users\\\\ACER\\\\AppData\\\\Local\\\\Programs\\\\Ollama\\\\ollama.exe' pull llama3.2:1b\")",
+      "Bash(curl -s \"https://cdn.jsdelivr.net/npm/marked/package.json\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('version','unknown'\\)\\)\")",
+      "Bash(git restore:*)",
+      "Bash(php -r \"echo app_path\\(\\);\")",
+      "Bash(grep -l \"chatbot-data\\\\|OPENROUTER\\\\|fetchKnowledge\" \"d:/xampp/htdocs/cpsu-edu/storage/framework/views/\"*.php)",
+      "Bash(python -c ':*)"
+    ]
+  }
+}
