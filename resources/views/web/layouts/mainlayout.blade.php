@@ -612,6 +612,7 @@
     });
     </script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    @if(request()->is('gad'))
     <script>
         $(document).ready(function() {
             var dataTable = $('#alltablegendercampus').DataTable({
@@ -636,5 +637,6 @@
             });
         });
     </script>
+    @endif
 </body>
 </html>

@@ -193,8 +193,6 @@
     </div>
 </section>
 
-
-
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
 
@@ -224,8 +222,8 @@
                         datasets: [{
                             data: data,
                             backgroundColor: [
-                                '#14532D', // dark green
-                                '#4ADE80'  // light green
+                                '#14532D', // dark green - Male
+                                '#4ADE80'  // light green - Female
                             ],
                             borderColor: '#ffffff',
                             borderWidth: 2
@@ -233,6 +231,7 @@
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: { 
                                 position: 'bottom',
@@ -263,8 +262,7 @@
                                     size: 14
                                 },
                                 formatter: (value, context) => {
-                                    const data = context.chart.data.datasets[0].data;
-                                    const total = data.reduce((a, b) => a + b, 0);
+                                    const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
                                     const percentage = ((value / total) * 100).toFixed(1);
                                     return percentage + '%'; 
                                 }
@@ -276,7 +274,7 @@
             }
 
             /* ===============================
-            2. BY CAMPUS BAR CHART
+            2. BY CAMPUS - STACKED BAR CHART (Improved)
             =============================== */
             const campusCanvas = document.getElementById('campusChart');
 
@@ -284,10 +282,10 @@
                 const byCampus = (result.bycampus || [])
                     .filter(item => item.sex !== null);
 
-                // unique campuses
+                // Get unique campus names
                 const campuses = [...new Set(byCampus.map(item => item.campus_name))];
 
-                // male data
+                // Prepare Male and Female data
                 const maleData = campuses.map(campus => {
                     const found = byCampus.find(item =>
                         item.campus_name === campus && item.sex === 'Male'
@@ -295,7 +293,6 @@
                     return found ? found.count : 0;
                 });
 
-                // female data
                 const femaleData = campuses.map(campus => {
                     const found = byCampus.find(item =>
                         item.campus_name === campus && item.sex === 'Female'
@@ -311,19 +308,26 @@
                             {
                                 label: 'Male',
                                 data: maleData,
-                                backgroundColor: '#14532D' // dark green
+                                backgroundColor: '#14532D',   // dark green
+                                borderColor: '#ffffff',
+                                borderWidth: 1
                             },
                             {
                                 label: 'Female',
                                 data: femaleData,
-                                backgroundColor: '#4ADE80' // light green
+                                backgroundColor: '#4ADE80',   // light green
+                                borderColor: '#ffffff',
+                                borderWidth: 1
                             }
                         ]
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'x', // set to 'y' for horizontal bars
                         scales: {
                             x: {
+                                stacked: true,
                                 ticks: {
                                     autoSkip: false,
                                     maxRotation: 45,
@@ -331,7 +335,22 @@
                                 }
                             },
                             y: {
-                                beginAtZero: true
+                                stacked: true,
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Students'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                align: 'center'
+                            },
+                            tooltip: {
+                                mode: 'index',
+                                intersect: false
                             }
                         }
                     }
@@ -343,8 +362,6 @@
         }
     });
 </script>
-
-
 
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
