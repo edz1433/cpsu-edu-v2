@@ -14,11 +14,11 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\Api\ChatbotController;
 
 Route::get('/chat', function () {
-    return view('chatbot.chat'); // Blade file
+    return view('chatbot.chat');
 })->name('chatbot.chat');
 
-Route::post('/chatbot-data', [ChatbotController::class, 'chatbotData'])->name('chatbot-data');
-Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.send');
+Route::get('/chatbot-data', [ChatbotController::class, 'chatbotData'])->name('chatbot-data');
+Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
 
 Route::middleware(['headers.security'])->group(function () {
     Route::middleware(['track.visit'])->group(function () {
