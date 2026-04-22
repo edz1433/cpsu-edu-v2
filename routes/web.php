@@ -17,7 +17,7 @@ Route::get('/chat', function () {
     return view('chatbot.chat');
 })->name('chatbot.chat');
 
-Route::get('/chatbot-data', [ChatbotController::class, 'chatbotData'])->name('chatbot-data');
+Route::post('/chatbot-data', [ChatbotController::class, 'chatbotData'])->name('chatbot-data');
 Route::post('/chatbot/chat', [ChatbotController::class, 'chat'])->name('chatbot.chat');
 
 Route::middleware(['headers.security'])->group(function () {
