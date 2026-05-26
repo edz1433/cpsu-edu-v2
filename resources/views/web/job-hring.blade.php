@@ -192,6 +192,41 @@
         text-decoration: underline;
         transform: translateY(-2px);
     }
+    .job-detail-toggle {
+        border: 0;
+        background: transparent;
+        color: #28a745;
+        font-size: 0.875rem;
+        font-weight: 600;
+        padding: 0;
+    }
+    .job-detail-toggle:hover,
+    .job-detail-toggle:focus {
+        color: #1e7e34;
+        text-decoration: underline;
+        outline: none;
+    }
+    .job-detail-collapsible {
+        max-height: 96px;
+        overflow: hidden;
+        position: relative;
+    }
+    .job-detail-collapsible::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 32px;
+        background: linear-gradient(rgba(255, 255, 255, 0), #fff);
+        pointer-events: none;
+    }
+    .job-detail-collapsible.expanded {
+        max-height: none;
+    }
+    .job-detail-collapsible.expanded::after {
+        display: none;
+    }
     </style>
     <div class="row mb-4">
         <div class="col-md-12 text-right">
@@ -235,7 +270,22 @@
                             <span class="font-weight-bold text-success">Experience:</span> {{ $job['experience'] }}
                         </div>
                         <div class="col-12 mb-1">
-                            <span class="font-weight-bold text-success">Competency:</span> {!! nl2br(e($job['competency'])) !!}
+                            <div class="job-detail-collapsible" id="job-details-{{ $job['id'] }}">
+                                <div class="mb-1">
+                                    <span class="font-weight-bold text-success">Competency:</span> {!! nl2br(e($job['competency'])) !!}
+                                </div>
+                                @if(!empty($job['requirements']))
+                                <div class="mt-2">
+                                    <span class="font-weight-bold text-success">Requirements:</span> {!! nl2br(e($job['requirements'])) !!}
+                                </div>
+                                @endif
+                            </div>
+                            <button type="button"
+                                    class="job-detail-toggle mt-1"
+                                    data-target="job-details-{{ $job['id'] }}"
+                                    aria-expanded="false">
+                                Read more
+                            </button>
                         </div>
                     </div>
 
@@ -291,6 +341,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const jobListing = document.getElementById('job-listing');
     const statusOutput = document.getElementById('status-output');
     const trackModal = $('#trackModal'); // Bootstrap modal
+
+    document.querySelectorAll('.job-detail-toggle').forEach(button => {
+        const detail = document.getElementById(button.dataset.target);
+        if (!detail) return;
+
+        if (detail.scrollHeight <= detail.clientHeight) {
+            button.style.display = 'none';
+            detail.classList.add('expanded');
+            return;
+        }
+
+        button.addEventListener('click', function () {
+            const isExpanded = detail.classList.toggle('expanded');
+            button.textContent = isExpanded ? 'Show less' : 'Read more';
+            button.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+        });
+    });
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
