@@ -449,20 +449,28 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                 `;
 
-                // ✅ Loop through all stages until current status
-                for (let stage of stages) {
-                    // 🧠 Show "Disqualified" only if status == 3
-                    if (stage.id === 3 && status !== 3) continue;
+                // ✅ Stages actually passed through for each status.
+                // Statuses are NOT a linear scale — 3, 4 and 6 are branch outcomes,
+                // so an applicant can reach them without ever being interviewed.
+                const stagePaths = {
+                    0: [0],             // Application Submitted
+                    1: [0, 1],          // Under Review
+                    2: [0, 1, 2],       // Qualified for Interview
+                    3: [0, 1, 3],       // Disqualified (never reached interview)
+                    4: [0, 1, 4],       // Qualified but Not Selected (never reached interview)
+                    5: [0, 1, 2, 5],    // For Psychological / Pre-Employment Test
+                    6: [0, 1, 2, 5, 6], // Not Hired
+                    7: [0, 1, 2, 5, 7]  // Hired
+                };
 
-                    // 🧠 Show "Qualified but Not Selected" only if status == 4
-                    if (stage.id === 4 && status !== 4) continue;
+                const path = stagePaths[status] || stagePaths[0];
 
-                    // 🧠 Show "Not Hired" only if status == 6
-                    if (stage.id === 6 && status !== 6) continue;
+                // ✅ Render only the stages on this application's path
+                for (let stageId of path) {
+                    const stage = stages.find(s => s.id === stageId);
+                    if (!stage) continue;
 
-                    // ✅ Show all stages up to current status
-                    if (stage.id <= status) {
-                        html += `
+                    html += `
                             <div class="timeline-date ${stage.color}">${stage.title}</div>
                             <div class="timeline-item active">
                                 <div class="timeline-icon ${stage.icon}">
@@ -479,11 +487,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                 </div>
                             </div>
                         `;
-                    }
                 }
 
-                // ✅ Add “Awaiting Next Update” if is_complete == 0
-                if (isComplete === 0 && status != 3 && status != 4) {
+                // ✅ Add “Awaiting Next Update” only while the application is still in progress.
+                // 3, 4, 6 and 7 are final outcomes — nothing further is coming.
+                const finalStatuses = [3, 4, 6, 7];
+                if (isComplete === 0 && !finalStatuses.includes(status)) {
                     html += `
                         <div class="timeline-item">
                             <div class="timeline-icon muted" style="border: 3px dashed #ccc; color: #999; background: #f9f9f9;">
